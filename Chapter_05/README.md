@@ -2,9 +2,6 @@
 
 [PracticalSQL](https://www.nostarch.com/practicalSQL) by Anthony DeBarros is [available from No Starch Press](https://www.nostarch.com/practicalSQL).
 
-### Chapter 5: Basic Math and Stats with SQL
+### Chapter 4: Importing and Exporting Data
 
-Covers arithmetic operations and introduces aggregate functions for finding sums, averages, and medians.
-
-
-
+Explains how to use SQL commands to load data from external files and then export it. You’ll load a table of U.S. Census population data that you’ll use throughout the book.

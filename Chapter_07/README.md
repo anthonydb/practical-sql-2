@@ -2,10 +2,8 @@
 
 [PracticalSQL](https://www.nostarch.com/practicalSQL) by Anthony DeBarros is [available from No Starch Press](https://www.nostarch.com/practicalSQL).
 
-### Chapter 7: Table Design that Works for You
+### Chapter 6: Joining Tables in a Relational Database
 
-Covers how to set up tables to improve the organization and integrity of your data as well as how to speed up queries using indexes.
-
-
+Explains how to query multiple, related tables by joining them on key columns. You’ll learn how and when to use different types of joins.
 
 

@@ -2,9 +2,10 @@
 
 [PracticalSQL](https://www.nostarch.com/practicalSQL) by Anthony DeBarros is [available from No Starch Press](https://www.nostarch.com/practicalSQL).
 
-### Chapter 8: Extracting Information by Grouping and Summarizing
+### Chapter 7: Table Design that Works for You
 
-Explains how to use aggregate functions to find trends in U.S. library use based on annual surveys.
+Covers how to set up tables to improve the organization and integrity of your data as well as how to speed up queries using indexes.
+
 
 
 

@@ -2,6 +2,7 @@
 
 [PracticalSQL](https://www.nostarch.com/practicalSQL) by Anthony DeBarros is [available from No Starch Press](https://www.nostarch.com/practicalSQL).
 
-### Chapter 4: Importing and Exporting Data
+### Chapter 3: Understanding Data Types
 
-Explains how to use SQL commands to load data from external files and then export it. You’ll load a table of U.S. Census population data that you’ll use throughout the book.
+Explains the definitions for setting columns in a table to hold specific types of data, from text to dates to various forms of numbers.
+

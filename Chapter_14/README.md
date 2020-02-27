@@ -2,9 +2,9 @@
 
 [PracticalSQL](https://www.nostarch.com/practicalSQL) by Anthony DeBarros is [available from No Starch Press](https://www.nostarch.com/practicalSQL).
 
-### Chapter 14: Analyzing Spatial Data with PostGIS
+### Chapter 13: Mining Text to Find Meaningful Data
 
-Introduces data types and queries related to spatial objects, which will let you analyze geographical features like states, roads, and rivers.
+Covers how to use PostgreSQL’s full text search engine and regular expressions to extract data from unstructured text, using a collection of speeches by U.S. presidents as an example.
 
 
 

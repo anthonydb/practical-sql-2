@@ -2,8 +2,9 @@
 
 [PracticalSQL](https://www.nostarch.com/practicalSQL) by Anthony DeBarros is [available from No Starch Press](https://www.nostarch.com/practicalSQL).
 
-### Chapter 15: Saving Time with Views, Functions, and Triggers:
+### Chapter 14: Analyzing Spatial Data with PostGIS
 
-Explains how to automate database tasks so you can avoid repeating routine work.
+Introduces data types and queries related to spatial objects, which will let you analyze geographical features like states, roads, and rivers.
+
 
 

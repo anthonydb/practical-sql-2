@@ -2,7 +2,8 @@
 
 [PracticalSQL](https://www.nostarch.com/practicalSQL) by Anthony DeBarros is [available from No Starch Press](https://www.nostarch.com/practicalSQL).
 
-### Chapter 17: Maintaining Your Database:
+### Chapter 15: Saving Time with Views, Functions, and Triggers:
 
-Provides tips and procedures for tracking the size of your database, customizing settings, and backing up data.
+Explains how to automate database tasks so you can avoid repeating routine work.
+
 

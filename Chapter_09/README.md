@@ -2,7 +2,9 @@
 
 [PracticalSQL](https://www.nostarch.com/practicalSQL) by Anthony DeBarros is [available from No Starch Press](https://www.nostarch.com/practicalSQL).
 
-### Chapter 9: Inspecting and Modifying Data
+### Chapter 8: Extracting Information by Grouping and Summarizing
 
-Explores how to  nd and  x incomplete or inaccurate data using a collection of records about meat, egg, and poultry producers as an example.
+Explains how to use aggregate functions to find trends in U.S. library use based on annual surveys.
+
+
 
