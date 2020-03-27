@@ -2,27 +2,27 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 14 Code Examples
+-- Chapter 15 Code Examples
 --------------------------------------------------------------
 
--- Listing 14-1: Creating a gis_analysis database
+-- Listing 15-1: Creating a gis_analysis database
 
 CREATE DATABASE gis_analysis;
 -- Note: Switch to this new database before continuing the examples
 
--- Listing 14-2: Loading the PostGIS extension
+-- Listing 15-2: Loading the PostGIS extension
 
 CREATE EXTENSION postgis;
 
 SELECT postgis_full_version(); -- shows PostGIS version
 
--- Listing 14-3: Retrieving the well-known text for SRID 4326
+-- Listing 15-3: Retrieving the well-known text for SRID 4326
 
 SELECT srtext
 FROM spatial_ref_sys
 WHERE srid = 4326;
 
--- Listing 14-4: Using ST_GeomFromText() to create spatial objects
+-- Listing 15-4: Using ST_GeomFromText() to create spatial objects
 
 SELECT ST_GeomFromText('POINT(-74.9233606 42.699992)', 4326);
 
@@ -44,24 +44,24 @@ SELECT ST_GeomFromText('MULTIPOLYGON((
                                       -74.98 42.64, -74.98 42.66,
                                       -75.0 42.66)))', 4326);
 
--- Listing 14-5: Using ST_GeogFromText() to create spatial objects
+-- Listing 15-5: Using ST_GeogFromText() to create spatial objects
 
 SELECT
 ST_GeogFromText('SRID=4326;MULTIPOINT(-74.9 42.7, -75.1 42.7, -74.924 42.6)');
 
--- Listing 14-6: Functions specific to making points
+-- Listing 15-6: Functions specific to making points
 
 SELECT ST_PointFromText('POINT(-74.9233606 42.699992)', 4326);
 
 SELECT ST_MakePoint(-74.9233606, 42.699992);
 SELECT ST_SetSRID(ST_MakePoint(-74.9233606, 42.699992), 4326);
 
--- Listing 14-7: Functions specific to making LineStrings
+-- Listing 15-7: Functions specific to making LineStrings
 
 SELECT ST_LineFromText('LINESTRING(-105.90 35.67,-105.91 35.67)', 4326);
 SELECT ST_MakeLine(ST_MakePoint(-74.92, 42.69), ST_MakePoint(-74.12, 42.45));
 
--- Listing 14-8: Functions specific to making Polygons
+-- Listing 15-8: Functions specific to making Polygons
 
 SELECT ST_PolygonFromText('POLYGON((-74.9 42.7, -75.1 42.7,
                                     -75.1 42.6, -74.9 42.7))', 4326);
@@ -84,7 +84,7 @@ SELECT ST_MPolyFromText('MULTIPOLYGON((
 -- https://www.ams.usda.gov/local-food-directories/farmersmarkets
 
 
--- Listing 14-9: Create and load the farmers_markets table
+-- Listing 15-9: Create and load the farmers_markets table
 
 CREATE TABLE farmers_markets (
     fmid bigint PRIMARY KEY,
@@ -105,7 +105,7 @@ WITH (FORMAT CSV, HEADER);
 
 SELECT count(*) FROM farmers_markets; -- should return 8,681 rows
 
--- Listing 14-10: Creating and indexing a geography column
+-- Listing 15-10: Creating and indexing a geography column
 -- There's also a function: https://postgis.net/docs/AddGeometryColumn.html
 
 -- Add column
@@ -129,7 +129,7 @@ FROM farmers_markets
 WHERE longitude IS NOT NULL
 LIMIT 5;
 
--- Listing 14-11: Using ST_DWithin() to locate farmers' markets within 10 kilometers of a point
+-- Listing 15-11: Using ST_DWithin() to locate farmers' markets within 10 kilometers of a point
 
 SELECT market_name,
        city,
@@ -140,7 +140,7 @@ WHERE ST_DWithin(geog_point,
                  10000)
 ORDER BY market_name;
 
--- Listing 14-12: Using ST_Distance() to calculate the miles between Yankee Stadium
+-- Listing 15-12: Using ST_Distance() to calculate the miles between Yankee Stadium
 -- and Citi Field (Mets)
 -- 1609.344 meters/mile
 
@@ -149,7 +149,7 @@ SELECT ST_Distance(
                    ST_GeogFromText('POINT(-73.8480153 40.7570917)')
                    ) / 1609.344 AS mets_to_yanks;
 
--- Listing 14-13: Using ST_Distance() for each row in farmers_markets
+-- Listing 15-13: Using ST_Distance() for each row in farmers_markets
 
 SELECT market_name,
        city,
@@ -173,13 +173,13 @@ ORDER BY miles_from_dt ASC;
    -- Cartographic Boundary Shapefiles - Counties
    -- https://www.census.gov/geo/maps-data/data/cbf/cbf_counties.html
 
--- Listing 14-14: Checking the geom column's well-known text representation
+-- Listing 15-14: Checking the geom column's well-known text representation
 
 SELECT ST_AsText(geom)
 FROM us_counties_2010_shp
 LIMIT 1;
 
--- Listing 14-15: Find the largest counties by area using ST_Area()
+-- Listing 15-15: Find the largest counties by area using ST_Area()
 
 SELECT name10,
        statefp10 AS st,
@@ -190,7 +190,7 @@ FROM us_counties_2010_shp
 ORDER BY square_miles DESC
 LIMIT 5;
 
--- Listing 14-16: Using ST_Within() to find the county belonging to a pair of coordinates
+-- Listing 15-16: Using ST_Within() to find the county belonging to a pair of coordinates
 
 SELECT name10,
        statefp10
@@ -219,7 +219,7 @@ WHERE ST_Within('SRID=4269;POINT(-118.3419063 34.0977076)'::geometry, geom);
 -- https://www.census.gov/geo/reference/mtfcc.html
 -- Here, H3010: A natural flowing waterway
 
--- Listing 14-17: Using ST_GeometryType() to determine geometry
+-- Listing 15-17: Using ST_GeometryType() to determine geometry
 
 SELECT ST_GeometryType(geom)
 FROM santafe_linearwater_2016
@@ -229,7 +229,7 @@ SELECT ST_GeometryType(geom)
 FROM santafe_roads_2016
 LIMIT 1;
 
--- Listing 14-18: Spatial join with ST_Intersects() to find roads crossing the Santa Fe river
+-- Listing 15-18: Spatial join with ST_Intersects() to find roads crossing the Santa Fe river
 
 SELECT water.fullname AS waterway,
        roads.rttyp,
@@ -239,7 +239,7 @@ FROM santafe_linearwater_2016 water JOIN santafe_roads_2016 roads
 WHERE water.fullname = 'Santa Fe Riv'
 ORDER BY roads.fullname;
 
--- Listing 14-19: Using ST_Intersection() to show where roads cross the river
+-- Listing 15-19: Using ST_Intersection() to show where roads cross the river
 
 SELECT water.fullname AS waterway,
        roads.rttyp,

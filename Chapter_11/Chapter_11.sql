@@ -2,10 +2,10 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 10 Code Examples
+-- Chapter 11 Code Examples
 --------------------------------------------------------------
 
--- Listing 10-1: Create Census 2011-2015 ACS 5-Year stats table and import data
+-- Listing 11-1: Create Census 2011-2015 ACS 5-Year stats table and import data
 
 CREATE TABLE acs_2011_2015_stats (
     geoid varchar(14) CONSTRAINT geoid_key PRIMARY KEY,
@@ -24,14 +24,14 @@ WITH (FORMAT CSV, HEADER, DELIMITER ',');
 
 SELECT * FROM acs_2011_2015_stats;
 
--- Listing 10-2: Using corr(Y, X) to measure the relationship between 
+-- Listing 11-2: Using corr(Y, X) to measure the relationship between 
 -- education and income
 
 SELECT corr(median_hh_income, pct_bachelors_higher)
     AS bachelors_income_r
 FROM acs_2011_2015_stats;
 
--- Listing 10-3: Using corr(Y, X) on additional variables
+-- Listing 11-3: Using corr(Y, X) on additional variables
 
 SELECT
     round(
@@ -45,7 +45,7 @@ SELECT
       ) AS bachelors_travel_r
 FROM acs_2011_2015_stats;
 
--- Listing 10-4: Regression slope and intercept functions
+-- Listing 11-4: Regression slope and intercept functions
 
 SELECT
     round(
@@ -56,7 +56,7 @@ SELECT
         ) AS y_intercept
 FROM acs_2011_2015_stats;
 
--- Listing 10-5: Calculating the coefficient of determination, or r-squared
+-- Listing 11-5: Calculating the coefficient of determination, or r-squared
 
 SELECT round(
         regr_r2(median_hh_income, pct_bachelors_higher)::numeric, 3
@@ -76,7 +76,7 @@ FROM acs_2011_2015_stats;
 SELECT covar_pop(median_hh_income, pct_bachelors_higher)
 FROM acs_2011_2015_stats;
 
--- Listing 10-6: The rank() and dense_rank() window functions
+-- Listing 11-6: The rank() and dense_rank() window functions
 
 CREATE TABLE widget_companies (
     id bigserial,
@@ -102,7 +102,7 @@ SELECT
     dense_rank() OVER (ORDER BY widget_output DESC)
 FROM widget_companies;
 
--- Listing 10-7: Applying rank() within groups using PARTITION BY
+-- Listing 11-7: Applying rank() within groups using PARTITION BY
 
 CREATE TABLE store_sales (
     store varchar(30),
@@ -130,7 +130,7 @@ SELECT
     rank() OVER (PARTITION BY category ORDER BY unit_sales DESC)
 FROM store_sales;
 
--- Listing 10-8: Create and fill a 2015 FBI crime data table
+-- Listing 11-8: Create and fill a 2015 FBI crime data table
 
 CREATE TABLE fbi_crime_data_2015 (
     st varchar(20),
@@ -151,7 +151,7 @@ WITH (FORMAT CSV, HEADER, DELIMITER ',');
 SELECT * FROM fbi_crime_data_2015
 ORDER BY population DESC;
 
--- Listing 10-9: Find property crime rates per thousand in cities with 500,000
+-- Listing 11-9: Find property crime rates per thousand in cities with 500,000
 -- or more people
 
 SELECT

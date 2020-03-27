@@ -2,10 +2,10 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 7 Code Examples
+-- Chapter 8 Code Examples
 --------------------------------------------------------------
 
--- Listing 7-1: Declaring a single-column natural key as primary key
+-- Listing 8-1: Declaring a single-column natural key as primary key
 
 -- As a column constraint
 CREATE TABLE natural_key_example (
@@ -25,14 +25,14 @@ CREATE TABLE natural_key_example (
     CONSTRAINT license_key PRIMARY KEY (license_id)
 );
 
--- Listing 7-2: Example of a primary key violation
+-- Listing 8-2: Example of a primary key violation
 INSERT INTO natural_key_example (license_id, first_name, last_name)
 VALUES ('T229901', 'Lynn', 'Malero');
 
 INSERT INTO natural_key_example (license_id, first_name, last_name)
 VALUES ('T229901', 'Sam', 'Tracy');
 
--- Listing 7-3: Declaring a composite primary key as a natural key
+-- Listing 8-3: Declaring a composite primary key as a natural key
 CREATE TABLE natural_key_composite_example (
     student_id varchar(10),
     school_day date,
@@ -40,7 +40,7 @@ CREATE TABLE natural_key_composite_example (
     CONSTRAINT student_key PRIMARY KEY (student_id, school_day)
 );
 
--- Listing 7-4: Example of a composite primary key violation
+-- Listing 8-4: Example of a composite primary key violation
 
 INSERT INTO natural_key_composite_example (student_id, school_day, present)
 VALUES(775, '1/22/2017', 'Y');
@@ -51,7 +51,7 @@ VALUES(775, '1/23/2017', 'Y');
 INSERT INTO natural_key_composite_example (student_id, school_day, present)
 VALUES(775, '1/23/2017', 'N');
 
--- Listing 7-5: Declaring a bigserial column as a surrogate key
+-- Listing 8-5: Declaring a bigserial column as a surrogate key
 
 CREATE TABLE surrogate_key_example (
     order_number bigserial,
@@ -67,7 +67,7 @@ VALUES ('Beachball Polish', '2015-03-17'),
 
 SELECT * FROM surrogate_key_example;
 
--- Listing 7-6: A foreign key example
+-- Listing 8-6: A foreign key example
 
 CREATE TABLE licenses (
     license_id varchar(10),
@@ -92,7 +92,7 @@ VALUES ('A203391', '3/17/2017', 'T229901');
 INSERT INTO registrations (registration_id, registration_date, license_id)
 VALUES ('A75772', '3/17/2017', 'T000001');
 
--- Listing 7-7: CHECK constraint examples
+-- Listing 8-7: CHECK constraint examples
 
 CREATE TABLE check_constraint_example (
     user_id bigserial,
@@ -110,7 +110,7 @@ VALUES ('admin');
 INSERT INTO check_constraint_example (salary)
 VALUES (0);
 
--- Listing 7-8: UNIQUE constraint example
+-- Listing 8-8: UNIQUE constraint example
 
 CREATE TABLE unique_constraint_example (
     contact_id bigserial CONSTRAINT contact_id_key PRIMARY KEY,
@@ -129,7 +129,7 @@ VALUES ('Betty', 'Diaz', 'bdiaz@example.org');
 INSERT INTO unique_constraint_example (first_name, last_name, email)
 VALUES ('Sasha', 'Lee', 'slee@example.org');
 
--- Listing 7-9: NOT NULL constraint example
+-- Listing 8-9: NOT NULL constraint example
 
 CREATE TABLE not_null_example (
     student_id bigserial,
@@ -138,7 +138,7 @@ CREATE TABLE not_null_example (
     CONSTRAINT student_id_key PRIMARY KEY (student_id)
 );
 
--- Listing 7-10: Dropping and adding a primary key and a NOT NULL constraint
+-- Listing 8-10: Dropping and adding a primary key and a NOT NULL constraint
 
 -- Drop
 ALTER TABLE not_null_example DROP CONSTRAINT student_id_key;
@@ -152,7 +152,7 @@ ALTER TABLE not_null_example ALTER COLUMN first_name DROP NOT NULL;
 -- Add
 ALTER TABLE not_null_example ALTER COLUMN first_name SET NOT NULL;
 
--- Listing 7-11: Importing New York City address data
+-- Listing 8-11: Importing New York City address data
 
 CREATE TABLE new_york_addresses (
     longitude numeric(9,6),
@@ -168,7 +168,7 @@ COPY new_york_addresses
 FROM 'C:\YourDirectory\city_of_new_york.csv'
 WITH (FORMAT CSV, HEADER);
 
--- Listing 7-12: Benchmark queries for index performance
+-- Listing 8-12: Benchmark queries for index performance
 
 EXPLAIN ANALYZE SELECT * FROM new_york_addresses
 WHERE street = 'BROADWAY';
@@ -179,6 +179,6 @@ WHERE street = '52 STREET';
 EXPLAIN ANALYZE SELECT * FROM new_york_addresses
 WHERE street = 'ZWICKY AVENUE';
 
--- Listing 7-13: Creating a B-Tree index on the new_york_addresses table
+-- Listing 8-13: Creating a B-Tree index on the new_york_addresses table
 
 CREATE INDEX street_idx ON new_york_addresses (street);

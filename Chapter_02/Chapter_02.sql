@@ -2,14 +2,14 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 1 Code Examples
+-- Chapter 2 Code Examples
 --------------------------------------------------------------
 
--- Listing 1-1: Creating a database named analysis
+-- Listing 2-1: Creating a database named analysis
 
 CREATE DATABASE analysis;
 
--- Listing 1-2: Creating a table named teachers with six columns
+-- Listing 2-2: Creating a table named teachers with six columns
 
 CREATE TABLE teachers (
     id bigserial,
@@ -23,7 +23,7 @@ CREATE TABLE teachers (
 -- This command will remove (drop) the table.
 -- DROP TABLE teachers;
 
--- Listing 1-3 Inserting data into the teachers table
+-- Listing 2-3 Inserting data into the teachers table
 
 INSERT INTO teachers (first_name, last_name, school, hire_date, salary)
 VALUES ('Janet', 'Smith', 'F.D. Roosevelt HS', '2011-10-30', 36200),

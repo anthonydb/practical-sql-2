@@ -2,10 +2,10 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 3 Code Examples
+-- Chapter 4 Code Examples
 --------------------------------------------------------------
 
--- Listing 3-1: Character data types in action
+-- Listing 4-1: Character data types in action
 
 CREATE TABLE char_data_types (
     varchar_column varchar(10),
@@ -22,7 +22,7 @@ COPY char_data_types TO 'C:\YourDirectory\typetest.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
 
--- Listing 3-2: Number data types in action
+-- Listing 4-2: Number data types in action
 
 CREATE TABLE number_data_types (
     numeric_column numeric(20,5),
@@ -38,8 +38,8 @@ VALUES
 
 SELECT * FROM number_data_types;
 
--- Listing 3-3: Rounding issues with float columns
--- Assumes table created and loaded with Listing 3-2
+-- Listing 4-3: Rounding issues with float columns
+-- Assumes table created and loaded with Listing 4-2
 
 SELECT
     numeric_column * 10000000 AS "Fixed",
@@ -47,7 +47,7 @@ SELECT
 FROM number_data_types
 WHERE numeric_column = .7;
 
--- Listing 3-4: Timestamp and interval types in action
+-- Listing 4-4: Timestamp and interval types in action
 
 CREATE TABLE date_time_types (
     timestamp_column timestamp with time zone,
@@ -63,8 +63,8 @@ VALUES
 
 SELECT * FROM date_time_types;
 
--- Listing 3-5: Using the interval data type
--- Assumes script 3-4 has been run
+-- Listing 4-5: Using the interval data type
+-- Assumes script 4-4 has been run
 
 SELECT
     timestamp_column,
@@ -72,7 +72,7 @@ SELECT
     timestamp_column - interval_column AS new_date
 FROM date_time_types;
 
--- Listing 3-6: Three CAST() examples
+-- Listing 4-6: Three CAST() examples
 
 SELECT timestamp_column, CAST(timestamp_column AS varchar(10))
 FROM date_time_types;

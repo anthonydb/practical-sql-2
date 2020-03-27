@@ -2,23 +2,23 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 5 Code Examples
+-- Chapter 6 Code Examples
 --------------------------------------------------------------
 
--- Listing 5-1: Basic addition, subtraction and multiplication with SQL
+-- Listing 6-1: Basic addition, subtraction and multiplication with SQL
 
 SELECT 2 + 2;    -- addition
 SELECT 9 - 1;    -- subtraction
 SELECT 3 * 4;    -- multiplication
 
--- Listing 5-2: Integer and decimal division with SQL
+-- Listing 6-2: Integer and decimal division with SQL
 
 SELECT 11 / 6;   -- integer division
 SELECT 11 % 6;   -- modulo division
 SELECT 11.0 / 6; -- decimal division
 SELECT CAST(11 AS numeric(3,1)) / 6;
 
--- Listing 5-3: Exponents, roots and factorials with SQL
+-- Listing 6-3: Exponents, roots and factorials with SQL
 
 SELECT 3 ^ 4;    -- exponentiation
 SELECT |/ 10;    -- square root (operator)
@@ -34,7 +34,7 @@ SELECT (7 + 8) * 9;	-- answer: 135
 SELECT 3 ^ 3 - 1;   -- answer: 26
 SELECT 3 ^ (3 - 1); -- answer: 9
 
--- Listing 5-4: Selecting Census population columns by race with aliases
+-- Listing 6-4: Selecting Census population columns by race with aliases
 
 SELECT geo_name,
        state_us_abbreviation AS "st",
@@ -48,7 +48,7 @@ SELECT geo_name,
        p0010009 AS "Two or More Races"
 FROM us_counties_2010;
 
--- Listing 5-5: Adding two columns in us_counties_2010
+-- Listing 6-5: Adding two columns in us_counties_2010
 
 SELECT geo_name,
        state_us_abbreviation AS "st",
@@ -57,7 +57,7 @@ SELECT geo_name,
        p0010003 + p0010004 AS "Total White and Black"
 FROM us_counties_2010;
 
--- Listing 5-6: Checking Census data totals
+-- Listing 6-6: Checking Census data totals
 
 SELECT geo_name,
        state_us_abbreviation AS "st",
@@ -69,7 +69,7 @@ SELECT geo_name,
 FROM us_counties_2010
 ORDER BY "Difference" DESC;
 
--- Listing 5-7: Calculating the percent of the population that is 
+-- Listing 6-7: Calculating the percent of the population that is 
 -- Asian by county (percent of the whole)
 
 SELECT geo_name,
@@ -78,7 +78,7 @@ SELECT geo_name,
 FROM us_counties_2010
 ORDER BY "pct_asian" DESC;
 
--- Listing 5-8: Calculating percent change
+-- Listing 6-8: Calculating percent change
 
 CREATE TABLE percent_change (
     department varchar(20),
@@ -102,13 +102,13 @@ SELECT department,
                     spend_2014 * 100, 1 ) AS "pct_change"
 FROM percent_change;
 
--- Listing 5-9: Using sum() and avg() aggregate functions
+-- Listing 6-9: Using sum() and avg() aggregate functions
 
 SELECT sum(p0010001) AS "County Sum",
        round(avg(p0010001), 0) AS "County Average"
 FROM us_counties_2010;
 
--- Listing 5-10: Testing SQL percentile functions
+-- Listing 6-10: Testing SQL percentile functions
 
 CREATE TABLE percentile_test (
     numbers integer
@@ -124,7 +124,7 @@ SELECT
     WITHIN GROUP (ORDER BY numbers)
 FROM percentile_test;
 
--- Listing 5-11: Using sum(), avg(), and percentile_cont() aggregate functions
+-- Listing 6-11: Using sum(), avg(), and percentile_cont() aggregate functions
 
 SELECT sum(p0010001) AS "County Sum",
        round(avg(p0010001), 0) AS "County Average",
@@ -132,7 +132,7 @@ SELECT sum(p0010001) AS "County Sum",
        WITHIN GROUP (ORDER BY p0010001) AS "County Median"
 FROM us_counties_2010;
 
--- Listing 5-12: Passing an array of values to percentile_cont()
+-- Listing 6-12: Passing an array of values to percentile_cont()
 
 -- quartiles
 SELECT percentile_cont(array[.25,.5,.75])
@@ -150,7 +150,7 @@ SELECT percentile_cont(array[.1,.2,.3,.4,.5,.6,.7,.8,.9])
        WITHIN GROUP (ORDER BY p0010001) AS "deciles"
 FROM us_counties_2010;
 
--- Listing 5-13: Using unnest() to turn an array into rows
+-- Listing 6-13: Using unnest() to turn an array into rows
 
 SELECT unnest(
             percentile_cont(array[.25,.5,.75])
@@ -158,7 +158,7 @@ SELECT unnest(
             ) AS "quartiles"
 FROM us_counties_2010;
 
--- Listing 5-14: Creating a median() aggregate function in PostgreSQL
+-- Listing 6-14: Creating a median() aggregate function in PostgreSQL
 -- Source: https://wiki.postgresql.org/wiki/Aggregate_Median
 
 CREATE OR REPLACE FUNCTION _final_median(anyarray)
@@ -192,7 +192,7 @@ CREATE AGGREGATE median(anyelement) (
   INITCOND='{}'
 );
 
--- Listing 5-15: Using a median() aggregate function
+-- Listing 6-15: Using a median() aggregate function
 
 SELECT sum(p0010001) AS "County Sum",
        round(avg(p0010001), 0) AS "County Average",
@@ -201,7 +201,7 @@ SELECT sum(p0010001) AS "County Sum",
        WITHIN GROUP (ORDER BY P0010001) AS "50th Percentile"
 FROM us_counties_2010;
 
--- Listing 5-16: Finding the most-frequent value with mode()
+-- Listing 6-16: Finding the most-frequent value with mode()
 
 SELECT mode() WITHIN GROUP (ORDER BY p0010001)
 FROM us_counties_2010;

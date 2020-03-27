@@ -5,7 +5,7 @@
 -- Chapter 6 Code Examples
 --------------------------------------------------------------
 
--- Listing 6-1: Creating the departments and employees tables
+-- Listing 7-1: Creating the departments and employees tables
 
 CREATE TABLE departments (
     dept_id bigserial,
@@ -37,13 +37,13 @@ VALUES
     ('Soo', 'Nguyen', 83000, 2),
     ('Janet', 'King', 95000, 2);
 
--- Listing 6-2: Joining the employees and departments tables
+-- Listing 7-2: Joining the employees and departments tables
 
 SELECT *
 FROM employees JOIN departments
 ON employees.dept_id = departments.dept_id;
 
--- Listing 6-3: Creating two tables to explore JOIN types
+-- Listing 7-3: Creating two tables to explore JOIN types
 
 CREATE TABLE schools_left (
     id integer CONSTRAINT left_id_key PRIMARY KEY,
@@ -68,7 +68,7 @@ INSERT INTO schools_right (id, right_school) VALUES
     (4, 'Chase Magnet Academy'),
     (6, 'Jefferson High School');
 
--- Listing 6-4: Using JOIN
+-- Listing 7-4: Using JOIN
 
 SELECT *
 FROM schools_left JOIN schools_right
@@ -80,51 +80,51 @@ SELECT *
 FROM schools_left INNER JOIN schools_right
 ON schools_left.id = schools_right.id;
 
--- Listing 6-5: Using LEFT JOIN
+-- Listing 7-5: Using LEFT JOIN
 
 SELECT *
 FROM schools_left LEFT JOIN schools_right
 ON schools_left.id = schools_right.id;
 
--- Listing 6-6: Using RIGHT JOIN
+-- Listing 7-6: Using RIGHT JOIN
 
 SELECT *
 FROM schools_left RIGHT JOIN schools_right
 ON schools_left.id = schools_right.id;
 
--- Listing 6-7: Using FULL OUTER JOIN
+-- Listing 7-7: Using FULL OUTER JOIN
 
 SELECT *
 FROM schools_left FULL OUTER JOIN schools_right
 ON schools_left.id = schools_right.id;
 
--- Listing 6-8: Using CROSS JOIN
+-- Listing 7-8: Using CROSS JOIN
 
 SELECT *
 FROM schools_left CROSS JOIN schools_right;
 
--- Listing 6-9: Filtering to show missing values with IS NULL
+-- Listing 7-9: Filtering to show missing values with IS NULL
 
 SELECT *
 FROM schools_left LEFT JOIN schools_right
 ON schools_left.id = schools_right.id
 WHERE schools_right.id IS NULL;
 
--- Listing 6-10: Querying specific columns in a join
+-- Listing 7-10: Querying specific columns in a join
 SELECT schools_left.id,
        schools_left.left_school,
        schools_right.right_school
 FROM schools_left LEFT JOIN schools_right
 ON schools_left.id = schools_right.id;
 
--- Listing 6-11: Simplifying code with table aliases
+-- Listing 7-11: Simplifying code with table aliases
 SELECT lt.id,
        lt.left_school,
        rt.right_school
 FROM schools_left AS lt LEFT JOIN schools_right AS rt
 ON lt.id = rt.id;
 
--- Listing 6-12: Joining multiple tables
+-- Listing 7-12: Joining multiple tables
 CREATE TABLE schools_enrollment (
     id integer,
     enrollment integer
@@ -155,7 +155,7 @@ FROM schools_left AS lt LEFT JOIN schools_enrollment AS en
 LEFT JOIN schools_grades AS gr
     ON lt.id = gr.id;
 
--- Listing 6-13: Performing math on joined Census tables
+-- Listing 7-13: Performing math on joined Census tables
 -- Decennial Census 2000. Full data dictionary at https://www.census.gov/prod/cen2000/doc/pl94-171.pdf
 -- Note: Some non-number columns have been given more descriptive names
 

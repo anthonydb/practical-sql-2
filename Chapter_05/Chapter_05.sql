@@ -2,10 +2,10 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 4 Code Examples
+-- Chapter 5 Code Examples
 --------------------------------------------------------------
 
--- Listing 4-1: Using COPY for data import
+-- Listing 5-1: Using COPY for data import
 -- This is example syntax only; running it will produce an error
 
 COPY table_name
@@ -13,7 +13,7 @@ FROM 'C:\YourDirectory\your_file.csv'
 WITH (FORMAT CSV, HEADER);
 
 
--- Listing 4-2: A CREATE TABLE statement for Census county data
+-- Listing 5-2: A CREATE TABLE statement for Census county data
 -- Full data dictionary available at: http://www.census.gov/prod/cen2010/doc/pl94-171.pdf
 -- Note: Some columns have been given more descriptive names
 
@@ -124,7 +124,7 @@ CREATE TABLE us_counties_2010 (
 
 SELECT * FROM us_counties_2010;
 
--- Listing 4-3: Importing Census data using COPY
+-- Listing 5-3: Importing Census data using COPY
 -- Note! If you run into an import error here, be sure you downloaded the code and
 -- data for the book according to the steps listed on page xxvii in the Introduction.
 -- Windows users: Please check the Note on page xxvii as well.
@@ -148,7 +148,7 @@ ORDER BY internal_point_lon DESC
 LIMIT 5;
 
 
--- Listing 4-4: Creating a table to track supervisor salaries
+-- Listing 5-4: Creating a table to track supervisor salaries
 
 CREATE TABLE supervisor_salaries (
     town varchar(30),
@@ -159,7 +159,7 @@ CREATE TABLE supervisor_salaries (
     benefits money
 );
 
--- Listing 4-5: Importing salaries data from CSV to three table columns
+-- Listing 5-5: Importing salaries data from CSV to three table columns
 
 COPY supervisor_salaries (town, supervisor, salary)
 FROM 'C:\YourDirectory\supervisor_salaries.csv'
@@ -168,7 +168,7 @@ WITH (FORMAT CSV, HEADER);
 -- Check the data
 SELECT * FROM supervisor_salaries LIMIT 2;
 
--- Listing 4-6 Use a temporary table to add a default value to a column during
+-- Listing 5-6 Use a temporary table to add a default value to a column during
 -- import
 
 DELETE FROM supervisor_salaries;
@@ -188,20 +188,20 @@ DROP TABLE supervisor_salaries_temp;
 -- Check the data
 SELECT * FROM supervisor_salaries LIMIT 2;
 
--- Listing 4-7: Export an entire table with COPY
+-- Listing 5-7: Export an entire table with COPY
 
 COPY us_counties_2010
 TO 'C:\YourDirectory\us_counties_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
 
--- Listing 4-8: Exporting selected columns from a table with COPY
+-- Listing 5-8: Exporting selected columns from a table with COPY
 
 COPY us_counties_2010 (geo_name, internal_point_lat, internal_point_lon)
 TO 'C:\YourDirectory\us_counties_latlon_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
--- Listing 4-9: Exporting query results with COPY
+-- Listing 5-9: Exporting query results with COPY
 
 COPY (
     SELECT geo_name, state_us_abbreviation

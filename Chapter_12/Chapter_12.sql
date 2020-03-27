@@ -2,10 +2,10 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 11 Code Examples
+-- Chapter 12 Code Examples
 --------------------------------------------------------------
 
--- Listing 11-1: Extracting components of a timestamp value using date_part()
+-- Listing 12-1: Extracting components of a timestamp value using date_part()
 
 SELECT
     date_part('year', '2019-12-01 18:37:12 EST'::timestamptz) AS "year",
@@ -23,7 +23,7 @@ SELECT
 
 SELECT extract('year' from '2019-12-01 18:37:12 EST'::timestamptz) AS "year";
 
--- Listing 11-2: Three functions for making datetimes from components
+-- Listing 12-2: Three functions for making datetimes from components
 
 -- make a date
 SELECT make_date(2018, 2, 22);
@@ -42,7 +42,7 @@ SELECT
     localtimestamp,
     now();
 
--- Listing 11-3: Comparing current_timestamp and clock_timestamp() during row insert
+-- Listing 12-3: Comparing current_timestamp and clock_timestamp() during row insert
 
 CREATE TABLE current_time_example (
     time_id bigserial,
@@ -59,11 +59,11 @@ SELECT * FROM current_time_example;
 
 -- Time Zones
 
--- Listing 11-4: Showing your PostgreSQL server's default time zone
+-- Listing 12-4: Showing your PostgreSQL server's default time zone
 
 SHOW timezone; -- Note: You can see all run-time defaults with SHOW ALL;
 
--- Listing 11-5: Showing time zone abbreviations and names
+-- Listing 12-5: Showing time zone abbreviations and names
 
 SELECT * FROM pg_timezone_abbrevs;
 SELECT * FROM pg_timezone_names;
@@ -72,7 +72,7 @@ SELECT * FROM pg_timezone_names;
 SELECT * FROM pg_timezone_names
 WHERE name LIKE 'Europe%';
 
--- Listing 11-6: Setting the time zone for a client session
+-- Listing 12-6: Setting the time zone for a client session
 
 SET timezone TO 'US/Pacific';
 
@@ -101,7 +101,7 @@ SELECT '9/30/1929'::date + '5 years'::interval;
 
 -- Taxi Rides
 
--- Listing 11-7: Creating a table and importing NYC yellow taxi data
+-- Listing 12-7: Creating a table and importing NYC yellow taxi data
 
 CREATE TABLE nyc_yellow_taxi_trips_2016_06_01 (
     trip_id bigserial PRIMARY KEY,
@@ -155,7 +155,7 @@ ON nyc_yellow_taxi_trips_2016_06_01 (tpep_pickup_datetime);
 
 SELECT count(*) FROM nyc_yellow_taxi_trips_2016_06_01;
 
--- Listing 11-8: Counting taxi trips by hour
+-- Listing 12-8: Counting taxi trips by hour
 
 SELECT
     date_part('hour', tpep_pickup_datetime) AS trip_hour,
@@ -164,7 +164,7 @@ FROM nyc_yellow_taxi_trips_2016_06_01
 GROUP BY trip_hour
 ORDER BY trip_hour;
 
--- Listing 11-9: Exporting taxi pickups per hour to a CSV file
+-- Listing 12-9: Exporting taxi pickups per hour to a CSV file
 
 COPY
     (SELECT
@@ -177,7 +177,7 @@ COPY
 TO 'C:\YourDirectory\hourly_pickups_2016_06_01.csv'
 WITH (FORMAT CSV, HEADER, DELIMITER ',');
 
--- Listing 11-10: Calculating median trip time by hour
+-- Listing 12-10: Calculating median trip time by hour
 
 SELECT
     date_part('hour', tpep_pickup_datetime) AS trip_hour,
@@ -188,7 +188,7 @@ FROM nyc_yellow_taxi_trips_2016_06_01
 GROUP BY trip_hour
 ORDER BY trip_hour;
 
--- Listing 11-11: Creating a table to hold train trip data
+-- Listing 12-11: Creating a table to hold train trip data
 
 SET timezone TO 'US/Central';
 
@@ -210,21 +210,21 @@ VALUES
 
 SELECT * FROM train_rides;
 
--- Listing 11-12: Calculating the length of each trip segment
+-- Listing 12-12: Calculating the length of each trip segment
 
 SELECT segment,
        to_char(departure, 'YYYY-MM-DD HH12:MI a.m. TZ') AS departure,
        arrival - departure AS segment_time
 FROM train_rides;
 
--- Listing 11-13: Calculating cumulative intervals using OVER
+-- Listing 12-13: Calculating cumulative intervals using OVER
 
 SELECT segment,
        arrival - departure AS segment_time,
        sum(arrival - departure) OVER (ORDER BY trip_id) AS cume_time
 FROM train_rides;
 
--- Listing 11-14: Better formatting for cumulative trip time
+-- Listing 12-14: Better formatting for cumulative trip time
 
 SELECT segment,
        arrival - departure AS segment_time,

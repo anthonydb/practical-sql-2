@@ -2,12 +2,12 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 15 Code Examples
+-- Chapter 17 Code Examples
 --------------------------------------------------------------
 
 -- VIEWS
 
--- Listing 15-1: Creating a view that displays Nevada 2010 counties
+-- Listing 17-1: Creating a view that displays Nevada 2010 counties
 
 CREATE OR REPLACE VIEW nevada_counties_pop_2010 AS
     SELECT geo_name,
@@ -18,13 +18,13 @@ CREATE OR REPLACE VIEW nevada_counties_pop_2010 AS
     WHERE state_us_abbreviation = 'NV'
     ORDER BY county_fips;
 
--- Listing 15-2: Querying the nevada_counties_pop_2010 view
+-- Listing 17-2: Querying the nevada_counties_pop_2010 view
 
 SELECT *
 FROM nevada_counties_pop_2010
 LIMIT 5;
 
--- Listing 15-3: Creating a view showing population change for US counties
+-- Listing 17-3: Creating a view showing population change for US counties
 
 CREATE OR REPLACE VIEW county_pop_change_2010_2000 AS
     SELECT c2010.geo_name,
@@ -40,7 +40,7 @@ CREATE OR REPLACE VIEW county_pop_change_2010_2000 AS
        AND c2010.county_fips = c2000.county_fips
     ORDER BY c2010.state_fips, c2010.county_fips;
 
--- Listing 15-4: Selecting columns from the county_pop_change_2010_2000 view
+-- Listing 17-4: Selecting columns from the county_pop_change_2010_2000 view
 
 SELECT geo_name,
        st,
@@ -50,7 +50,7 @@ FROM county_pop_change_2010_2000
 WHERE st = 'NV'
 LIMIT 5;
 
--- Listing 15-5: Creating a view on the employees table
+-- Listing 17-5: Creating a view on the employees table
 
 CREATE OR REPLACE VIEW employees_tax_dept AS
      SELECT emp_id,
@@ -64,7 +64,7 @@ CREATE OR REPLACE VIEW employees_tax_dept AS
 
 SELECT * FROM employees_tax_dept;
 
--- Listing 15-6: Successful and rejected inserts via the employees_tax_dept view
+-- Listing 17-6: Successful and rejected inserts via the employees_tax_dept view
 
 INSERT INTO employees_tax_dept (first_name, last_name, dept_id)
 VALUES ('Suzanne', 'Legere', 1);
@@ -77,7 +77,7 @@ SELECT * FROM employees_tax_dept;
 
 SELECT * FROM employees;
 
--- Listing 15-7: Updating a row via the employees_tax_dept view
+-- Listing 17-7: Updating a row via the employees_tax_dept view
 
 UPDATE employees_tax_dept
 SET last_name = 'Le Gere'
@@ -90,7 +90,7 @@ UPDATE employees_tax_dept
 SET salary = 100000
 WHERE emp_id = 5;
 
--- Listing 15-8: Deleting a row via the employees_tax_dept view
+-- Listing 17-8: Deleting a row via the employees_tax_dept view
 
 DELETE FROM employees_tax_dept
 WHERE emp_id = 5;
@@ -99,7 +99,7 @@ WHERE emp_id = 5;
 -- FUNCTIONS
 -- https://www.postgresql.org/docs/current/static/plpgsql.html
 
--- Listing 15-9: Creating a percent_change function
+-- Listing 17-9: Creating a percent_change function
 -- To delete this function: DROP FUNCTION percent_change(numeric,numeric,integer);
 
 CREATE OR REPLACE FUNCTION
@@ -114,11 +114,11 @@ LANGUAGE SQL
 IMMUTABLE
 RETURNS NULL ON NULL INPUT;
 
--- Listing 15-10: Testing the percent_change() function
+-- Listing 17-10: Testing the percent_change() function
 
 SELECT percent_change(110, 108, 2);
 
--- Listing 15-11: Testing percent_change() on Census data
+-- Listing 17-11: Testing percent_change() on Census data
 
 SELECT c2010.geo_name,
        c2010.state_us_abbreviation AS st,
@@ -132,7 +132,7 @@ ON c2010.state_fips = c2000.state_fips
 ORDER BY pct_chg_func DESC
 LIMIT 5;
 
--- Listing 15-12: Adding a column to the teachers table and seeing the data
+-- Listing 17-12: Adding a column to the teachers table and seeing the data
 
 ALTER TABLE teachers ADD COLUMN personal_days integer;
 
@@ -142,7 +142,7 @@ SELECT first_name,
        personal_days
 FROM teachers;
 
--- Listing 15-13: Creating an update_personal_days() function
+-- Listing 17-13: Creating an update_personal_days() function
 
 CREATE OR REPLACE FUNCTION update_personal_days()
 RETURNS void AS $$
@@ -161,11 +161,11 @@ $$ LANGUAGE plpgsql;
 -- To run the function:
 SELECT update_personal_days();
 
--- Listing 15-14: Enabling the PL/Python procedural language
+-- Listing 17-14: Enabling the PL/Python procedural language
 
 CREATE EXTENSION plpythonu;
 
--- Listing 15-15: Using PL/Python to create the trim_county() function
+-- Listing 17-15: Using PL/Python to create the trim_county() function
 
 CREATE OR REPLACE FUNCTION trim_county(input_string text)
 RETURNS text AS $$
@@ -174,7 +174,7 @@ RETURNS text AS $$
     return cleaned
 $$ LANGUAGE plpythonu;
 
--- Listing 15-16: Testing the trim_county() function
+-- Listing 17-16: Testing the trim_county() function
 
 SELECT geo_name,
        trim_county(geo_name)
@@ -185,7 +185,7 @@ LIMIT 5;
 
 -- TRIGGERS
 
--- Listing 15-17: Creating the grades and grades_history tables
+-- Listing 17-17: Creating the grades and grades_history tables
 
 CREATE TABLE grades (
     student_id bigint,
@@ -212,7 +212,7 @@ CREATE TABLE grades_history (
 PRIMARY KEY (student_id, course_id, change_time)
 );  
 
--- Listing 15-18: Creating the record_if_grade_changed() function
+-- Listing 17-18: Creating the record_if_grade_changed() function
 
 CREATE OR REPLACE FUNCTION record_if_grade_changed()
     RETURNS trigger AS
@@ -238,7 +238,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Listing 15-19: Creating the grades_update trigger
+-- Listing 17-19: Creating the grades_update trigger
 
 CREATE TRIGGER grades_update
   AFTER UPDATE
@@ -246,7 +246,7 @@ CREATE TRIGGER grades_update
   FOR EACH ROW
   EXECUTE PROCEDURE record_if_grade_changed();
 
--- Listing 15-20: Testing the grades_update trigger
+-- Listing 17-20: Testing the grades_update trigger
 
 -- Initially, there should be 0 records in the history
 SELECT * FROM grades_history;
@@ -267,7 +267,7 @@ SELECT student_id,
        new_grade
 FROM grades_history;
 
--- Listing 15-21: Creating a temperature_test table
+-- Listing 17-21: Creating a temperature_test table
 
 CREATE TABLE temperature_test (
     station_name varchar(50),
@@ -278,7 +278,7 @@ CREATE TABLE temperature_test (
 PRIMARY KEY (station_name, observation_date)
 );
 
--- Listing 15-22: Creating the classify_max_temp() function
+-- Listing 17-22: Creating the classify_max_temp() function
 
 CREATE OR REPLACE FUNCTION classify_max_temp()
     RETURNS trigger AS
@@ -301,7 +301,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Listing 15-23: Creating the temperature_insert trigger
+-- Listing 17-23: Creating the temperature_insert trigger
 
 CREATE TRIGGER temperature_insert
     BEFORE INSERT
@@ -309,7 +309,7 @@ CREATE TRIGGER temperature_insert
     FOR EACH ROW
     EXECUTE PROCEDURE classify_max_temp();
 
--- Listing 15-24: Inserting rows to test the temperature_update trigger
+-- Listing 17-24: Inserting rows to test the temperature_update trigger
 
 INSERT INTO temperature_test (station_name, observation_date, max_temp, min_temp)
 VALUES
