@@ -1,9 +1,9 @@
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 3 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- Listing 3-1: Querying all rows and columns from the teachers table
 
@@ -95,6 +95,15 @@ SELECT *
 FROM teachers
 WHERE school = 'F.D. Roosevelt HS'
       AND (salary < 38000 OR salary > 40000);
+
+-- Note how the results change if we omit parentheses. That's
+-- because the AND operator takes precedence over OR and is
+-- evaluated first:
+
+SELECT *
+FROM teachers
+WHERE school = 'F.D. Roosevelt HS'
+      AND salary < 38000 OR salary > 40000;
 
 -- Listing 3-10: A SELECT statement including WHERE and ORDER BY
 

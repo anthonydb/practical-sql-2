@@ -1,9 +1,9 @@
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 2 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- Listing 2-1: Creating a database named analysis
 
