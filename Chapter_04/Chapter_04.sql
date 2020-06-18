@@ -9,7 +9,7 @@
 
 CREATE TABLE char_data_types (
     char_column char(10),
-	varchar_column varchar(10),
+    varchar_column varchar(10),
     text_column text
 );
 
