@@ -1,13 +1,12 @@
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Try It Yourself Questions and Answers
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
-
 --------------------------------------------------------------
--- Chapter 1: Creating Your First Database and Table
+-- Chapter 2: Creating Your First Database and Table
 --------------------------------------------------------------
 
 -- 1. Imagine you're building a database to catalog all the animals at your
@@ -75,7 +74,7 @@ INSERT INTO animal_types (common_name, scientific_name, conservation_status)
 VALUES ('Javan Rhino', 'Rhinoceros sondaicus' 'Critically Endangered');
 
 --------------------------------------------------------------
--- Chapter 2: Beginning Data Exploration with SELECT
+-- Chapter 3: Beginning Data Exploration with SELECT
 --------------------------------------------------------------
 
 -- 1. The school district superintendent asks for a list of teachers in each
@@ -109,7 +108,7 @@ ORDER BY salary DESC;
 
 
 --------------------------------------------------------------
--- Chapter 3: Understanding Data Types
+-- Chapter 4: Understanding Data Types
 --------------------------------------------------------------
 
 -- 1. Your company delivers fruit and vegetables to local grocery stores, and
@@ -150,11 +149,11 @@ varchar(50)
 -- accepted date/time formats will result in an error. You can see this with
 -- the below example, which tries to cast the string as a timestamp.
 
-SELECT CAST('4//2017' AS timestamp with time zone);
+SELECT CAST('4//2021' AS timestamp with time zone);
 
 
 --------------------------------------------------------------
--- Chapter 4: Importing and Exporting Data
+-- Chapter 5: Importing and Exporting Data
 --------------------------------------------------------------
 
 -- 1. Write a WITH statement to include with COPY to handle the import of an
@@ -182,7 +181,7 @@ CREATE TABLE actors (
 -- Note: You may never encounter a file that uses a colon as a delimiter and
 -- and pound sign for quoting, but anything is possible.
 
--- 2. Using the table us_counties_2010 you created and filled in this chapter,
+-- 2. Using the table us_counties_pop_est_2019 you created and filled in this chapter,
 -- export to a CSV file the 20 counties in the United States that have the most
 -- housing units. Make sure you export only each county's name, state, and
 -- number of housing units. (Hint: Housing units are totaled for each county in
@@ -191,8 +190,8 @@ CREATE TABLE actors (
 -- Answer:
 
 COPY (
-    SELECT geo_name, state_us_abbreviation, housing_unit_count_100_percent
-    FROM us_counties_2010 ORDER BY housing_unit_count_100_percent DESC LIMIT 20
+    SELECT county_name, state_name, births_2019
+    FROM us_counties_pop_est_2019 ORDER BY births_2019 DESC LIMIT 20
      )
 TO 'C:\YourDirectory\us_counties_housing_export.txt'
 WITH (FORMAT CSV, HEADER);

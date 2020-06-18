@@ -1,15 +1,15 @@
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 4 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- Listing 4-1: Character data types in action
 
 CREATE TABLE char_data_types (
-    varchar_column varchar(10),
     char_column char(10),
+	varchar_column varchar(10),
     text_column text
 );
 
@@ -42,8 +42,8 @@ SELECT * FROM number_data_types;
 -- Assumes table created and loaded with Listing 4-2
 
 SELECT
-    numeric_column * 10000000 AS "Fixed",
-    real_column * 10000000 AS "Float"
+    numeric_column * 10000000 AS fixed,
+    real_column * 10000000 AS floating
 FROM number_data_types
 WHERE numeric_column = .7;
 
@@ -56,9 +56,9 @@ CREATE TABLE date_time_types (
 
 INSERT INTO date_time_types
 VALUES
-    ('2018-12-31 01:00 EST','2 days'),
-    ('2018-12-31 01:00 PST','1 month'),
-    ('2018-12-31 01:00 Australia/Melbourne','1 century'),
+    ('2022-12-31 01:00 EST','2 days'),
+    ('2022-12-31 01:00 PST','1 month'),
+    ('2022-12-31 01:00 Australia/Melbourne','1 century'),
     (now(),'1 week');
 
 SELECT * FROM date_time_types;
@@ -79,7 +79,7 @@ FROM date_time_types;
 
 SELECT numeric_column,
        CAST(numeric_column AS integer),
-       CAST(numeric_column AS varchar(6))
+       CAST(numeric_column AS text)
 FROM number_data_types;
 
 -- Does not work:
