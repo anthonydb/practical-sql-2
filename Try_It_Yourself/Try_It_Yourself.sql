@@ -5,9 +5,11 @@
 -- Try It Yourself Questions and Answers
 ----------------------------------------------------------------------------
 
---------------------------------------------------------------
+
+
+----------------------------------------------------------------------------
 -- Chapter 2: Creating Your First Database and Table
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- 1. Imagine you're building a database to catalog all the animals at your
 -- local zoo. You want one table for tracking all the kinds of animals and
@@ -20,27 +22,30 @@
 -- The first table will hold the animal types and their conservation status:
 
 CREATE TABLE animal_types (
-   animal_type_id bigserial CONSTRAINT animal_types_key PRIMARY KEY,
-   common_name varchar(100) NOT NULL,
-   scientific_name varchar(100) NOT NULL,
-   conservation_status varchar(50) NOT NULL
+    animal_type_id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    common_name text NOT NULL,
+    scientific_name text NOT NULL,
+    conservation_status text NOT NULL,
+    CONSTRAINT common_name_unique UNIQUE (common_name)
 );
 
--- Note that I have added keywords on some columns that define constraints
--- such as a PRIMARY KEY. You will learn about these in Chapters 6 and 7.
+-- It's OK if your answer doesn't have all the keywords in the example above. Those
+-- keywords reference concepts you'll learn in later chapters, including table
+-- constraints, primary keys and and IDENTITY columns. What's important is that you
+-- considered the individual data items you would want to track.
 
 -- The second table will hold data on individual animals. Note that the
 -- column animal_type_id references the column of the same name in the
 -- table animal types. This is a foreign key, which you will learn about in
--- Chapter 7.
+-- Chapter 8.
 
 CREATE TABLE menagerie (
-   menagerie_id bigserial CONSTRAINT menagerie_key PRIMARY KEY,
-   animal_type_id bigint REFERENCES animal_types (animal_type_id),
+   menagerie_id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+   common_name text REFERENCES animal_types (common_name),
    date_acquired date NOT NULL,
-   gender varchar(1),
-   acquired_from varchar(100),
-   name varchar(100),
+   gender text,
+   acquired_from text,
+   name text,
    notes text
 );
 
@@ -54,14 +59,15 @@ VALUES ('Bengal Tiger', 'Panthera tigris tigris', 'Endangered'),
        ('Arctic Wolf', 'Canis lupus arctos', 'Least Concern');
 -- data source: https://www.worldwildlife.org/species/directory?direction=desc&sort=extinction_status
 
-INSERT INTO menagerie (animal_type_id, date_acquired, gender, acquired_from, name, notes)
+INSERT INTO menagerie (common_name, date_acquired, gender, acquired_from, name, notes)
 VALUES
-(1, '3/12/1996', 'F', 'Dhaka Zoo', 'Ariel', 'Healthy coat at last exam.'),
-(2, '9/30/2000', 'F', 'National Zoo', 'Freddy', 'Strong appetite.');
+('Bengal Tiger', '3/12/1996', 'F', 'Dhaka Zoo', 'Ariel', 'Healthy coat at last exam.'),
+('Arctic Wolf', '9/30/2000', 'F', 'National Zoo', 'Freddy', 'Strong appetite.');
 
 -- To view data via pgAdmin, in the object browser, right-click Tables and
 -- select Refresh. Then right-click the table name and select
 -- View/Edit Data > All Rows
+
 
 -- 2b. Create an additional INSERT statement for one of your tables. On purpose,
 -- leave out one of the required commas separating the entries in the VALUES
@@ -73,9 +79,10 @@ VALUES
 INSERT INTO animal_types (common_name, scientific_name, conservation_status)
 VALUES ('Javan Rhino', 'Rhinoceros sondaicus' 'Critically Endangered');
 
---------------------------------------------------------------
+
+----------------------------------------------------------------------------
 -- Chapter 3: Beginning Data Exploration with SELECT
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- 1. The school district superintendent asks for a list of teachers in each
 -- school. Write a query that lists the schools in alphabetical order along
@@ -107,9 +114,9 @@ WHERE hire_date >= '2010-01-01'
 ORDER BY salary DESC;
 
 
---------------------------------------------------------------
+----------------------------------------------------------------------------
 -- Chapter 4: Understanding Data Types
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- 1. Your company delivers fruit and vegetables to local grocery stores, and
 -- you need to track the mileage driven by each driver each day to a tenth
@@ -136,10 +143,15 @@ numeric(4,1)
 -- Answer:
 
 varchar(50)
+-- or
+text
 
--- 50 characters is a reasonable length for names, and varchar() ensures you
--- will not waste space when names are shorter. Separating first and last names
+-- 50 characters is a reasonable length for names, and using either varchar(50)
+-- or text ensures you will not waste space when names are shorter. Using text will
+-- ensure that if you run into the exceptionally rare circumstance of a name longer
+-- than 50 characters, you'll be covered. Also, separating first and last names
 -- into their own columns will let you later sort on each independently.
+
 
 -- 3. Assume you have a text column that includes strings formatted as dates.
 -- One of the strings is written as '4//2017'. What will happen when you try
@@ -152,15 +164,15 @@ varchar(50)
 SELECT CAST('4//2021' AS timestamp with time zone);
 
 
---------------------------------------------------------------
+----------------------------------------------------------------------------
 -- Chapter 5: Importing and Exporting Data
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- 1. Write a WITH statement to include with COPY to handle the import of an
 -- imaginary text file that has a first couple of rows that look like this:
 
--- id:movie:actor
--- 50:#Mission: Impossible#:Tom Cruise
+id:movie:actor
+50:#Mission: Impossible#:Tom Cruise
 
 -- Answer: The WITH statement will need the options seen here:
 
@@ -179,13 +191,14 @@ CREATE TABLE actors (
 );
 
 -- Note: You may never encounter a file that uses a colon as a delimiter and
--- and pound sign for quoting, but anything is possible.
+-- pound sign for quoting, but anything is possible!
 
--- 2. Using the table us_counties_pop_est_2019 you created and filled in this chapter,
--- export to a CSV file the 20 counties in the United States that have the most
--- housing units. Make sure you export only each county's name, state, and
--- number of housing units. (Hint: Housing units are totaled for each county in
--- the column housing_unit_count_100_percent.
+
+-- 2. Using the table us_counties_pop_est_2019 you created and filled in this
+-- chapter, export to a CSV file the 20 counties in the United States that had
+-- the most births. Make sure you export only each county’s name, state, and
+-- number of births. (Hint: births are totaled for each county in the column
+-- births_2019.)
 
 -- Answer:
 
@@ -193,11 +206,12 @@ COPY (
     SELECT county_name, state_name, births_2019
     FROM us_counties_pop_est_2019 ORDER BY births_2019 DESC LIMIT 20
      )
-TO 'C:\YourDirectory\us_counties_housing_export.txt'
+TO 'C:\YourDirectory\us_counties_births_export.txt'
 WITH (FORMAT CSV, HEADER);
 
 -- Note: This COPY statement uses a SELECT statement to limit the output to
 -- only the desired columns and rows.
+
 
 -- 3. Imagine you're importing a file that contains a column with these values:
       -- 17519.668
@@ -212,9 +226,9 @@ WITH (FORMAT CSV, HEADER);
 -- type for the example data is numeric(8,3).
 
 
---------------------------------------------------------------
--- Chapter 5: Basic Math and Stats with SQL
---------------------------------------------------------------
+----------------------------------------------------------------------------
+-- Chapter 6: Basic Math and Stats with SQL
+----------------------------------------------------------------------------
 
 -- 1. Write a SQL statement for calculating the area of a circle whose radius is
 -- 5 inches. Do you need parentheses in your calculation? Why or why not?
@@ -231,64 +245,68 @@ SELECT 3.14 * 5 ^ 2;
 
 SELECT 3.14 * (5 ^ 2);
 
--- 2. Using the 2010 Census county data, find out which New York state county
--- has the highest percentage of the population that identified as "American
--- Indian/Alaska Native Alone." What can you learn about that county from online
--- research that explains the relatively large proportion of American Indian
--- population compared with other New York counties?
+
+-- 2. Using the 2019 Census county estimates data, calculate a ratio of births to 
+-- deaths for each county in New York state. Which region of the state generally
+-- saw a higher ratio of births to deaths in 2019?
 
 -- Answer:
--- Franklin County, N.Y., with 7.4%. The county contains the St. Regis Mohawk
--- Reservation. https://en.wikipedia.org/wiki/St._Regis_Mohawk_Reservation
 
-SELECT geo_name,
-       state_us_abbreviation,
-       p0010001 AS total_population,
-       p0010005 AS american_indian_alaska_native_alone,
-       (CAST (p0010005 AS numeric(8,1)) / p0010001) * 100
-           AS percent_american_indian_alaska_native_alone
-FROM us_counties_2010
-WHERE state_us_abbreviation = 'NY'
-ORDER BY percent_american_indian_alaska_native_alone DESC;
+SELECT county_name,
+       state_name,
+       births_2019 AS births,
+       deaths_2019 AS DEATHS,
+       births_2019::numeric / deaths_2019 AS birth_death_ratio
+FROM us_counties_pop_est_2019
+WHERE state_name = 'New York'
+ORDER BY birth_death_ratio DESC;
 
--- 3. Was the 2010 median county population higher in California or New York?
+-- Generally, counties in and around New York City had the highest ratio of births
+-- to deaths in the 2019 estimates. One exception to the trend is Jefferson County,
+-- which is upstate on the U.S./Canadian border.
+
+
+-- 3. Was the 2019 median county population estimate higher in California or New York?
 
 -- Answer:
--- California had a median county population of 179,140.5 in 2010, almost double
--- that of New York, at 91,301. Here are two solutions:
+-- California had a median county population estimate of 187,029 in 2019, almost double
+-- that of New York, at 86,687. Here are two solutions:
 
 -- First, you can find the median for each state one at a time:
 
 SELECT percentile_cont(.5)
-        WITHIN GROUP (ORDER BY p0010001)
-FROM us_counties_2010
-WHERE state_us_abbreviation = 'NY';
+        WITHIN GROUP (ORDER BY pop_est_2019)
+FROM us_counties_pop_est_2019
+WHERE state_name = 'New York';
 
 SELECT percentile_cont(.5)
-        WITHIN GROUP (ORDER BY p0010001)
-FROM us_counties_2010
-WHERE state_us_abbreviation = 'CA';
+        WITHIN GROUP (ORDER BY pop_est_2019)
+FROM us_counties_pop_est_2019
+WHERE state_name = 'California';
 
 -- Or both in one query (credit: https://github.com/Kennith-eng)
 
-SELECT state_us_abbreviation,
+SELECT state_name,
        percentile_cont(0.5)
-          WITHIN GROUP (ORDER BY p0010001) AS median
-FROM us_counties_2010
-WHERE state_us_abbreviation IN ('NY', 'CA')
-GROUP BY state_us_abbreviation;
-              
+          WITHIN GROUP (ORDER BY pop_est_2019) AS median
+FROM us_counties_pop_est_2019
+WHERE state_name IN ('New York', 'California')
+GROUP BY state_name;
+
 -- Finally, this query shows the median for each state:
 
-SELECT state_us_abbreviation,
+SELECT state_name,
        percentile_cont(0.5)
-          WITHIN GROUP (ORDER BY p0010001) AS median
-FROM us_counties_2010
-GROUP BY state_us_abbreviation;
+          WITHIN GROUP (ORDER BY pop_est_2019) AS median
+FROM us_counties_pop_est_2019
+GROUP BY state_name;
+
+
+
 
 
 --------------------------------------------------------------
--- Chapter 6: Joining Tables in a Relational Database
+-- Chapter 7: Joining Tables in a Relational Database
 --------------------------------------------------------------
 
 -- 1. The table us_counties_2010 contains 3,143 rows, and us_counties_2000 has
@@ -368,7 +386,7 @@ ON c2010.state_fips = c2000.state_fips
 ORDER BY pct_change ASC;
 
 --------------------------------------------------------------
--- Chapter 7: Table Design that Works for You
+-- Chapter 8: Table Design that Works for You
 --------------------------------------------------------------
 
 -- Consider the following two tables from a database you’re making to keep
@@ -461,7 +479,7 @@ CREATE TABLE songs (
 
 
 ----------------------------------------------------------------
--- Chapter 8: Extracting Information by Grouping and Summarizing
+-- Chapter 9: Extracting Information by Grouping and Summarizing
 ----------------------------------------------------------------
 
 -- 1. We saw that library visits have declined in most places. But what is the
@@ -582,7 +600,7 @@ WHERE pls14.fscskey IS NULL OR pls09.fscskey IS NULL;
 -- that do not appear in both tables.
 
 --------------------------------------------------------------
--- Chapter 9: Inspecting and Modifying Data
+-- Chapter 10: Inspecting and Modifying Data
 --------------------------------------------------------------
 
 -- In this exercise, you’ll turn the meat_poultry_egg_inspect table into useful
@@ -636,7 +654,7 @@ WHERE meat_processing = TRUE AND
       poultry_processing = TRUE;
 
 --------------------------------------------------------------
--- Chapter 10: Statistical Functions in SQL
+-- Chapter 11: Statistical Functions in SQL
 --------------------------------------------------------------
 
 -- 1. In Listing 10-2, the correlation coefficient, or r value, of the
@@ -720,7 +738,7 @@ WHERE popu_lsa >= 250000;
 
 
 --------------------------------------------------------------
--- Chapter 11: Working with Dates and Times
+-- Chapter 12: Working with Dates and Times
 --------------------------------------------------------------
 
 -- 1. Using the New York City taxi data, calculate the length of each ride using
@@ -787,7 +805,7 @@ WHERE tpep_dropoff_datetime - tpep_pickup_datetime <= '3 hours'::interval;
 -- expect this given that cost of a taxi ride is based on both time and distance.
 
 --------------------------------------------------------------
--- Chapter 12: Advanced Query Techniques
+-- Chapter 13: Advanced Query Techniques
 --------------------------------------------------------------
 
 -- 1. Revise the code in Listing 12-15 to dig deeper into the nuances of
@@ -858,7 +876,7 @@ AS (flavor varchar(20),
 
 
 -------------------------------------------------------------
--- Chapter 13: Mining Text to Find Meaningful Data
+-- Chapter 14: Mining Text to Find Meaningful Data
 --------------------------------------------------------------
 
 -- 1. The style guide of a publishing company you're writing for wants you to
@@ -934,7 +952,7 @@ LIMIT 5;
 
 
 --------------------------------------------------------------
--- Chapter 14: Analyzing Spatial Data with PostGIS
+-- Chapter 15: Analyzing Spatial Data with PostGIS
 --------------------------------------------------------------
 
 -- 1. Earlier, you found which US county has the largest area. Now,
@@ -1004,7 +1022,14 @@ ORDER BY census.statefp10, census.name10;
 -- Can you spot it?
 
 --------------------------------------------------------------
--- Chapter 15: Saving Time with Views, Functions, and Triggers
+-- Chapter 16: Working with JSON Data
+--------------------------------------------------------------
+
+-- To come ...
+
+
+--------------------------------------------------------------
+-- Chapter 17: Saving Time with Views, Functions, and Triggers
 --------------------------------------------------------------
 
 -- 1. Create a view that displays the number of New York City taxi trips per
@@ -1085,14 +1110,14 @@ SELECT * FROM meat_poultry_egg_inspect
 WHERE company = 'testcompany';
 
 --------------------------------------------------------------
--- Chapter 16: Using PostgreSQL From the Command Line
+-- Chapter 18: Using PostgreSQL From the Command Line
 --------------------------------------------------------------
 
 -- For this chapter, use psql to review any of the exercises in the book.
 
 
 --------------------------------------------------------------
--- Chapter 17: Maintaining Your Database
+-- Chapter 19: Maintaining Your Database
 --------------------------------------------------------------
 
 -- To back up the gis_analysis database, use the pg_dump utility at the command line:
@@ -1100,7 +1125,7 @@ WHERE company = 'testcompany';
 
 
 -----------------------------------------------------------------
--- Chapter 18: Identifying and Telling the Story Behind Your Data
+-- Chapter 20: Identifying and Telling the Story Behind Your Data
 -----------------------------------------------------------------
 
 -- This is a non-coding chapter.
