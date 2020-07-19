@@ -58,7 +58,7 @@ FROM us_counties_pop_est_2019
 ORDER BY area_land DESC
 LIMIT 3;
 
-SELECT county_name, state_name, internal_point_lon
+SELECT county_name, state_name, internal_point_lat, internal_point_lon
 FROM us_counties_pop_est_2019
 ORDER BY internal_point_lon DESC
 LIMIT 5;
@@ -98,7 +98,7 @@ FROM 'C:\YourDirectory\supervisor_salaries.csv'
 WITH (FORMAT CSV, HEADER);
 
 INSERT INTO supervisor_salaries (town, county, supervisor, salary)
-SELECT town, 'My County', supervisor, salary
+SELECT town, 'Mills', supervisor, salary
 FROM supervisor_salaries_temp;
 
 DROP TABLE supervisor_salaries_temp;
