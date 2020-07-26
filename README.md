@@ -48,8 +48,8 @@ Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gma
 
 You can obtain all the code and data at once by downloading this repository as a .zip file. To do that:
 
-* Select the **Code** button at top right.
-* Select **Download ZIP**
+* Click the **Code** button at top right.
+* Click **Download ZIP**
 * Unzip the file on your computer. Place it in a directory that's easy to remember so you can reference it during the exercises that include importing data to PostgreSQL.
 
 **Warning about CSV files!**: Opening CSV files with Excel could lead to data loss. Excel will remove leading zeros from numbers that are intended to be stored as text, such as zip codes. If you wish to view the contents of a CSV file, only do so with a plain-text editor and be careful not to save the file in an encoding other than UTF-8 (e.g., `Notepad.exe` on Windows defaults to ANSI).
