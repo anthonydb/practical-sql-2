@@ -64,6 +64,6 @@ Additionally, I recommend paying attention to developer notes for any of the Pos
 
 You can find documentation for each version of PostgreSQL along with an FAQ and wiki on the [main page](https://www.postgresql.org/docs/). It’s worth reading through various sections of the manual as you learn more about a particular topic, such as indexes, or search for all the options that come with functions. In particular, the Preface, Tutorial, and SQL Language sections cover much of the material presented in the book’s chapters.
 
-Other good resources for documentation are the [Postgres Guide](http://postgresguide.com/) and [Stack Overflow](https://stackoverflow.com/questions/tagged/postgresql/), where you can find questions and answers posted by developers. You can also check out the Q&A site for [PostGIS](https://gis.stackexchange.com/questions/tagged/postgis/.
+Other good resources for documentation are the [Postgres Guide](http://postgresguide.com/) and [Stack Overflow](https://stackoverflow.com/questions/tagged/postgresql/), where you can find questions and answers posted by developers. You can also check out the Q&A site for [PostGIS](https://gis.stackexchange.com/questions/tagged/postgis/).
 
 
