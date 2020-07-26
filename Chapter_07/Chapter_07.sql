@@ -1,8 +1,14 @@
+-- FIRST EDITION FILE; IGNORE
+
+
+
+
+
 --------------------------------------------------------------
 -- Practical SQL: A Beginner's Guide to Storytelling with Data
 -- by Anthony DeBarros
 
--- Chapter 6 Code Examples
+-- Chapter 7 Code Examples
 --------------------------------------------------------------
 
 -- Listing 7-1: Creating the departments and employees tables
