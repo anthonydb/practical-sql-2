@@ -1,6 +1,6 @@
 ## Practical SQL: A Beginner's Guide to Storytelling with Data
 
-[Practical SQL](https://www.nostarch.com/practicalSQL) from No Starch Press is a beginner-friendly guide to the database programming language SQL. Journalist and data analyst  [Anthony DeBarros](https://www.anthonydebarros.com) begins with SQL basics, using the free open-source database PostgreSQL and interface pgAdmin, and walks through intermediate and advanced topics including statistics, aggregation, cleaning data, GIS and automating tasks. Along the way, you'll use real-world data from the U.S. Census and other government agencies and learn the fundamentals of good database design. This book is ideal for beginners as well as those who know some SQL and want to go deeper.
+[Practical SQL](https://www.nostarch.com/practicalSQL) from No Starch Press is a beginner-friendly guide to the database programming language SQL. Journalist and data analyst [Anthony DeBarros](https://www.anthonydebarros.com) begins with SQL basics, using the free open-source database PostgreSQL and interface pgAdmin, and walks through intermediate and advanced topics including statistics, aggregation, cleaning data, GIS and automating tasks. Along the way, you'll use real-world data from the U.S. Census and other government agencies and learn the fundamentals of good database design. This book is ideal for beginners as well as those who know some SQL and want to go deeper.
 
 Practical SQL is [available in PDF, .mobi, .epub, and classic print formats](https://www.nostarch.com/practicalSQL).
 
@@ -20,7 +20,7 @@ Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gma
 
 ## Chapters
 
-* Chapter 1: Setting Up Your Environment
+* Chapter 1: Setting Up Your Coding Environment
 * Chapter 2: Creating Your First Database and Table
 * Chapter 3: Beginning Data Exploration with SELECT
 * Chapter 4: Understanding Data Types
@@ -48,7 +48,7 @@ Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gma
 
 You can obtain all the code and data at once by downloading this repository as a .zip file. To do that:
 
-* Select the **Clone or Download** button at top right.
+* Select the **Code** button at top right.
 * Select **Download ZIP**
 * Unzip the file on your computer. Place it in a directory that's easy to remember so you can reference it during the exercises that include importing data to PostgreSQL.
 
