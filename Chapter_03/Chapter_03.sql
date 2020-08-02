@@ -9,32 +9,45 @@
 
 SELECT * FROM teachers;
 
+-- Note that this standard SQL shorthand also works:
+
+TABLE teachers;
+
 -- Listing 3-2: Querying a subset of columns
 
 SELECT last_name, first_name, salary FROM teachers;
 
--- Listing 3-3: Querying distinct values in the school column
-
-SELECT DISTINCT school
-FROM teachers;
-
--- Listing 3-4: Querying distinct pairs of values in the school and salary
--- columns
-
-SELECT DISTINCT school, salary
-FROM teachers;
-
--- Listing 3-5: Sorting a column with ORDER BY
+-- Listing 3-3: Sorting a column with ORDER BY
 
 SELECT first_name, last_name, salary
 FROM teachers
 ORDER BY salary DESC;
 
--- Listing 3-6: Sorting multiple columns with ORDER BY
+-- Note you can also specify the sort column by
+-- using a number representing its position in the result.
+
+SELECT first_name, last_name, salary
+FROM teachers
+ORDER BY 3 DESC;
+
+-- Listing 3-4: Sorting multiple columns with ORDER BY
 
 SELECT last_name, school, hire_date
 FROM teachers
 ORDER BY school ASC, hire_date DESC;
+
+-- Listing 3-5: Querying distinct values in the school column
+
+SELECT DISTINCT school
+FROM teachers
+ORDER BY school;
+
+-- Listing 3-6: Querying distinct pairs of values in the school and salary
+-- columns
+
+SELECT DISTINCT school, salary
+FROM teachers
+ORDER BY school, salary;
 
 -- Listing 3-7: Filtering rows using WHERE
 
@@ -52,7 +65,7 @@ WHERE first_name = 'Janet';
 -- School names not equal to F.D. Roosevelt HS
 SELECT school
 FROM teachers
-WHERE school != 'F.D. Roosevelt HS';
+WHERE school <> 'F.D. Roosevelt HS';
 
 -- Teachers hired before Jan. 1, 2000
 SELECT first_name, last_name, hire_date
@@ -68,6 +81,10 @@ WHERE salary >= 43500;
 SELECT first_name, last_name, school, salary
 FROM teachers
 WHERE salary BETWEEN 40000 AND 65000;
+
+SELECT first_name, last_name, school, salary
+FROM teachers
+WHERE salary >= 40000 AND salary < 65001;
 
 -- Listing 3-8: Filtering with LIKE AND ILIKE
 

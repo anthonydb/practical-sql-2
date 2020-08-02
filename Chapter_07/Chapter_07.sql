@@ -1,47 +1,42 @@
--- FIRST EDITION FILE; IGNORE
-
-
-
-
-
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
--- Chapter 7 Code Examples
---------------------------------------------------------------
+-- Chapter 7     Code Examples
+----------------------------------------------------------------------------
+
 
 -- Listing 7-1: Creating the departments and employees tables
 
 CREATE TABLE departments (
-    dept_id bigserial,
-    dept varchar(100),
-    city varchar(100),
+    dept_id integer,
+    dept text,
+    city text,
     CONSTRAINT dept_key PRIMARY KEY (dept_id),
     CONSTRAINT dept_city_unique UNIQUE (dept, city)
 );
 
 CREATE TABLE employees (
-    emp_id bigserial,
-    first_name varchar(100),
-    last_name varchar(100),
-    salary integer,
+    emp_id integer,
+    first_name text,
+    last_name text,
+    salary numeric(10,2),
     dept_id integer REFERENCES departments (dept_id),
     CONSTRAINT emp_key PRIMARY KEY (emp_id),
     CONSTRAINT emp_dept_unique UNIQUE (emp_id, dept_id)
 );
 
-INSERT INTO departments (dept, city)
+INSERT INTO departments
 VALUES
-    ('Tax', 'Atlanta'),
-    ('IT', 'Boston');
+    (1, 'Tax', 'Atlanta'),
+    (2, 'IT', 'Boston');
 
-INSERT INTO employees (first_name, last_name, salary, dept_id)
+INSERT INTO employees
 VALUES
-    ('Nancy', 'Jones', 62500, 1),
-    ('Lee', 'Smith', 59300, 1),
-    ('Soo', 'Nguyen', 83000, 2),
-    ('Janet', 'King', 95000, 2);
+    (1, 'Julia', 'Reyes', 115300, 1),
+    (2, 'Janet', 'King', 98000, 1),
+    (3, 'Arthur', 'Pappas', 72700, 2),
+    (4, 'Michael', 'Taylor', 89500, 2);
 
 -- Listing 7-2: Joining the employees and departments tables
 
