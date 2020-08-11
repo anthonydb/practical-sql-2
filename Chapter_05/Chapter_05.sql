@@ -83,7 +83,7 @@ FROM 'C:\YourDirectory\supervisor_salaries.csv'
 WITH (FORMAT CSV, HEADER);
 
 -- Check the data
-SELECT * FROM supervisor_salaries LIMIT 2;
+SELECT * FROM supervisor_salaries ORDER BY id LIMIT 2;
 
 -- Listing 5-6 Use a temporary table to add a default value to a column during
 -- import
@@ -104,7 +104,7 @@ FROM supervisor_salaries_temp;
 DROP TABLE supervisor_salaries_temp;
 
 -- Check the data
-SELECT * FROM supervisor_salaries LIMIT 2;
+SELECT * FROM supervisor_salaries ORDER BY id LIMIT 2;
 
 
 -- Listing 5-7: Export an entire table with COPY
