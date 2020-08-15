@@ -85,7 +85,20 @@ WITH (FORMAT CSV, HEADER);
 -- Check the data
 SELECT * FROM supervisor_salaries ORDER BY id LIMIT 2;
 
--- Listing 5-6 Use a temporary table to add a default value to a column during
+
+-- Listing 5-6: Importing a subset of rows with WHERE
+
+DELETE FROM supervisor_salaries;
+
+COPY supervisor_salaries (town, supervisor, salary)
+FROM 'C:\YourDirectory\supervisor_salaries.csv'
+WITH (FORMAT CSV, HEADER)
+WHERE town = 'New Brillig';
+
+SELECT * FROM supervisor_salaries;
+
+
+-- Listing 5-7: Use a temporary table to add a default value to a column during
 -- import
 
 DELETE FROM supervisor_salaries;
@@ -107,21 +120,21 @@ DROP TABLE supervisor_salaries_temp;
 SELECT * FROM supervisor_salaries ORDER BY id LIMIT 2;
 
 
--- Listing 5-7: Export an entire table with COPY
+-- Listing 5-8: Export an entire table with COPY
 
 COPY us_counties_pop_est_2019
 TO 'C:\YourDirectory\us_counties_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
 
--- Listing 5-8: Exporting selected columns from a table with COPY
+-- Listing 5-9: Exporting selected columns from a table with COPY
 
 COPY us_counties_pop_est_2019 
     (county_name, internal_point_lat, internal_point_lon)
 TO 'C:\YourDirectory\us_counties_latlon_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
--- Listing 5-9: Exporting query results with COPY
+-- Listing 5-10: Exporting query results with COPY
 
 COPY (
     SELECT county_name, state_name
