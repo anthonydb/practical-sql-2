@@ -143,19 +143,19 @@ FROM us_counties_pop_est_2019;
 
 -- Extra:
 -- quintiles
-SELECT percentile_cont(array[.2,.4,.6,.8])
+SELECT percentile_cont(ARRAY[.2,.4,.6,.8])
        WITHIN GROUP (ORDER BY pop_est_2019) AS quintiles
 FROM us_counties_pop_est_2019;
 
 -- deciles
-SELECT percentile_cont(array[.1,.2,.3,.4,.5,.6,.7,.8,.9])
+SELECT percentile_cont(ARRAY[.1,.2,.3,.4,.5,.6,.7,.8,.9])
        WITHIN GROUP (ORDER BY pop_est_2019) AS deciles
 FROM us_counties_pop_est_2019;
 
 -- Listing 6-13: Using unnest() to turn an array into rows
 
 SELECT unnest(
-            percentile_cont(array[.25,.5,.75])
+            percentile_cont(ARRAY[.25,.5,.75])
             WITHIN GROUP (ORDER BY pop_est_2019)
             ) AS quartiles
 FROM us_counties_pop_est_2019;
