@@ -336,8 +336,13 @@ ON c2019.state_fips = c2010.state_fips
 ORDER BY pct_change ASC;
 
 
--- 2.
+-- 2. Apply the concepts you learned about UNION to create query 
+-- results that merge queries of the Census county population estimates
+-- for 2010 and 2019. Your results should include a column called year
+-- that specifies the year of the estimate for each row in the results.
 
+-- Answer:
+-- Note that you pass a string for the year in both queries.
 SELECT '2010' AS year,
        state_fips,
        county_fips,
