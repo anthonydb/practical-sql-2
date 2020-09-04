@@ -2,7 +2,7 @@
 -- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
--- Chapter 7     Code Examples
+-- Chapter 7 Code Examples
 ----------------------------------------------------------------------------
 
 
@@ -46,152 +46,183 @@ ON employees.dept_id = departments.dept_id;
 
 -- Listing 7-3: Creating two tables to explore JOIN types
 
-CREATE TABLE schools_left (
-    id integer CONSTRAINT left_id_key PRIMARY KEY,
-    left_school varchar(30)
+CREATE TABLE district_2020 (
+    id integer CONSTRAINT id_key_2020 PRIMARY KEY,
+    school_2020 text
 );
 
-CREATE TABLE schools_right (
-    id integer CONSTRAINT right_id_key PRIMARY KEY,
-    right_school varchar(30)
+CREATE TABLE district_2035 (
+    id integer CONSTRAINT id_key_2035 PRIMARY KEY,
+    school_2035 text
 );
 
-INSERT INTO schools_left (id, left_school) VALUES
+INSERT INTO district_2020 VALUES
     (1, 'Oak Street School'),
     (2, 'Roosevelt High School'),
-    (5, 'Washington Middle School'),
-    (6, 'Jefferson High School');
+    (5, 'Dover Middle School'),
+    (6, 'Webutuck High School');
 
-INSERT INTO schools_right (id, right_school) VALUES
+INSERT INTO district_2035 VALUES
     (1, 'Oak Street School'),
     (2, 'Roosevelt High School'),
     (3, 'Morrison Elementary'),
     (4, 'Chase Magnet Academy'),
-    (6, 'Jefferson High School');
+    (6, 'Webutuck High School');
 
 -- Listing 7-4: Using JOIN
 
 SELECT *
-FROM schools_left JOIN schools_right
-ON schools_left.id = schools_right.id;
+FROM district_2020 JOIN district_2035
+ON district_2020.id = district_2035.id;
 
 -- Bonus: Also can be specified as INNER JOIN
 
 SELECT *
-FROM schools_left INNER JOIN schools_right
-ON schools_left.id = schools_right.id;
+FROM district_2020 INNER JOIN district_2035
+ON district_2020.id = district_2035.id;
 
 -- Listing 7-5: Using LEFT JOIN
 
 SELECT *
-FROM schools_left LEFT JOIN schools_right
-ON schools_left.id = schools_right.id;
+FROM district_2020 LEFT JOIN district_2035
+ON district_2020.id = district_2035.id;
 
 -- Listing 7-6: Using RIGHT JOIN
 
 SELECT *
-FROM schools_left RIGHT JOIN schools_right
-ON schools_left.id = schools_right.id;
+FROM district_2020 RIGHT JOIN district_2035
+ON district_2020.id = district_2035.id;
 
 -- Listing 7-7: Using FULL OUTER JOIN
 
 SELECT *
-FROM schools_left FULL OUTER JOIN schools_right
-ON schools_left.id = schools_right.id;
+FROM district_2020 FULL OUTER JOIN district_2035
+ON district_2020.id = district_2035.id;
 
 -- Listing 7-8: Using CROSS JOIN
 
 SELECT *
-FROM schools_left CROSS JOIN schools_right;
+FROM district_2020 CROSS JOIN district_2035;
 
 -- Listing 7-9: Filtering to show missing values with IS NULL
 
 SELECT *
-FROM schools_left LEFT JOIN schools_right
-ON schools_left.id = schools_right.id
-WHERE schools_right.id IS NULL;
+FROM district_2020 LEFT JOIN district_2035
+ON district_2020.id = district_2035.id
+WHERE district_2035.id IS NULL;
+
+SELECT *
+FROM district_2020 RIGHT JOIN district_2035
+ON district_2020.id = district_2035.id
+WHERE district_2020.id IS NULL;
 
 -- Listing 7-10: Querying specific columns in a join
-SELECT schools_left.id,
-       schools_left.left_school,
-       schools_right.right_school
-FROM schools_left LEFT JOIN schools_right
-ON schools_left.id = schools_right.id;
+SELECT district_2020.id,
+       district_2020.school_2020,
+       district_2035.school_2035
+FROM district_2020 LEFT JOIN district_2035
+ON district_2020.id = district_2035.id;
 
 -- Listing 7-11: Simplifying code with table aliases
-SELECT lt.id,
-       lt.left_school,
-       rt.right_school
-FROM schools_left AS lt LEFT JOIN schools_right AS rt
-ON lt.id = rt.id;
+SELECT d20.id,
+       d20.school_2020,
+       d35.school_2035
+FROM district_2020 AS d20 LEFT JOIN district_2035 AS d35
+ON d20.id = d35.id;
 
 -- Listing 7-12: Joining multiple tables
-CREATE TABLE schools_enrollment (
+CREATE TABLE district_2020_enrollment (
     id integer,
     enrollment integer
 );
 
-CREATE TABLE schools_grades (
+CREATE TABLE district_2020_grades (
     id integer,
     grades varchar(10)
 );
 
-INSERT INTO schools_enrollment (id, enrollment)
+INSERT INTO district_2020_enrollment
 VALUES
     (1, 360),
     (2, 1001),
     (5, 450),
     (6, 927);
 
-INSERT INTO schools_grades (id, grades)
+INSERT INTO district_2020_grades
 VALUES
     (1, 'K-3'),
     (2, '9-12'),
     (5, '6-8'),
     (6, '9-12');
 
-SELECT lt.id, lt.left_school, en.enrollment, gr.grades
-FROM schools_left AS lt LEFT JOIN schools_enrollment AS en
-    ON lt.id = en.id
-LEFT JOIN schools_grades AS gr
-    ON lt.id = gr.id;
+SELECT d20.id,
+       d20.school_2020,
+       en.enrollment,
+       gr.grades
+FROM district_2020 AS d20 LEFT JOIN district_2020_enrollment AS en
+    ON d20.id = en.id
+LEFT JOIN district_2020_grades AS gr
+    ON d20.id = gr.id;
 
--- Listing 7-13: Performing math on joined Census tables
--- Decennial Census 2000. Full data dictionary at https://www.census.gov/prod/cen2000/doc/pl94-171.pdf
--- Note: Some non-number columns have been given more descriptive names
+-- Listing 7-13: Combining query results with UNION
+SELECT * FROM district_2020
+UNION
+SELECT * FROM district_2035
+ORDER BY id;
 
-CREATE TABLE us_counties_2000 (
-    geo_name varchar(90),              -- County/state name,
-    state_us_abbreviation varchar(2),  -- State/U.S. abbreviation
-    state_fips varchar(2),             -- State FIPS code
-    county_fips varchar(3),            -- County code
-    p0010001 integer,                  -- Total population
-    p0010002 integer,                  -- Population of one race:
-    p0010003 integer,                      -- White Alone
-    p0010004 integer,                      -- Black or African American alone
-    p0010005 integer,                      -- American Indian and Alaska Native alone
-    p0010006 integer,                      -- Asian alone
-    p0010007 integer,                      -- Native Hawaiian and Other Pacific Islander alone
-    p0010008 integer,                      -- Some Other Race alone
-    p0010009 integer,                  -- Population of two or more races
-    p0010010 integer,                  -- Population of two races
-    p0020002 integer,                  -- Hispanic or Latino
-    p0020003 integer                   -- Not Hispanic or Latino:
+-- Listing 7-14: Combining query results with UNION ALL
+SELECT * FROM district_2020
+UNION ALL
+SELECT * FROM district_2035
+ORDER BY id;
+
+-- Listing 7-15: Customizing a UNION query
+SELECT '2020' AS year,
+       school_2020 AS school
+FROM district_2020
+
+UNION
+
+SELECT '2035' AS year,
+       school_2035
+FROM district_2035
+ORDER BY school, year;
+
+-- Listing 7-16: Combining query results with INTERSECT and EXCEPT
+SELECT * FROM district_2020
+INTERSECT
+SELECT * FROM district_2035
+ORDER BY id;
+
+SELECT * FROM district_2020
+EXCEPT
+SELECT * FROM district_2035
+ORDER BY id;
+
+-- Listing 7-17: Performing math on joined Census population estimates tables
+CREATE TABLE us_counties_pop_est_2010 (
+    state_fips text,                         -- State FIPS code
+    county_fips text,                        -- County FIPS code
+    region smallint,                         -- Region
+    state_name text,                         -- State name	
+    county_name text,                        -- County name
+    estimates_base_2010 integer,             -- 4/1/2010 resident total population estimates base
+    CONSTRAINT counties_2010_key PRIMARY KEY (state_fips, county_fips)	
 );
 
-COPY us_counties_2000
-FROM 'C:\YourDirectory\us_counties_2000.csv'
+COPY us_counties_pop_est_2010
+FROM 'C:\YourDirectory\us_counties_pop_est_2010.csv'
 WITH (FORMAT CSV, HEADER);
 
-SELECT c2010.geo_name,
-       c2010.state_us_abbreviation AS state,
-       c2010.p0010001 AS pop_2010,
-       c2000.p0010001 AS pop_2000,
-       c2010.p0010001 - c2000.p0010001 AS raw_change,
-       round( (CAST(c2010.p0010001 AS numeric(8,1)) - c2000.p0010001)
-           / c2000.p0010001 * 100, 1 ) AS pct_change
-FROM us_counties_2010 c2010 INNER JOIN us_counties_2000 c2000
-ON c2010.state_fips = c2000.state_fips
-   AND c2010.county_fips = c2000.county_fips
-   AND c2010.p0010001 <> c2000.p0010001
+SELECT c2019.county_name,
+       c2019.state_name,
+       c2019.pop_est_2019 AS pop_2019,
+       c2010.estimates_base_2010 AS pop_2010,
+       c2019.pop_est_2019 - c2010.estimates_base_2010 AS raw_change,
+       round( (c2019.pop_est_2019::numeric - c2010.estimates_base_2010)
+           / c2010.estimates_base_2010 * 100, 1 ) AS pct_change       
+FROM us_counties_pop_est_2019 AS c2019
+    JOIN us_counties_pop_est_2010 AS c2010
+ON c2019.state_fips = c2010.state_fips
+    AND c2019.county_fips = c2010.county_fips
 ORDER BY pct_change DESC;
