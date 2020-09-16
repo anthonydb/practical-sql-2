@@ -117,6 +117,7 @@ ON district_2020.id = district_2035.id
 WHERE district_2020.id IS NULL;
 
 -- Listing 7-10: Querying specific columns in a join
+
 SELECT district_2020.id,
        district_2020.school_2020,
        district_2035.school_2035
@@ -124,6 +125,7 @@ FROM district_2020 LEFT JOIN district_2035
 ON district_2020.id = district_2035.id;
 
 -- Listing 7-11: Simplifying code with table aliases
+
 SELECT d20.id,
        d20.school_2020,
        d35.school_2035
@@ -131,6 +133,7 @@ FROM district_2020 AS d20 LEFT JOIN district_2035 AS d35
 ON d20.id = d35.id;
 
 -- Listing 7-12: Joining multiple tables
+
 CREATE TABLE district_2020_enrollment (
     id integer,
     enrollment integer
@@ -165,18 +168,21 @@ LEFT JOIN district_2020_grades AS gr
     ON d20.id = gr.id;
 
 -- Listing 7-13: Combining query results with UNION
+
 SELECT * FROM district_2020
 UNION
 SELECT * FROM district_2035
 ORDER BY id;
 
 -- Listing 7-14: Combining query results with UNION ALL
+
 SELECT * FROM district_2020
 UNION ALL
 SELECT * FROM district_2035
 ORDER BY id;
 
 -- Listing 7-15: Customizing a UNION query
+
 SELECT '2020' AS year,
        school_2020 AS school
 FROM district_2020
@@ -189,6 +195,7 @@ FROM district_2035
 ORDER BY school, year;
 
 -- Listing 7-16: Combining query results with INTERSECT and EXCEPT
+
 SELECT * FROM district_2020
 INTERSECT
 SELECT * FROM district_2035
@@ -200,14 +207,15 @@ SELECT * FROM district_2035
 ORDER BY id;
 
 -- Listing 7-17: Performing math on joined Census population estimates tables
+
 CREATE TABLE us_counties_pop_est_2010 (
     state_fips text,                         -- State FIPS code
     county_fips text,                        -- County FIPS code
     region smallint,                         -- Region
-    state_name text,                         -- State name	
+    state_name text,                         -- State name
     county_name text,                        -- County name
     estimates_base_2010 integer,             -- 4/1/2010 resident total population estimates base
-    CONSTRAINT counties_2010_key PRIMARY KEY (state_fips, county_fips)	
+    CONSTRAINT counties_2010_key PRIMARY KEY (state_fips, county_fips)
 );
 
 COPY us_counties_pop_est_2010
@@ -220,7 +228,7 @@ SELECT c2019.county_name,
        c2010.estimates_base_2010 AS pop_2010,
        c2019.pop_est_2019 - c2010.estimates_base_2010 AS raw_change,
        round( (c2019.pop_est_2019::numeric - c2010.estimates_base_2010)
-           / c2010.estimates_base_2010 * 100, 1 ) AS pct_change       
+           / c2010.estimates_base_2010 * 100, 1 ) AS pct_change
 FROM us_counties_pop_est_2019 AS c2019
     JOIN us_counties_pop_est_2010 AS c2010
 ON c2019.state_fips = c2010.state_fips
