@@ -470,5 +470,140 @@ CREATE TABLE songs (
 -- to perform many queries that include date ranges.
 
 
+----------------------------------------------------------------------------
+-- Chapter 9: Extracting Information by Grouping and Summarizing
+----------------------------------------------------------------------------
 
+-- 1. We saw that library visits have declined recently in most places. But 
+-- what is the pattern in library employment? All three library survey tables
+-- contain the column totstaff, which is the number of paid full-time equivalent
+-- employees. Modify the code in Listings 9-13 and 9-14 to calculate the 
+-- percent change in the sum of the column over time, examining all states as 
+-- well as states with the most visitors. Watch out for negative values!
 
+-- Answer (all states):
+
+SELECT pls18.stabr,
+       sum(pls18.totstaff) AS totstaff_2018,
+       sum(pls17.totstaff) AS totstaff_2017,
+       sum(pls16.totstaff) AS totstaff_2016,
+       round( (sum(pls18.totstaff::numeric) - sum(pls17.totstaff)) /
+            sum(pls17.totstaff) * 100, 1 ) AS chg_2018_17,
+       round( (sum(pls17.totstaff::numeric) - sum(pls16.totstaff)) /
+            sum(pls16.hrs_open) * 100, 1 ) AS chg_2017_16
+FROM pls_fy2018_libraries pls18
+       JOIN pls_fy2017_libraries pls17 ON pls18.fscskey = pls17.fscskey
+       JOIN pls_fy2016_libraries pls16 ON pls18.fscskey = pls16.fscskey
+WHERE pls18.totstaff >= 0
+       AND pls17.totstaff >= 0
+       AND pls16.totstaff >= 0
+GROUP BY pls18.stabr
+ORDER BY chg_2018_17 DESC;
+
+-- Answer (filtered with HAVING):
+
+SELECT pls18.stabr,
+       sum(pls18.totstaff) AS totstaff_2018,
+       sum(pls17.totstaff) AS totstaff_2017,
+       sum(pls16.totstaff) AS totstaff_2016,
+       round( (sum(pls18.totstaff::numeric) - sum(pls17.totstaff)) /
+            sum(pls17.totstaff) * 100, 1 ) AS chg_2018_17,
+       round( (sum(pls17.totstaff::numeric) - sum(pls16.totstaff)) /
+            sum(pls16.hrs_open) * 100, 1 ) AS chg_2017_16
+FROM pls_fy2018_libraries pls18
+       JOIN pls_fy2017_libraries pls17 ON pls18.fscskey = pls17.fscskey
+       JOIN pls_fy2016_libraries pls16 ON pls18.fscskey = pls16.fscskey
+WHERE pls18.totstaff >= 0
+       AND pls17.totstaff >= 0
+       AND pls16.totstaff >= 0
+GROUP BY pls18.stabr
+HAVING sum(pls18.visits) > 50000000
+ORDER BY chg_2018_17 DESC;
+
+-- 2. The library survey tables contain a column called obereg, a two-digit
+-- Bureau of Economic Analysis Code that classifies each library agency
+-- according to a region of the United States, such as New England, Rocky
+-- Mountains, and so on. Just as we calculated the percent change in visits
+-- grouped by state, do the same to group percent changes in visits by U.S.
+-- region using obereg. Consult the survey documentation to find the meaning
+-- of each region code. For a bonus challenge, create a table with the obereg
+-- code as the primary key and the region name as text, and join it to the
+-- summary query to group by the region name rather than the code.
+
+-- Answer:
+
+-- a) sum() visits by region.
+    
+SELECT pls18.obereg,
+       sum(pls18.visits) AS visits_2018,
+       sum(pls17.visits) AS visits_2017,
+       sum(pls16.visits) AS visits_2016,
+       round( (sum(pls18.visits::numeric) - sum(pls17.visits)) /
+            sum(pls17.visits) * 100, 1 ) AS chg_2018_17,
+       round( (sum(pls17.visits::numeric) - sum(pls16.visits)) /
+            sum(pls16.visits) * 100, 1 ) AS chg_2017_16
+FROM pls_fy2018_libraries pls18
+       JOIN pls_fy2017_libraries pls17 ON pls18.fscskey = pls17.fscskey
+       JOIN pls_fy2016_libraries pls16 ON pls18.fscskey = pls16.fscskey
+WHERE pls18.visits >= 0
+       AND pls17.visits >= 0
+       AND pls16.visits >= 0
+GROUP BY pls18.obereg
+ORDER BY chg_2018_17 DESC;
+
+-- b) Bonus: creating the regions lookup table and adding it to the query.
+
+CREATE TABLE obereg_codes (
+    obereg text CONSTRAINT obereg_key PRIMARY KEY,
+    region text
+);
+
+INSERT INTO obereg_codes
+VALUES ('01', 'New England (CT ME MA NH RI VT)'),
+       ('02', 'Mid East (DE DC MD NJ NY PA)'),
+       ('03', 'Great Lakes (IL IN MI OH WI)'),
+       ('04', 'Plains (IA KS MN MO NE ND SD)'),
+       ('05', 'Southeast (AL AR FL GA KY LA MS NC SC TN VA WV)'),
+       ('06', 'Soutwest (AZ NM OK TX)'),
+       ('07', 'Rocky Mountains (CO ID MT UT WY)'),
+       ('08', 'Far West (AK CA HI NV OR WA)'),
+       ('09', 'Outlying Areas (AS GU MP PR VI)');
+
+-- sum() visits by region.
+
+SELECT obereg_codes.region,
+       sum(pls18.visits) AS visits_2018,
+       sum(pls17.visits) AS visits_2017,
+       sum(pls16.visits) AS visits_2016,
+       round( (sum(pls18.visits::numeric) - sum(pls17.visits)) /
+            sum(pls17.visits) * 100, 1 ) AS chg_2018_17,
+       round( (sum(pls17.visits::numeric) - sum(pls16.visits)) /
+            sum(pls16.visits) * 100, 1 ) AS chg_2017_16
+FROM pls_fy2018_libraries pls18
+       JOIN pls_fy2017_libraries pls17 ON pls18.fscskey = pls17.fscskey
+       JOIN pls_fy2016_libraries pls16 ON pls18.fscskey = pls16.fscskey
+       JOIN obereg_codes ON pls18.obereg = obereg_codes.obereg
+WHERE pls18.visits >= 0
+       AND pls17.visits >= 0
+       AND pls16.visits >= 0
+GROUP BY obereg_codes.region
+ORDER BY chg_2018_17 DESC;
+
+-- 3. Thinking back to the types of joins you learned in Chapter 7,
+-- which join type will show you all the rows in all three tables,
+-- including those without a match? Write such a query and add an
+-- IS NULL filter in a WHERE clause to show agencies not included
+-- in one or more of the tables.
+
+-- Answer: a FULL OUTER JOIN will show all rows in both tables.
+
+SELECT pls18.libname, pls18.city, pls18.stabr, pls18.statstru, 
+       pls17.libname, pls17.city, pls17.stabr, pls17.statstru, 
+       pls16.libname, pls16.city, pls16.stabr, pls16.statstru
+FROM pls_fy2018_libraries pls18
+       FULL OUTER JOIN pls_fy2017_libraries pls17 ON pls18.fscskey = pls17.fscskey
+       FULL OUTER JOIN pls_fy2016_libraries pls16 ON pls18.fscskey = pls16.fscskey
+WHERE pls16.fscskey IS NULL OR pls17.fscskey IS NULL;
+
+-- Note: The IS NULL statements in the WHERE clause limit results to those
+-- that do not appear in one or more tables.
