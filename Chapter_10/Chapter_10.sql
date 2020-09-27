@@ -1,26 +1,21 @@
--- FIRST EDITION FILE; IGNORE
-
-
-
-
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 10 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- Listing 10-1: Importing the FSIS Meat, Poultry, and Egg Inspection Directory
--- https://catalog.data.gov/dataset/meat-poultry-and-egg-inspection-directory-by-establishment-name
+-- https://catalog.data.gov/dataset/fsis-meat-poultry-and-egg-inspection-directory-by-establishment-name
 
 CREATE TABLE meat_poultry_egg_inspect (
-    est_number varchar(50) CONSTRAINT est_number_key PRIMARY KEY,
-    company varchar(100),
-    street varchar(100),
-    city varchar(30),
-    st varchar(2),
-    zip varchar(5),
-    phone varchar(14),
+    est_number text CONSTRAINT est_number_key PRIMARY KEY,
+    company text,
+    street text,
+    city text,
+    st text,
+    zip text,
+    phone text,
     grant_date date,
     activities text,
     dbas text
