@@ -8,8 +8,8 @@
 -- Listing 10-1: Importing the FSIS Meat, Poultry, and Egg Inspection Directory
 -- https://catalog.data.gov/dataset/fsis-meat-poultry-and-egg-inspection-directory-by-establishment-name
 
-CREATE TABLE meat_poultry_egg_inspect (
-    est_number text CONSTRAINT est_number_key PRIMARY KEY,
+CREATE TABLE meat_poultry_egg_establishments (
+    establishment_number text CONSTRAINT est_number_key PRIMARY KEY,
     company text,
     street text,
     city text,
@@ -21,14 +21,15 @@ CREATE TABLE meat_poultry_egg_inspect (
     dbas text
 );
 
-COPY meat_poultry_egg_inspect
-FROM 'C:\YourDirectory\MPI_Directory_by_Establishment_Name.csv'
-WITH (FORMAT CSV, HEADER, DELIMITER ',');
+COPY meat_poultry_egg_establishments
+-- FROM 'C:\YourDirectory\MPI_Directory_by_Establishment_Name.csv'
+from '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_10/MPI_Directory_by_Establishment_Name.csv'
+WITH (FORMAT CSV, HEADER);
 
-CREATE INDEX company_idx ON meat_poultry_egg_inspect (company);
+CREATE INDEX company_idx ON meat_poultry_egg_establishments (company);
 
 -- Count the rows imported:
-SELECT count(*) FROM meat_poultry_egg_inspect;
+SELECT count(*) FROM meat_poultry_egg_establishments;
 
 -- Listing 10-2: Finding multiple companies at the same address
 SELECT company,
@@ -36,7 +37,7 @@ SELECT company,
        city,
        st,
        count(*) AS address_count
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
 GROUP BY company, street, city, st
 HAVING count(*) > 1
 ORDER BY company, street, city, st;
@@ -44,24 +45,24 @@ ORDER BY company, street, city, st;
 -- Listing 10-3: Grouping and counting states
 SELECT st, 
        count(*) AS st_count
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
 GROUP BY st
 ORDER BY st;
 
 -- Listing 10-4: Using IS NULL to find missing values in the st column
-SELECT est_number,
+SELECT establishment_number,
        company,
        city,
        st,
        zip
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
 WHERE st IS NULL;
 
 -- Listing 10-5: Using GROUP BY and count() to find inconsistent company names
 
 SELECT company,
        count(*) AS company_count
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
 GROUP BY company
 ORDER BY company ASC;
 
@@ -69,7 +70,7 @@ ORDER BY company ASC;
 
 SELECT length(zip),
        count(*) AS length_count
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
 GROUP BY length(zip)
 ORDER BY length(zip) ASC;
 
@@ -77,151 +78,160 @@ ORDER BY length(zip) ASC;
 
 SELECT st,
        count(*) AS st_count
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
 WHERE length(zip) < 5
 GROUP BY st
 ORDER BY st ASC;
 
 -- Listing 10-8: Backing up a table
 
-CREATE TABLE meat_poultry_egg_inspect_backup AS
-SELECT * FROM meat_poultry_egg_inspect;
+CREATE TABLE meat_poultry_egg_establishments_backup AS
+SELECT * FROM meat_poultry_egg_establishments;
 
 -- Check number of records:
 SELECT 
-    (SELECT count(*) FROM meat_poultry_egg_inspect) AS original,
-    (SELECT count(*) FROM meat_poultry_egg_inspect_backup) AS backup;
+    (SELECT count(*) FROM meat_poultry_egg_establishments) AS original,
+    (SELECT count(*) FROM meat_poultry_egg_establishments_backup) AS backup;
 
 -- Listing 10-9: Creating and filling the st_copy column with ALTER TABLE and UPDATE
 
-ALTER TABLE meat_poultry_egg_inspect ADD COLUMN st_copy varchar(2);
+ALTER TABLE meat_poultry_egg_establishments ADD COLUMN st_copy text;
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET st_copy = st;
 
 -- Listing 10-10: Checking values in the st and st_copy columns
 
 SELECT st,
        st_copy
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
+ORDER BY st;
+
+-- With WHERE clause to check for equality
+SELECT st,
+       st_copy
+FROM meat_poultry_egg_establishments
+WHERE st <> st_copy
 ORDER BY st;
 
 -- Listing 10-11: Updating the st column for three establishments
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET st = 'MN'
-WHERE est_number = 'V18677A';
+WHERE establishment_number = 'V18677A';
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET st = 'AL'
-WHERE est_number = 'M45319+P45319';
+WHERE establishment_number = 'M45319+P45319';
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET st = 'WI'
-WHERE est_number = 'M263A+P263A+V263A';
+WHERE establishment_number = 'M263A+P263A+V263A';
 
 -- Listing 10-12: Restoring original st column values
 
 -- Restoring from the column backup
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET st = st_copy;
 
 -- Restoring from the table backup
-UPDATE meat_poultry_egg_inspect original
+UPDATE meat_poultry_egg_establishments original
 SET st = backup.st
-FROM meat_poultry_egg_inspect_backup backup
-WHERE original.est_number = backup.est_number; 
+FROM meat_poultry_egg_establishments_backup backup
+WHERE original.establishment_number = backup.establishment_number; 
 
 -- Listing 10-13: Creating and filling the company_standard column
 
-ALTER TABLE meat_poultry_egg_inspect ADD COLUMN company_standard varchar(100);
+ALTER TABLE meat_poultry_egg_establishments ADD COLUMN company_standard text;
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET company_standard = company;
 
--- Listing 10-14: Use UPDATE to modify field values that match a string
+-- Listing 10-14: Use UPDATE to modify column values that match a string
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET company_standard = 'Armour-Eckrich Meats'
 WHERE company LIKE 'Armour%';
 
 SELECT company, company_standard
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
 WHERE company LIKE 'Armour%';
 
 -- Listing 10-15: Creating and filling the zip_copy column
 
-ALTER TABLE meat_poultry_egg_inspect ADD COLUMN zip_copy varchar(5);
+ALTER TABLE meat_poultry_egg_establishments ADD COLUMN zip_copy text;
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET zip_copy = zip;
 
 -- Listing 10-16: Modify codes in the zip column missing two leading zeros
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET zip = '00' || zip
 WHERE st IN('PR','VI') AND length(zip) = 3;
 
 -- Listing 10-17: Modify codes in the zip column missing one leading zero
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET zip = '0' || zip
 WHERE st IN('CT','MA','ME','NH','NJ','RI','VT') AND length(zip) = 4;
 
 -- Listing 10-18: Creating and filling a state_regions table
 
 CREATE TABLE state_regions (
-    st varchar(2) CONSTRAINT st_key PRIMARY KEY,
-    region varchar(20) NOT NULL
+    st text CONSTRAINT st_key PRIMARY KEY,
+    region text NOT NULL
 );
 
 COPY state_regions
-FROM 'C:\YourDirectory\state_regions.csv'
-WITH (FORMAT CSV, HEADER, DELIMITER ',');
+-- FROM 'C:\YourDirectory\state_regions.csv'
+from '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_10/state_regions.csv'
+WITH (FORMAT CSV, HEADER);
 
--- Listing 10-19: Adding and updating an inspection_date column
+-- Listing 10-19: Adding and updating an inspection_deadline column
 
-ALTER TABLE meat_poultry_egg_inspect ADD COLUMN inspection_date date;
+ALTER TABLE meat_poultry_egg_establishments
+    ADD COLUMN inspection_deadline timestamp with time zone;
 
-UPDATE meat_poultry_egg_inspect inspect
-SET inspection_date = '20110-12-01'
+UPDATE meat_poultry_egg_establishments establishments
+SET inspection_deadline = '2022-12-01 00:00 EST'
 WHERE EXISTS (SELECT state_regions.region
               FROM state_regions
-              WHERE inspect.st = state_regions.st 
+              WHERE establishments.st = state_regions.st 
                     AND state_regions.region = 'New England');
 
--- Listing 10-20: Viewing updated inspection_date values
+-- Listing 10-20: Viewing updated inspection_deadline values
 
-SELECT st, inspection_date
-FROM meat_poultry_egg_inspect
-GROUP BY st, inspection_date
+SELECT st, inspection_deadline
+FROM meat_poultry_egg_establishments
+GROUP BY st, inspection_deadline
 ORDER BY st;
 
 -- Listing 10-21: Delete rows matching an expression
 
-DELETE FROM meat_poultry_egg_inspect
-WHERE st IN('PR','VI');
+DELETE FROM meat_poultry_egg_establishments
+WHERE st IN('AS','GU','MP','PR','VI');
 
 -- Listing 10-22: Remove a column from a table using DROP
 
-ALTER TABLE meat_poultry_egg_inspect DROP COLUMN zip_copy;
+ALTER TABLE meat_poultry_egg_establishments DROP COLUMN zip_copy;
 
 -- Listing 10-23: Remove a table from a database using DROP
 
-DROP TABLE meat_poultry_egg_inspect_backup;
+DROP TABLE meat_poultry_egg_establishments_backup;
 
 -- Listing 10-24: Demonstrating a transaction block
 
 -- Start transaction and perform update
 START TRANSACTION;
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET company = 'AGRO Merchantss Oakland LLC'
 WHERE company = 'AGRO Merchants Oakland, LLC';
 
 -- view changes
 SELECT company
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
 WHERE company LIKE 'AGRO%'
 ORDER BY company;
 
@@ -230,14 +240,14 @@ ROLLBACK;
 
 -- See restored state
 SELECT company
-FROM meat_poultry_egg_inspect
+FROM meat_poultry_egg_establishments
 WHERE company LIKE 'AGRO%'
 ORDER BY company;
 
 -- Alternately, commit changes at the end:
 START TRANSACTION;
 
-UPDATE meat_poultry_egg_inspect
+UPDATE meat_poultry_egg_establishments
 SET company = 'AGRO Merchants Oakland LLC'
 WHERE company = 'AGRO Merchants Oakland, LLC';
 
@@ -245,15 +255,15 @@ COMMIT;
 
 -- Listing 10-25: Backing up a table while adding and filling a new column
 
-CREATE TABLE meat_poultry_egg_inspect_backup AS
+CREATE TABLE meat_poultry_egg_establishments_backup AS
 SELECT *,
-       '2018-02-07'::date AS reviewed_date
-FROM meat_poultry_egg_inspect;
+       '2023-02-14 00:00 EST'::timestamp with time zone AS reviewed_date
+FROM meat_poultry_egg_establishments;
 
 -- Listing 10-26: Swapping table names using ALTER TABLE
 
-ALTER TABLE meat_poultry_egg_inspect RENAME TO meat_poultry_egg_inspect_temp;
-ALTER TABLE meat_poultry_egg_inspect_backup RENAME TO meat_poultry_egg_inspect;
-ALTER TABLE meat_poultry_egg_inspect_temp RENAME TO meat_poultry_egg_inspect_backup;
+ALTER TABLE meat_poultry_egg_establishments RENAME TO meat_poultry_egg_establishments_temp;
+ALTER TABLE meat_poultry_egg_establishments_backup RENAME TO meat_poultry_egg_establishments;
+ALTER TABLE meat_poultry_egg_establishments_temp RENAME TO meat_poultry_egg_establishments_backup;
 
 
