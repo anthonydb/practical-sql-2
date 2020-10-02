@@ -126,7 +126,8 @@ WHERE establishment_number = 'M45319+P45319';
 
 UPDATE meat_poultry_egg_establishments
 SET st = 'WI'
-WHERE establishment_number = 'M263A+P263A+V263A';
+WHERE establishment_number = 'M263A+P263A+V263A'
+RETURNING establishment_number, company, city, st, zip;
 
 -- Listing 10-12: Restoring original st column values
 
@@ -151,11 +152,8 @@ SET company_standard = company;
 
 UPDATE meat_poultry_egg_establishments
 SET company_standard = 'Armour-Eckrich Meats'
-WHERE company LIKE 'Armour%';
-
-SELECT company, company_standard
-FROM meat_poultry_egg_establishments
-WHERE company LIKE 'Armour%';
+WHERE company LIKE 'Armour%'
+RETURNING company, company_standard;
 
 -- Listing 10-15: Creating and filling the zip_copy column
 
