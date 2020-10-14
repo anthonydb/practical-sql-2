@@ -1,40 +1,36 @@
--- FIRST EDITION FILE; IGNORE
-
-
-
-
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 11 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- Listing 11-1: Create Census 2011-2015 ACS 5-Year stats table and import data
 
-CREATE TABLE acs_2011_2015_stats (
-    geoid varchar(14) CONSTRAINT geoid_key PRIMARY KEY,
-    county varchar(50) NOT NULL,
-    st varchar(20) NOT NULL,
-    pct_travel_60_min numeric(5,3) NOT NULL,
-    pct_bachelors_higher numeric(5,3) NOT NULL,
-    pct_masters_higher numeric(5,3) NOT NULL,
+CREATE TABLE acs_2014_2018_stats (
+    geoid text CONSTRAINT geoid_key PRIMARY KEY,
+    county text NOT NULL,
+    st text NOT NULL,
+    pct_travel_60_min numeric(5,2),
+    pct_bachelors_higher numeric(5,2),
+    pct_masters_higher numeric(5,2),
     median_hh_income integer,
     CHECK (pct_masters_higher <= pct_bachelors_higher)
 );
 
-COPY acs_2011_2015_stats
-FROM 'C:\YourDirectory\acs_2011_2015_stats.csv'
+COPY acs_2014_2018_stats
+FROM '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_11/acs_2014_2018_stats.csv'
+--FROM 'C:\YourDirectory\acs_2014_2018_stats.csv'
 WITH (FORMAT CSV, HEADER, DELIMITER ',');
 
-SELECT * FROM acs_2011_2015_stats;
+SELECT * FROM acs_2014_2018_stats;
 
 -- Listing 11-2: Using corr(Y, X) to measure the relationship between 
 -- education and income
 
 SELECT corr(median_hh_income, pct_bachelors_higher)
     AS bachelors_income_r
-FROM acs_2011_2015_stats;
+FROM acs_2014_2018_stats;
 
 -- Listing 11-3: Using corr(Y, X) on additional variables
 
@@ -48,7 +44,7 @@ SELECT
     round(
       corr(pct_travel_60_min, pct_bachelors_higher)::numeric, 2
       ) AS bachelors_travel_r
-FROM acs_2011_2015_stats;
+FROM acs_2014_2018_stats;
 
 -- Listing 11-4: Regression slope and intercept functions
 
@@ -59,27 +55,27 @@ SELECT
     round(
         regr_intercept(median_hh_income, pct_bachelors_higher)::numeric, 2
         ) AS y_intercept
-FROM acs_2011_2015_stats;
+FROM acs_2014_2018_stats;
 
 -- Listing 11-5: Calculating the coefficient of determination, or r-squared
 
 SELECT round(
         regr_r2(median_hh_income, pct_bachelors_higher)::numeric, 3
         ) AS r_squared
-FROM acs_2011_2015_stats;
+FROM acs_2014_2018_stats;
 
 -- Bonus: Additional stats functions.
 -- Variance
 SELECT var_pop(median_hh_income)
-FROM acs_2011_2015_stats;
+FROM acs_2014_2018_stats;
 
 -- Standard deviation of the entire population
 SELECT stddev_pop(median_hh_income)
-FROM acs_2011_2015_stats;
+FROM acs_2014_2018_stats;
 
 -- Covariance
 SELECT covar_pop(median_hh_income, pct_bachelors_higher)
-FROM acs_2011_2015_stats;
+FROM acs_2014_2018_stats;
 
 -- Listing 11-6: The rank() and dense_rank() window functions
 
@@ -134,6 +130,46 @@ SELECT
     unit_sales,
     rank() OVER (PARTITION BY category ORDER BY unit_sales DESC)
 FROM store_sales;
+
+
+
+-- 
+
+CREATE TABLE cbp_naics_72_establishments (
+    state_fips text,
+    county_fips text,
+    county text NOT NULL,
+    st text NOT NULL,
+    naics_2017 text NOT NULL,
+    naics_2017_label text NOT NULL,
+    year smallint NOT NULL,
+    establishments integer NOT NULL,
+    CONSTRAINT cbp_fips_key PRIMARY KEY (state_fips, county_fips)
+);
+
+COPY cbp_naics_72_establishments
+FROM '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_11/cbp_naics_72_establishments.csv'
+--FROM 'C:\YourDirectory\cbp_naics_72_establishments.csv'
+WITH (FORMAT CSV, HEADER, DELIMITER ',');
+
+
+SELECT cbp.state_fips || cbp.county_fips AS fips,
+       cbp.county,
+       cbp.st,
+       cbp.establishments,
+       pop.pop_est_2018,
+       round(
+           (cbp.establishments::numeric / pop.pop_est_2018) * 1000, 1
+           ) AS estabs_per_1000       
+FROM 
+cbp_naics_72_establishments cbp LEFT JOIN us_counties_pop_est_2019 pop
+ON cbp.state_fips = pop.state_fips
+    AND cbp.county_fips = pop.county_fips
+WHERE pop.pop_est_2018 >= 50000
+ORDER BY cbp.establishments::numeric / pop.pop_est_2018 DESC;
+
+-- OLD first edition
+
 
 -- Listing 11-8: Create and fill a 2015 FBI crime data table
 

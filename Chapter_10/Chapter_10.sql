@@ -22,8 +22,7 @@ CREATE TABLE meat_poultry_egg_establishments (
 );
 
 COPY meat_poultry_egg_establishments
--- FROM 'C:\YourDirectory\MPI_Directory_by_Establishment_Name.csv'
-from '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_10/MPI_Directory_by_Establishment_Name.csv'
+FROM 'C:\YourDirectory\MPI_Directory_by_Establishment_Name.csv'
 WITH (FORMAT CSV, HEADER);
 
 CREATE INDEX company_idx ON meat_poultry_egg_establishments (company);
@@ -182,8 +181,7 @@ CREATE TABLE state_regions (
 );
 
 COPY state_regions
--- FROM 'C:\YourDirectory\state_regions.csv'
-from '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_10/state_regions.csv'
+FROM 'C:\YourDirectory\state_regions.csv'
 WITH (FORMAT CSV, HEADER);
 
 -- Listing 10-19: Adding and updating an inspection_deadline column
