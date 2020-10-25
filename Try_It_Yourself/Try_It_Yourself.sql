@@ -662,4 +662,70 @@ FROM meat_poultry_egg_establishments
 WHERE meat_processing = TRUE AND
       poultry_processing = TRUE;
 
+----------------------------------------------------------------------------
+-- Chapter 11: Creating Your First Database and Table
+----------------------------------------------------------------------------
+
+-- 1. In Listing 11-2, the correlation coefficient, or r value, of the
+-- variables pct_bachelors_higher and median_hh_income was about .70.
+-- Write a query to show the correlation between pct_masters_higher and
+-- median_hh_income. Is the r value higher or lower? What might explain
+-- the difference?
+
+-- Answer:
+-- The r value of pct_bachelors_higher and median_hh_income is about .60, which
+-- shows a lower connection between percent master's degree or higher and
+-- income than percent bachelor's degree or higher and income. One possible
+-- explanation is that attaining a master's degree or higher may have a more
+-- incremental impact on earnings than attaining a bachelor's degree.
+
+SELECT
+    round(
+      corr(median_hh_income, pct_bachelors_higher)::numeric, 2
+      ) AS bachelors_income_r,
+    round(
+      corr(median_hh_income, pct_masters_higher)::numeric, 2
+      ) AS masters_income_r
+FROM acs_2014_2018_stats;
+
+
+-- 2. Using the exports data, create a 12-month rolling sum using the values
+-- in the column soybeans_export_value and the query pattern from 
+-- Listing 11-8. Copy and paste the results from the pgAdmin output 
+-- pane and graph the values using Excel. What trend do you see?  
+
+-- Answer: Soybean exports rose considerably during the late 2000s
+-- and dropped off considerably starting in 2018 following the start of the 
+-- U.S. trade war with China.
+
+SELECT year, month, soybeans_export_value,
+    round(   
+       sum(soybeans_export_value) 
+            OVER(ORDER BY year, month 
+                 ROWS BETWEEN 11 PRECEDING AND CURRENT ROW), 0)
+       AS twelve_month_avg
+FROM us_exports
+ORDER BY year, month;
+
+-- 3. As a bonus challenge, revisit the libraries data in the table
+-- pls_fy2018_libraries in Chapter 9. Rank library agencies based on the rate
+-- of visits per 1,000 population (variable popu_lsa), and limit the query to
+-- agencies serving 250,000 people or more.
+
+-- Answer:
+-- Pinellas Public Library Coop tops the rankings with 9,705 visits per
+-- thousand people (or roughly 10 visits per person).
+
+SELECT
+    libname,
+    stabr,
+    visits,
+    popu_lsa,
+    round(
+        (visits::numeric / popu_lsa) * 1000, 1
+        ) AS visits_per_1000,
+    rank() OVER (ORDER BY (visits::numeric / popu_lsa) * 1000 DESC)
+FROM pls_fy2018_libraries
+WHERE popu_lsa >= 250000;
+
 

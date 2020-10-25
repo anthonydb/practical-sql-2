@@ -19,9 +19,8 @@ CREATE TABLE acs_2014_2018_stats (
 );
 
 COPY acs_2014_2018_stats
-FROM '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_11/acs_2014_2018_stats.csv'
---FROM 'C:\YourDirectory\acs_2014_2018_stats.csv'
-WITH (FORMAT CSV, HEADER, DELIMITER ',');
+FROM 'C:\YourDirectory\acs_2014_2018_stats.csv'
+WITH (FORMAT CSV, HEADER);
 
 SELECT * FROM acs_2014_2018_stats;
 
@@ -64,8 +63,8 @@ SELECT round(
         ) AS r_squared
 FROM acs_2014_2018_stats;
 
--- Bonus: Additional stats functions.
--- Variance
+-- Bonus: Additional stats functions
+-- Variance of the entire population
 SELECT var_pop(median_hh_income)
 FROM acs_2014_2018_stats;
 
@@ -73,28 +72,24 @@ FROM acs_2014_2018_stats;
 SELECT stddev_pop(median_hh_income)
 FROM acs_2014_2018_stats;
 
--- Covariance
-SELECT covar_pop(median_hh_income, pct_bachelors_higher)
-FROM acs_2014_2018_stats;
-
 -- Listing 11-6: The rank() and dense_rank() window functions
 
 CREATE TABLE widget_companies (
-    id bigserial,
-    company varchar(30) NOT NULL,
+    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    company text NOT NULL,
     widget_output integer NOT NULL
 );
 
 INSERT INTO widget_companies (company, widget_output)
 VALUES
-    ('Morse Widgets', 125000),
-    ('Springfield Widget Masters', 143000),
-    ('Best Widgets', 196000),
-    ('Acme Inc.', 133000),
-    ('District Widget Inc.', 201000),
-    ('Clarke Amalgamated', 620000),
-    ('Stavesacre Industries', 244000),
-    ('Bowers Widget Emporium', 201000);
+    ('Dom Widgets', 125000),
+    ('Ariadne Widget Masters', 143000),
+    ('Saito Widget Co.', 201000),
+    ('Mal Inc.', 133000),
+    ('Dream Widget Inc.', 196000),
+    ('Miles Amalgamated', 620000),
+    ('Arthur Industries', 244000),
+    ('Fischer Worldwide', 201000);
 
 SELECT
     company,
@@ -106,8 +101,8 @@ FROM widget_companies;
 -- Listing 11-7: Applying rank() within groups using PARTITION BY
 
 CREATE TABLE store_sales (
-    store varchar(30),
-    category varchar(30) NOT NULL,
+    store text NOT NULL,
+    category text NOT NULL,
     unit_sales bigint NOT NULL,
     CONSTRAINT store_category_key PRIMARY KEY (store, category)
 );
@@ -131,9 +126,35 @@ SELECT
     rank() OVER (PARTITION BY category ORDER BY unit_sales DESC)
 FROM store_sales;
 
+-- Listing 11-8: Creating a rolling average for export data
 
+CREATE TABLE us_exports (
+    year smallint,
+    month smallint,
+    citrus_export_value bigint,	
+    soybeans_export_value bigint
+);
 
--- 
+COPY us_exports
+ROM 'C:\YourDirectory\us_exports.csv'
+WITH (FORMAT CSV, HEADER);
+
+-- View the monthly citrus data
+SELECT year, month, citrus_export_value
+FROM us_exports
+ORDER BY year, month;
+
+-- Calculate rolling average
+SELECT year, month, citrus_export_value,
+    round(   
+       avg(citrus_export_value) 
+            OVER(ORDER BY year, month 
+                 ROWS BETWEEN 11 PRECEDING AND CURRENT ROW), 0)
+       AS twelve_month_avg
+FROM us_exports
+ORDER BY year, month;
+
+-- Listing 11-9: Creating and filling a table for Census county business pattern data
 
 CREATE TABLE cbp_naics_72_establishments (
     state_fips text,
@@ -148,61 +169,22 @@ CREATE TABLE cbp_naics_72_establishments (
 );
 
 COPY cbp_naics_72_establishments
-FROM '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_11/cbp_naics_72_establishments.csv'
---FROM 'C:\YourDirectory\cbp_naics_72_establishments.csv'
-WITH (FORMAT CSV, HEADER, DELIMITER ',');
+FROM 'C:\YourDirectory\cbp_naics_72_establishments.csv'
+WITH (FORMAT CSV, HEADER);
 
+SELECT * FROM cbp_naics_72_establishments LIMIT 5;
 
-SELECT cbp.state_fips || cbp.county_fips AS fips,
-       cbp.county,
-       cbp.st,
-       cbp.establishments,
-       pop.pop_est_2018,
-       round(
-           (cbp.establishments::numeric / pop.pop_est_2018) * 1000, 1
-           ) AS estabs_per_1000       
-FROM 
-cbp_naics_72_establishments cbp LEFT JOIN us_counties_pop_est_2019 pop
-ON cbp.state_fips = pop.state_fips
-    AND cbp.county_fips = pop.county_fips
-WHERE pop.pop_est_2018 >= 50000
-ORDER BY cbp.establishments::numeric / pop.pop_est_2018 DESC;
-
--- OLD first edition
-
-
--- Listing 11-8: Create and fill a 2015 FBI crime data table
-
-CREATE TABLE fbi_crime_data_2015 (
-    st varchar(20),
-    city varchar(50),
-    population integer,
-    violent_crime integer,
-    property_crime integer,
-    burglary integer,
-    larceny_theft integer,
-    motor_vehicle_theft integer,
-    CONSTRAINT st_city_key PRIMARY KEY (st, city)
-);
-
-COPY fbi_crime_data_2015
-FROM 'C:\YourDirectory\fbi_crime_data_2015.csv'
-WITH (FORMAT CSV, HEADER, DELIMITER ',');
-
-SELECT * FROM fbi_crime_data_2015
-ORDER BY population DESC;
-
--- Listing 11-9: Find property crime rates per thousand in cities with 500,000
--- or more people
+-- Listing 11-10: Finding business rates per thousand population in counties with 50,000 or more people
 
 SELECT
-    city,
-    st,
-    population,
-    property_crime,
-    round(
-        (property_crime::numeric / population) * 1000, 1
-        ) AS pc_per_1000
-FROM fbi_crime_data_2015
-WHERE population >= 500000
-ORDER BY (property_crime::numeric / population) DESC;
+    cbp.county,
+    cbp.st,
+    cbp.establishments,
+    pop.pop_est_2018,
+    round( (cbp.establishments::numeric / pop.pop_est_2018) * 1000, 1 )
+        AS estabs_per_1000 
+FROM cbp_naics_72_establishments cbp LEFT JOIN us_counties_pop_est_2019 pop 
+    ON cbp.state_fips = pop.state_fips 
+    AND cbp.county_fips = pop.county_fips 
+WHERE pop.pop_est_2018 >= 50000 
+ORDER BY cbp.establishments::numeric / pop.pop_est_2018 DESC;
