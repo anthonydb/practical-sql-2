@@ -136,7 +136,7 @@ CREATE TABLE us_exports (
 );
 
 COPY us_exports
-ROM 'C:\YourDirectory\us_exports.csv'
+FROM 'C:\YourDirectory\us_exports.csv'
 WITH (FORMAT CSV, HEADER);
 
 -- View the monthly citrus data
