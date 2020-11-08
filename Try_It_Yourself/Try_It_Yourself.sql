@@ -753,7 +753,7 @@ ORDER BY length_of_ride DESC;
 
 -- 2. Using the AT TIME ZONE keywords, write a query that displays the date and
 -- time for London, Johannesburg, Moscow, and Melbourne the moment January 1,
--- 2100, arrives in New York City.
+-- 2100, arrives in New York City. Use the code in Listing 12-5 to find time zone names.
 
 -- Answer:
 
