@@ -104,12 +104,6 @@ SET st_copy = st;
 SELECT st,
        st_copy
 FROM meat_poultry_egg_establishments
-ORDER BY st;
-
--- With WHERE clause to check for equality
-SELECT st,
-       st_copy
-FROM meat_poultry_egg_establishments
 WHERE st <> st_copy
 ORDER BY st;
 

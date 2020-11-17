@@ -258,7 +258,7 @@ GROUP BY stabr, stataddr
 ORDER BY stabr, stataddr;
 
 -- Listing 9-11: Using the sum() aggregate function to total visits to
--- libraries in 2014 and 2009
+-- libraries in 2016, 2017, and 2018
 
 -- 2018
 SELECT sum(visits) AS visits_2018
