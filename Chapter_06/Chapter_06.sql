@@ -20,11 +20,13 @@ SELECT CAST(11 AS numeric(3,1)) / 6;
 
 -- Listing 6-3: Exponents, roots and factorials with SQL
 
-SELECT 3 ^ 4;    -- exponentiation
-SELECT |/ 10;    -- square root (operator)
-SELECT sqrt(10); -- square root (function)
-SELECT ||/ 10;   -- cube root
-SELECT 4 !;      -- factorial
+SELECT 3 ^ 4;         -- exponentiation
+SELECT |/ 10;         -- square root (operator)
+SELECT sqrt(10);      -- square root (function)
+SELECT ||/ 10;        -- cube root
+SELECT factorial(4);  -- factorial (function)
+SELECT 4 !;           -- factorial (operator; PostgreSQL 13 and earlier only)
+
 
 -- Order of operations
 
@@ -55,7 +57,8 @@ SELECT county_name AS county,
        births_2019 AS births,
        deaths_2019 AS deaths,
        births_2019 - deaths_2019 AS natural_increase
-FROM us_counties_pop_est_2019;
+FROM us_counties_pop_est_2019
+ORDER BY state_name, county_name;
 
 -- Listing 6-6: Checking Census data totals
 
@@ -160,50 +163,7 @@ SELECT unnest(
             ) AS quartiles
 FROM us_counties_pop_est_2019;
 
--- Listing 6-14: Creating a median() aggregate function in PostgreSQL
--- Source: https://wiki.postgresql.org/wiki/Aggregate_Median
-
-CREATE OR REPLACE FUNCTION _final_median(anyarray)
-   RETURNS float8 AS
-$$
-  WITH q AS
-  (
-     SELECT val
-     FROM unnest($1) val
-     WHERE VAL IS NOT NULL
-     ORDER BY 1
-  ),
-  cnt AS
-  (
-    SELECT COUNT(*) AS c FROM q
-  )
-  SELECT AVG(val)::float8
-  FROM
-  (
-    SELECT val FROM q
-    LIMIT  2 - MOD((SELECT c FROM cnt), 2)
-    OFFSET GREATEST(CEIL((SELECT c FROM cnt) / 2.0) - 1,0)
-  ) q2;
-$$
-LANGUAGE sql IMMUTABLE;
-
-CREATE AGGREGATE median(anyelement) (
-  SFUNC=array_append,
-  STYPE=anyarray,
-  FINALFUNC=_final_median,
-  INITCOND='{}'
-);
-
--- Listing 6-15: Using a median() aggregate function
-
-SELECT sum(pop_est_2019) AS county_sum,
-       round(avg(pop_est_2019), 0) AS county_average,
-       median(pop_est_2019) AS county_median_func,
-       percentile_cont(.5)
-       WITHIN GROUP (ORDER BY pop_est_2019) AS county_median_perc
-FROM us_counties_pop_est_2019;
-
--- Listing 6-16: Finding the most-frequent value with mode()
+-- Listing 6-14: Finding the most-frequent value with mode()
 
 SELECT mode() WITHIN GROUP (ORDER BY pop_est_2019)
 FROM us_counties_pop_est_2019;
