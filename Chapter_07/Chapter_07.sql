@@ -22,8 +22,7 @@ CREATE TABLE employees (
     last_name text,
     salary numeric(10,2),
     dept_id integer REFERENCES departments (dept_id),
-    CONSTRAINT emp_key PRIMARY KEY (emp_id),
-    CONSTRAINT emp_dept_unique UNIQUE (emp_id, dept_id)
+    CONSTRAINT emp_key PRIMARY KEY (emp_id)
 );
 
 INSERT INTO departments
@@ -42,7 +41,8 @@ VALUES
 
 SELECT *
 FROM employees JOIN departments
-ON employees.dept_id = departments.dept_id;
+ON employees.dept_id = departments.dept_id
+ORDER BY employees.dept_id;
 
 -- Listing 7-3: Creating two tables to explore JOIN types
 
@@ -73,38 +73,57 @@ INSERT INTO district_2035 VALUES
 
 SELECT *
 FROM district_2020 JOIN district_2035
-ON district_2020.id = district_2035.id;
+ON district_2020.id = district_2035.id
+ORDER BY district_2020.id;
 
 -- Bonus: Also can be specified as INNER JOIN
-
 SELECT *
 FROM district_2020 INNER JOIN district_2035
-ON district_2020.id = district_2035.id;
+ON district_2020.id = district_2035.id
+ORDER BY district_2020.id;
 
--- Listing 7-5: Using LEFT JOIN
+-- Listing 7-5: JOIN with USING
+
+SELECT *
+FROM district_2020 JOIN district_2035
+USING (id)
+ORDER BY district_2020.id;
+
+-- Listing 7-6: Using LEFT JOIN
 
 SELECT *
 FROM district_2020 LEFT JOIN district_2035
-ON district_2020.id = district_2035.id;
+ON district_2020.id = district_2035.id
+ORDER BY district_2020.id;
 
--- Listing 7-6: Using RIGHT JOIN
+-- Listing 7-7: Using RIGHT JOIN
 
 SELECT *
 FROM district_2020 RIGHT JOIN district_2035
-ON district_2020.id = district_2035.id;
+ON district_2020.id = district_2035.id
+ORDER BY district_2035.id;
 
--- Listing 7-7: Using FULL OUTER JOIN
+-- Listing 7-8: Using FULL OUTER JOIN
 
 SELECT *
 FROM district_2020 FULL OUTER JOIN district_2035
-ON district_2020.id = district_2035.id;
+ON district_2020.id = district_2035.id
+ORDER BY district_2020.id;
 
--- Listing 7-8: Using CROSS JOIN
+-- Listing 7-9: Using CROSS JOIN
 
 SELECT *
 FROM district_2020 CROSS JOIN district_2035;
 
--- Listing 7-9: Filtering to show missing values with IS NULL
+-- Alternately, a CROSS JOIN can be written with a comma-join syntax:
+SELECT *
+FROM district_2020, district_2035;
+
+-- Or it can be written as a JOIN with true in the ON clause:
+SELECT *
+FROM district_2020 JOIN district_2035 ON true;
+
+-- Listing 7-10: Filtering to show missing values with IS NULL
 
 SELECT *
 FROM district_2020 LEFT JOIN district_2035
@@ -116,23 +135,25 @@ FROM district_2020 RIGHT JOIN district_2035
 ON district_2020.id = district_2035.id
 WHERE district_2020.id IS NULL;
 
--- Listing 7-10: Querying specific columns in a join
+-- Listing 7-11: Querying specific columns in a join
 
 SELECT district_2020.id,
        district_2020.school_2020,
        district_2035.school_2035
 FROM district_2020 LEFT JOIN district_2035
-ON district_2020.id = district_2035.id;
+ON district_2020.id = district_2035.id
+ORDER BY district_2020.id;
 
--- Listing 7-11: Simplifying code with table aliases
+-- Listing 7-12: Simplifying code with table aliases
 
 SELECT d20.id,
        d20.school_2020,
        d35.school_2035
 FROM district_2020 AS d20 LEFT JOIN district_2035 AS d35
-ON d20.id = d35.id;
+ON d20.id = d35.id
+ORDER BY d20.id;
 
--- Listing 7-12: Joining multiple tables
+-- Listing 7-13: Joining multiple tables
 
 CREATE TABLE district_2020_enrollment (
     id integer,
@@ -162,39 +183,40 @@ SELECT d20.id,
        d20.school_2020,
        en.enrollment,
        gr.grades
-FROM district_2020 AS d20 LEFT JOIN district_2020_enrollment AS en
+FROM district_2020 AS d20 JOIN district_2020_enrollment AS en
     ON d20.id = en.id
-LEFT JOIN district_2020_grades AS gr
-    ON d20.id = gr.id;
+JOIN district_2020_grades AS gr
+    ON d20.id = gr.id
+ORDER BY d20.id;
 
--- Listing 7-13: Combining query results with UNION
+-- Listing 7-14: Combining query results with UNION
 
 SELECT * FROM district_2020
 UNION
 SELECT * FROM district_2035
 ORDER BY id;
 
--- Listing 7-14: Combining query results with UNION ALL
+-- Listing 7-15: Combining query results with UNION ALL
 
 SELECT * FROM district_2020
 UNION ALL
 SELECT * FROM district_2035
 ORDER BY id;
 
--- Listing 7-15: Customizing a UNION query
+-- Listing 7-16: Customizing a UNION query
 
 SELECT '2020' AS year,
        school_2020 AS school
 FROM district_2020
 
-UNION
+UNION ALL
 
 SELECT '2035' AS year,
        school_2035
 FROM district_2035
 ORDER BY school, year;
 
--- Listing 7-16: Combining query results with INTERSECT and EXCEPT
+-- Listing 7-17: Combining query results with INTERSECT and EXCEPT
 
 SELECT * FROM district_2020
 INTERSECT
@@ -206,7 +228,7 @@ EXCEPT
 SELECT * FROM district_2035
 ORDER BY id;
 
--- Listing 7-17: Performing math on joined Census population estimates tables
+-- Listing 7-18: Performing math on joined Census population estimates tables
 
 CREATE TABLE us_counties_pop_est_2010 (
     state_fips text,                         -- State FIPS code
