@@ -104,7 +104,7 @@ SET st_copy = st;
 SELECT st,
        st_copy
 FROM meat_poultry_egg_establishments
-WHERE st <> st_copy
+WHERE st IS DISTINCT FROM st_copy
 ORDER BY st;
 
 -- Listing 10-11: Updating the st column for three establishments
