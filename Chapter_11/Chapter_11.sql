@@ -5,7 +5,7 @@
 -- Chapter 11 Code Examples
 ----------------------------------------------------------------------------
 
--- Listing 11-1: Create Census 2011-2015 ACS 5-Year stats table and import data
+-- Listing 11-1: Create Census 2014-2018 ACS 5-Year stats table and import data
 
 CREATE TABLE acs_2014_2018_stats (
     geoid text CONSTRAINT geoid_key PRIMARY KEY,
@@ -126,7 +126,42 @@ SELECT
     rank() OVER (PARTITION BY category ORDER BY unit_sales DESC)
 FROM store_sales;
 
--- Listing 11-8: Creating a rolling average for export data
+-- Listing 11-8: Creating and filling a table for Census county business pattern data
+
+CREATE TABLE cbp_naics_72_establishments (
+    state_fips text,
+    county_fips text,
+    county text NOT NULL,
+    st text NOT NULL,
+    naics_2017 text NOT NULL,
+    naics_2017_label text NOT NULL,
+    year smallint NOT NULL,
+    establishments integer NOT NULL,
+    CONSTRAINT cbp_fips_key PRIMARY KEY (state_fips, county_fips)
+);
+
+COPY cbp_naics_72_establishments
+FROM 'C:\YourDirectory\cbp_naics_72_establishments.csv'
+WITH (FORMAT CSV, HEADER);
+
+SELECT * FROM cbp_naics_72_establishments LIMIT 5;
+
+-- Listing 11-9: Finding business rates per thousand population in counties with 50,000 or more people
+
+SELECT
+    cbp.county,
+    cbp.st,
+    cbp.establishments,
+    pop.pop_est_2018,
+    round( (cbp.establishments::numeric / pop.pop_est_2018) * 1000, 1 )
+        AS estabs_per_1000 
+FROM cbp_naics_72_establishments cbp LEFT JOIN us_counties_pop_est_2019 pop 
+    ON cbp.state_fips = pop.state_fips 
+    AND cbp.county_fips = pop.county_fips 
+WHERE pop.pop_est_2018 >= 50000 
+ORDER BY cbp.establishments::numeric / pop.pop_est_2018 DESC;
+
+-- Listing 11-10: Creating a rolling average for export data
 
 CREATE TABLE us_exports (
     year smallint,
@@ -154,37 +189,3 @@ SELECT year, month, citrus_export_value,
 FROM us_exports
 ORDER BY year, month;
 
--- Listing 11-9: Creating and filling a table for Census county business pattern data
-
-CREATE TABLE cbp_naics_72_establishments (
-    state_fips text,
-    county_fips text,
-    county text NOT NULL,
-    st text NOT NULL,
-    naics_2017 text NOT NULL,
-    naics_2017_label text NOT NULL,
-    year smallint NOT NULL,
-    establishments integer NOT NULL,
-    CONSTRAINT cbp_fips_key PRIMARY KEY (state_fips, county_fips)
-);
-
-COPY cbp_naics_72_establishments
-FROM 'C:\YourDirectory\cbp_naics_72_establishments.csv'
-WITH (FORMAT CSV, HEADER);
-
-SELECT * FROM cbp_naics_72_establishments LIMIT 5;
-
--- Listing 11-10: Finding business rates per thousand population in counties with 50,000 or more people
-
-SELECT
-    cbp.county,
-    cbp.st,
-    cbp.establishments,
-    pop.pop_est_2018,
-    round( (cbp.establishments::numeric / pop.pop_est_2018) * 1000, 1 )
-        AS estabs_per_1000 
-FROM cbp_naics_72_establishments cbp LEFT JOIN us_counties_pop_est_2019 pop 
-    ON cbp.state_fips = pop.state_fips 
-    AND cbp.county_fips = pop.county_fips 
-WHERE pop.pop_est_2018 >= 50000 
-ORDER BY cbp.establishments::numeric / pop.pop_est_2018 DESC;
