@@ -1,14 +1,10 @@
--- FIRST EDITION FILE; IGNORE
-
-
-
-
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 14 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
+
 
 -- Commonly used string functions
 -- Full list at https://www.postgresql.org/docs/current/static/functions-string.html
@@ -39,70 +35,100 @@ SELECT right('703-555-1212', 8);
 SELECT replace('bat', 'b', 'c');
 
 
--- Table 14-2: Regular Expression Matching Examples
+-- Table 14-1: Regular Expression Matching Examples
 
 -- Any character one or more times
-SELECT substring('The game starts at 7 p.m. on May 2, 2019.' from '.+');
+SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '.+');
 -- One or two digits followed by a space and p.m.
-SELECT substring('The game starts at 7 p.m. on May 2, 2019.' from '\d{1,2} (?:a.m.|p.m.)');
+SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '\d{1,2} (?:a.m.|p.m.)');
 -- One or more word characters at the start
-SELECT substring('The game starts at 7 p.m. on May 2, 2019.' from '^\w+');
+SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '^\w+');
 -- One or more word characters followed by any character at the end.
-SELECT substring('The game starts at 7 p.m. on May 2, 2019.' from '\w+.$');
+SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '\w+.$');
 -- The words May or June
-SELECT substring('The game starts at 7 p.m. on May 2, 2019.' from 'May|June');
+SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from 'May|June');
 -- Four digits
-SELECT substring('The game starts at 7 p.m. on May 2, 2019.' from '\d{4}');
+SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '\d{4}');
 -- May followed by a space, digit, comma, space, and four digits.
-SELECT substring('The game starts at 7 p.m. on May 2, 2019.' from 'May \d, \d{4}');
+SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from 'May \d, \d{4}');
+
+-- Listing 14-1: Using regular expressions in a WHERE clause
+
+SELECT county_name
+FROM us_counties_pop_est_2019
+WHERE county_name ~* '(.+lade.+|.+lare.+)'
+ORDER BY county_name;
+
+SELECT county_name
+FROM us_counties_pop_est_2019
+WHERE county_name ~* '.+ash.+' AND county_name !~ 'Wash.+'
+ORDER BY county_name;
+
+
+-- Listing 14-2: Regular expression functions to replace and split
+
+SELECT regexp_replace('05/12/2024', '\d{4}', '2023');
+
+SELECT regexp_split_to_table('Four,score,and,seven,years,ago', ',');
+
+SELECT regexp_split_to_array('Phil Mike Tony Steve', ' ');
+
+-- Listing 14-3: Finding an array length
+
+SELECT array_length(regexp_split_to_array('Phil Mike Tony Steve', ' '), 1);
 
 
 -- Turning Text to Data with Regular Expression Functions
 
--- Listing 14-2: Creating and loading the crime_reports table
+-- Listing 14-5: Creating and loading the crime_reports table
 -- Data from https://sheriff.loudoun.gov/dailycrime
 
 CREATE TABLE crime_reports (
-    crime_id bigserial PRIMARY KEY,
+    crime_id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    case_number text,
     date_1 timestamp with time zone,
     date_2 timestamp with time zone,
-    street varchar(250),
-    city varchar(100),
-    crime_type varchar(100),
+    street text,
+    city text,
+    crime_type text,
     description text,
-    case_number varchar(50),
     original_text text NOT NULL
 );
 
 COPY crime_reports (original_text)
-FROM 'C:\YourDirectory\crime_reports.csv'
+-- FROM 'C:\YourDirectory\crime_reports.csv'
+FROM '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_14/crime_reports.csv'
 WITH (FORMAT CSV, HEADER OFF, QUOTE '"');
 
 SELECT original_text FROM crime_reports;
 
--- Listing 14-3: Using regexp_match() to find the first date
+-- Listing 14-6: Using regexp_match() to find the first date
 SELECT crime_id,
        regexp_match(original_text, '\d{1,2}\/\d{1,2}\/\d{2}')
-FROM crime_reports;
+FROM crime_reports
+ORDER BY crime_id;
 
--- Listing 14-4: Using the regexp_matches() function with the 'g' flag
+-- Listing 14-7: Using the regexp_matches() function with the 'g' flag
 SELECT crime_id,
        regexp_matches(original_text, '\d{1,2}\/\d{1,2}\/\d{2}', 'g')
-FROM crime_reports;
+FROM crime_reports
+ORDER BY crime_id;
 
--- Listing 14-5: Using regexp_match() to find the second date
+-- Listing 14-8: Using regexp_match() to find the second date
 -- Note that the result includes an unwanted hyphen
 SELECT crime_id,
        regexp_match(original_text, '-\d{1,2}\/\d{1,2}\/\d{1,2}')
-FROM crime_reports;
+FROM crime_reports
+ORDER BY crime_id;
 
--- Listing 14-6: Using a capture group to return only the date
+-- Listing 14-9: Using a capture group to return only the date
 -- Eliminates the hyphen
 SELECT crime_id,
        regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{1,2})')
-FROM crime_reports;
+FROM crime_reports
+ORDER BY crime_id;
 
--- Listing 14-7: Matching case number, date, crime type, and city
+-- Listing 14-10: Matching case number, date, crime type, and city
 
 SELECT
     regexp_match(original_text, '(?:C0|SO)[0-9]+') AS case_number,
@@ -110,7 +136,8 @@ SELECT
     regexp_match(original_text, '\n(?:\w+ \w+|\w+)\n(.*):') AS crime_type,
     regexp_match(original_text, '(?:Sq.|Plz.|Dr.|Ter.|Rd.)\n(\w+ \w+|\w+)\n')
         AS city
-FROM crime_reports;
+FROM crime_reports
+ORDER BY crime_id;
 
 -- Bonus: Get all parsed elements at once
 
@@ -130,17 +157,19 @@ SELECT crime_id,
        regexp_match(original_text, '\n(?:\w+ \w+|\w+)\n(.*):') AS crime_type,
        regexp_match(original_text, ':\s(.+)(?:C0|SO)') AS description,
        regexp_match(original_text, '(?:C0|SO)[0-9]+') AS case_number
-FROM crime_reports;
+FROM crime_reports
+ORDER BY crime_id;
 
--- Listing 14-8: Retrieving a value from within an array
+-- Listing 14-11: Retrieving a value from within an array
 
 SELECT
     crime_id,
     (regexp_match(original_text, '(?:C0|SO)[0-9]+'))[1]
         AS case_number
-FROM crime_reports;
+FROM crime_reports
+ORDER BY crime_id;
 
--- Listing 14-9: Updating the crime_reports date_1 column
+-- Listing 14-12: Updating the crime_reports date_1 column
 
 UPDATE crime_reports
 SET date_1 = 
@@ -149,14 +178,10 @@ SET date_1 =
         || ' ' ||
     (regexp_match(original_text, '\/\d{2}\n(\d{4})'))[1] 
         ||' US/Eastern'
-)::timestamptz;
+)::timestamptz
+RETURNING crime_id, date_1, original_text;
 
-SELECT crime_id,
-       date_1,
-       original_text
-FROM crime_reports;
-
--- Listing 14-10: Updating all crime_reports columns
+-- Listing 14-13: Updating all crime_reports columns
 
 UPDATE crime_reports
 SET date_1 = 
@@ -198,38 +223,14 @@ SET date_1 =
     description = (regexp_match(original_text, ':\s(.+)(?:C0|SO)'))[1],
     case_number = (regexp_match(original_text, '(?:C0|SO)[0-9]+'))[1];
 
--- Listing 14-11: Viewing selected crime data
+-- Listing 14-14: Viewing selected crime data
 
 SELECT date_1,
        street,
        city,
        crime_type
-FROM crime_reports;
-
--- Listing 14-12: Using regular expressions in a WHERE clause
-
-SELECT geo_name
-FROM us_counties_2010
-WHERE geo_name ~* '(.+lade.+|.+lare.+)'
-ORDER BY geo_name;
-
-SELECT geo_name
-FROM us_counties_2010
-WHERE geo_name ~* '.+ash.+' AND geo_name !~ 'Wash.+'
-ORDER BY geo_name;
-
-
--- Listing 14-13: Regular expression functions to replace and split
-
-SELECT regexp_replace('05/12/2018', '\d{4}', '2017');
-
-SELECT regexp_split_to_table('Four,score,and,seven,years,ago', ',');
-
-SELECT regexp_split_to_array('Phil Mike Tony Steve', ' ');
-
--- Listing 14-14: Finding an array length
-
-SELECT array_length(regexp_split_to_array('Phil Mike Tony Steve', ' '), 1);
+FROM crime_reports
+ORDER BY crime_id;
 
 
 -- FULL TEXT SEARCH
@@ -261,16 +262,17 @@ SELECT to_tsvector('I am walking across the sitting room') @@ to_tsquery('walkin
 -- https://www.eisenhower.archives.gov/all_about_ike/speeches.html
 
 CREATE TABLE president_speeches (
-    sotu_id serial PRIMARY KEY,
-    president varchar(100) NOT NULL,
-    title varchar(250) NOT NULL,
+    president text NOT NULL,
+    title text NOT NULL,
     speech_date date NOT NULL,
     speech_text text NOT NULL,
-    search_speech_text tsvector
+    search_speech_text tsvector,
+    CONSTRAINT speech_key PRIMARY KEY (president, speech_date)
 );
 
 COPY president_speeches (president, title, speech_date, speech_text)
-FROM 'C:\YourDirectory\sotu-1946-1977.csv'
+-- FROM 'C:\YourDirectory\president_speeches.csv'
+FROM '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_14/president_speeches.csv'
 WITH (FORMAT CSV, DELIMITER '|', HEADER OFF, QUOTE '@');
 
 SELECT * FROM president_speeches;
@@ -295,14 +297,15 @@ ORDER BY speech_date;
 
 SELECT president,
        speech_date,
-       ts_headline(speech_text, to_tsquery('Vietnam'),
+       ts_headline(speech_text, to_tsquery('tax'),
                    'StartSel = <,
                     StopSel = >,
                     MinWords=5,
                     MaxWords=7,
                     MaxFragments=1')
 FROM president_speeches
-WHERE search_speech_text @@ to_tsquery('Vietnam');
+WHERE search_speech_text @@ to_tsquery('tax');
+
 
 -- Listing 14-23: Finding speeches with the word "transportation" but not "roads"
 
