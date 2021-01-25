@@ -1,33 +1,24 @@
--- FIRST EDITION FILE; IGNORE
-
-
-
-
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 15 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
--- Listing 15-1: Creating a gis_analysis database
 
-CREATE DATABASE gis_analysis;
--- Note: Switch to this new database before continuing the examples
-
--- Listing 15-2: Loading the PostGIS extension
+-- Listing 15-1: Loading the PostGIS extension
 
 CREATE EXTENSION postgis;
 
 SELECT postgis_full_version(); -- shows PostGIS version
 
--- Listing 15-3: Retrieving the well-known text for SRID 4326
+-- Listing 15-2: Retrieving the well-known text for SRID 4326
 
 SELECT srtext
 FROM spatial_ref_sys
 WHERE srid = 4326;
 
--- Listing 15-4: Using ST_GeomFromText() to create spatial objects
+-- Listing 15-3: Using ST_GeomFromText() to create spatial objects
 
 SELECT ST_GeomFromText('POINT(-74.9233606 42.699992)', 4326);
 
@@ -49,24 +40,24 @@ SELECT ST_GeomFromText('MULTIPOLYGON((
                                       -74.98 42.64, -74.98 42.66,
                                       -75.0 42.66)))', 4326);
 
--- Listing 15-5: Using ST_GeogFromText() to create spatial objects
+-- Listing 15-4: Using ST_GeogFromText() to create spatial objects
 
 SELECT
 ST_GeogFromText('SRID=4326;MULTIPOINT(-74.9 42.7, -75.1 42.7, -74.924 42.6)');
 
--- Listing 15-6: Functions specific to making points
+-- Listing 15-5: Functions specific to making points
 
 SELECT ST_PointFromText('POINT(-74.9233606 42.699992)', 4326);
 
 SELECT ST_MakePoint(-74.9233606, 42.699992);
 SELECT ST_SetSRID(ST_MakePoint(-74.9233606, 42.699992), 4326);
 
--- Listing 15-7: Functions specific to making LineStrings
+-- Listing 15-6: Functions specific to making LineStrings
 
 SELECT ST_LineFromText('LINESTRING(-105.90 35.67,-105.91 35.67)', 4326);
 SELECT ST_MakeLine(ST_MakePoint(-74.92, 42.69), ST_MakePoint(-74.12, 42.45));
 
--- Listing 15-8: Functions specific to making Polygons
+-- Listing 15-7: Functions specific to making Polygons
 
 SELECT ST_PolygonFromText('POLYGON((-74.9 42.7, -75.1 42.7,
                                     -75.1 42.6, -74.9 42.7))', 4326);
@@ -89,19 +80,19 @@ SELECT ST_MPolyFromText('MULTIPOLYGON((
 -- https://www.ams.usda.gov/local-food-directories/farmersmarkets
 
 
--- Listing 15-9: Create and load the farmers_markets table
+-- Listing 15-8: Create and load the farmers_markets table
 
 CREATE TABLE farmers_markets (
     fmid bigint PRIMARY KEY,
-    market_name varchar(100) NOT NULL,
-    street varchar(180),
-    city varchar(60),
-    county varchar(25),
-    st varchar(20) NOT NULL,
-    zip varchar(10),
+    market_name text NOT NULL,
+    street text,
+    city text,
+    county text,
+    st text NOT NULL,
+    zip text,
     longitude numeric(10,7),
     latitude numeric(10,7),
-    organic varchar(1) NOT NULL
+    organic text NOT NULL
 );
 
 COPY farmers_markets
@@ -110,7 +101,7 @@ WITH (FORMAT CSV, HEADER);
 
 SELECT count(*) FROM farmers_markets; -- should return 8,681 rows
 
--- Listing 15-10: Creating and indexing a geography column
+-- Listing 15-9: Creating and indexing a geography column
 -- There's also a function: https://postgis.net/docs/AddGeometryColumn.html
 
 -- Add column
@@ -134,18 +125,19 @@ FROM farmers_markets
 WHERE longitude IS NOT NULL
 LIMIT 5;
 
--- Listing 15-11: Using ST_DWithin() to locate farmers' markets within 10 kilometers of a point
+-- Listing 15-10: Using ST_DWithin() to locate farmers' markets within 10 kilometers of a point
 
 SELECT market_name,
        city,
-       st
+       st,
+       geog_point
 FROM farmers_markets
 WHERE ST_DWithin(geog_point,
                  ST_GeogFromText('POINT(-93.6204386 41.5853202)'),
                  10000)
 ORDER BY market_name;
 
--- Listing 15-12: Using ST_Distance() to calculate the miles between Yankee Stadium
+-- Listing 15-11: Using ST_Distance() to calculate the miles between Yankee Stadium
 -- and Citi Field (Mets)
 -- 1609.344 meters/mile
 
@@ -154,7 +146,7 @@ SELECT ST_Distance(
                    ST_GeogFromText('POINT(-73.8480153 40.7570917)')
                    ) / 1609.344 AS mets_to_yanks;
 
--- Listing 15-13: Using ST_Distance() for each row in farmers_markets
+-- Listing 15-12: Using ST_Distance() for each row in farmers_markets
 
 SELECT market_name,
        city,
