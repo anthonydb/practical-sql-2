@@ -170,38 +170,67 @@ ORDER BY miles_from_dt ASC;
    -- Cartographic Boundary Shapefiles - Counties
    -- https://www.census.gov/geo/maps-data/data/cbf/cbf_counties.html
 
--- Listing 15-14: Checking the geom column's well-known text representation
+
+-- Import
+shp2pgsql -I -s 4269 -W LATIN1 tl_2019_us_county.shp us_counties_2019_shp | psql -d analysis -U postgres
+
+-- Listing 15-13: Checking the geom column's well-known text representation
 
 SELECT ST_AsText(geom)
-FROM us_counties_2010_shp
+FROM us_counties_2019_shp
+ORDER BY gid
 LIMIT 1;
 
--- Listing 15-15: Find the largest counties by area using ST_Area()
+-- Listing 15-14: Find the largest counties by area using ST_Area()
 
-SELECT name10,
-       statefp10 AS st,
+SELECT name,
+       statefp AS st,
        round(
              ( ST_Area(geom::geography) / 2589988.110336 )::numeric, 2
             )  AS square_miles
-FROM us_counties_2010_shp
+FROM us_counties_2019_shp
 ORDER BY square_miles DESC
 LIMIT 5;
 
--- Listing 15-16: Using ST_Within() to find the county belonging to a pair of coordinates
+-- Listing 15-15: Using ST_Within() to find the county belonging to a pair of coordinates
 
-SELECT name10,
-       statefp10
-FROM us_counties_2010_shp
-WHERE ST_Within('SRID=4269;POINT(-118.3419063 34.0977076)'::geometry, geom);
+SELECT sh.name,
+       c.state_name
+FROM us_counties_2019_shp sh JOIN us_counties_pop_est_2019 c
+    ON sh.statefp = c.state_fips AND sh.countyfp = c.county_fips
+WHERE ST_Within(
+         'SRID=4269;POINT(-118.3419063 34.0977076)'::geometry, geom
+);
+
+
+-- Listing 15-16: Using ST_DWithin() to count people near Lincoln, Nebraska
+SELECT sum(c.pop_est_2019) AS pop_est_2019
+FROM us_counties_2019_shp sh JOIN us_counties_pop_est_2019 c
+    ON sh.statefp = c.state_fips AND sh.countyfp = c.county_fips
+WHERE ST_DWithin(sh.geom::geography, 
+          ST_GeogFromText('SRID=4269;POINT(-96.699656 40.811567)'),
+          80467);
+
+-- Listing 15-17: Displaying counties near Lincoln, Nebraska
+SELECT sh.name,
+       c.state_name,
+       c.pop_est_2019,
+       ST_Transform(sh.geom, 4326) AS geom
+FROM us_counties_2019_shp sh JOIN us_counties_pop_est_2019 c
+    ON sh.statefp = c.state_fips AND sh.countyfp = c.county_fips
+WHERE ST_DWithin(sh.geom::geography, 
+          ST_GeogFromText('SRID=4269;POINT(-96.699656 40.811567)'),
+          80467);
+
 
 -- SPATIAL JOINS
 -- SANTA FE WATER AND ROAD DATA
 -- http://www.santafenm.gov/santa_fe_river
 
--- Census 2016 Tiger/Line roads, water
+-- Census 2019 Tiger/Line roads, water
 -- https://www.census.gov/geo/maps-data/data/tiger-line.html
--- https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2016&layergroup=Roads
--- https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2016&layergroup=Water
+-- https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2019&layergroup=Roads
+-- https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2019&layergroup=Water
 
 -- RTTYP - Route Type Code Description
 -- https://www.census.gov/geo/reference/rttyp.html
@@ -216,34 +245,46 @@ WHERE ST_Within('SRID=4269;POINT(-118.3419063 34.0977076)'::geometry, geom);
 -- https://www.census.gov/geo/reference/mtfcc.html
 -- Here, H3010: A natural flowing waterway
 
--- Listing 15-17: Using ST_GeometryType() to determine geometry
+-- Listing 15-18: Using ST_GeometryType() to determine geometry
 
 SELECT ST_GeometryType(geom)
-FROM santafe_linearwater_2016
+FROM santafe_linearwater_2019
 LIMIT 1;
 
 SELECT ST_GeometryType(geom)
-FROM santafe_roads_2016
+FROM santafe_roads_2019
 LIMIT 1;
 
--- Listing 15-18: Spatial join with ST_Intersects() to find roads crossing the Santa Fe river
+-- Listing 15-19: Spatial join with ST_Intersects() to find roads crossing the Santa Fe river
 
 SELECT water.fullname AS waterway,
        roads.rttyp,
        roads.fullname AS road
-FROM santafe_linearwater_2016 water JOIN santafe_roads_2016 roads
+FROM santafe_linearwater_2019 water JOIN santafe_roads_2019 roads
     ON ST_Intersects(water.geom, roads.geom)
-WHERE water.fullname = 'Santa Fe Riv'
+WHERE water.fullname = 'Santa Fe Riv' 
+      AND roads.fullname IS NOT NULL
 ORDER BY roads.fullname;
 
--- Listing 15-19: Using ST_Intersection() to show where roads cross the river
+SELECT water.fullname AS waterway,
+       roads.rttyp,
+       roads.fullname AS road
+FROM santafe_linearwater_2019 water JOIN santafe_roads_2019 roads
+    ON ST_Intersects(water.geom, roads.geom)
+WHERE water.fullname = 'Santa Fe Riv' 
+      AND roads.fullname IS NOT NULL
+ORDER BY roads.fullname;    
+
+-- Listing 15-20: Using ST_Intersection() to show where roads cross the river
 
 SELECT water.fullname AS waterway,
        roads.rttyp,
        roads.fullname AS road,
        ST_AsText(ST_Intersection(water.geom, roads.geom))
-FROM santafe_linearwater_2016 water JOIN santafe_roads_2016 roads
+FROM santafe_linearwater_2019 water JOIN santafe_roads_2019 roads
     ON ST_Intersects(water.geom, roads.geom)
 WHERE water.fullname = 'Santa Fe Riv'
+      AND roads.fullname IS NOT NULL
 ORDER BY roads.fullname
 LIMIT 5;
+
