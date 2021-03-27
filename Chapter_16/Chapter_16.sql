@@ -41,7 +41,7 @@
 
 CREATE TABLE films (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    film jsonb
+    film jsonb NOT NULL
 );
 
 COPY films (film)
@@ -199,7 +199,7 @@ WHERE film ?& '{rating, genre}';
 
 CREATE TABLE earthquakes (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    earthquake jsonb
+    earthquake jsonb NOT NULL
 );
 
 COPY earthquakes (earthquake)
