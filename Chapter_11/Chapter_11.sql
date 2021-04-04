@@ -96,7 +96,8 @@ SELECT
     widget_output,
     rank() OVER (ORDER BY widget_output DESC),
     dense_rank() OVER (ORDER BY widget_output DESC)
-FROM widget_companies;
+FROM widget_companies
+ORDER BY widget_output DESC;
 
 -- Listing 11-7: Applying rank() within groups using PARTITION BY
 
@@ -124,7 +125,9 @@ SELECT
     store,
     unit_sales,
     rank() OVER (PARTITION BY category ORDER BY unit_sales DESC)
-FROM store_sales;
+FROM store_sales
+ORDER BY category, rank() OVER (PARTITION BY category 
+        ORDER BY unit_sales DESC);
 
 -- Listing 11-8: Creating and filling a table for Census county business pattern data
 
@@ -144,7 +147,10 @@ COPY cbp_naics_72_establishments
 FROM 'C:\YourDirectory\cbp_naics_72_establishments.csv'
 WITH (FORMAT CSV, HEADER);
 
-SELECT * FROM cbp_naics_72_establishments LIMIT 5;
+SELECT *
+FROM cbp_naics_72_establishments
+ORDER BY state_fips, county_fips
+LIMIT 5;
 
 -- Listing 11-9: Finding business rates per thousand population in counties with 50,000 or more people
 
@@ -155,7 +161,7 @@ SELECT
     pop.pop_est_2018,
     round( (cbp.establishments::numeric / pop.pop_est_2018) * 1000, 1 )
         AS estabs_per_1000 
-FROM cbp_naics_72_establishments cbp LEFT JOIN us_counties_pop_est_2019 pop 
+FROM cbp_naics_72_establishments cbp JOIN us_counties_pop_est_2019 pop 
     ON cbp.state_fips = pop.state_fips 
     AND cbp.county_fips = pop.county_fips 
 WHERE pop.pop_est_2018 >= 50000 

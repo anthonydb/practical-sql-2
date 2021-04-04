@@ -1,57 +1,55 @@
--- FIRST EDITION FILE; IGNORE
-
-
-
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 17 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- VIEWS
 
--- Listing 17-1: Creating a view that displays Nevada 2010 counties
+-- Listing 17-1: Creating a view that displays Nevada 2019 counties
 
-CREATE OR REPLACE VIEW nevada_counties_pop_2010 AS
-    SELECT geo_name,
+CREATE OR REPLACE VIEW nevada_counties_pop_2019 AS
+    SELECT county_name,
            state_fips,
            county_fips,
-           p0010001 AS pop_2010
-    FROM us_counties_2010
-    WHERE state_us_abbreviation = 'NV'
+           pop_est_2019
+    FROM us_counties_pop_est_2019
+    WHERE state_name = 'Nevada'
     ORDER BY county_fips;
 
--- Listing 17-2: Querying the nevada_counties_pop_2010 view
+-- Listing 17-2: Querying the nevada_counties_pop_2019 view
 
 SELECT *
-FROM nevada_counties_pop_2010
+FROM nevada_counties_pop_2019
 LIMIT 5;
 
 -- Listing 17-3: Creating a view showing population change for US counties
 
-CREATE OR REPLACE VIEW county_pop_change_2010_2000 AS
-    SELECT c2010.geo_name,
-           c2010.state_us_abbreviation AS st,
-           c2010.state_fips,
-           c2010.county_fips,
-           c2010.p0010001 AS pop_2010,
-           c2000.p0010001 AS pop_2000,
-           round( (CAST(c2010.p0010001 AS numeric(8,1)) - c2000.p0010001)
-               / c2000.p0010001 * 100, 1 ) AS pct_change_2010_2000
-    FROM us_counties_2010 c2010 INNER JOIN us_counties_2000 c2000
-    ON c2010.state_fips = c2000.state_fips
-       AND c2010.county_fips = c2000.county_fips
-    ORDER BY c2010.state_fips, c2010.county_fips;
+CREATE OR REPLACE VIEW county_pop_change_2019_2010 AS
+    SELECT c2019.county_name,
+           c2019.state_name,
+           c2019.state_fips,
+           c2019.county_fips,
+           c2019.pop_est_2019 AS pop_2019,
+           c2010.estimates_base_2010 AS pop_2010,
+           c2019.pop_est_2019 - c2010.estimates_base_2010 AS raw_change,
+           round( (c2019.pop_est_2019::numeric - c2010.estimates_base_2010)
+               / c2010.estimates_base_2010 * 100, 1 ) AS pct_change_2019_2010
+    FROM us_counties_pop_est_2019 AS c2019
+        JOIN us_counties_pop_est_2010 AS c2010
+    ON c2019.state_fips = c2010.state_fips
+        AND c2019.county_fips = c2010.county_fips
+        ORDER BY c2019.state_fips, c2019.county_fips;
 
 -- Listing 17-4: Selecting columns from the county_pop_change_2010_2000 view
 
-SELECT geo_name,
-       st,
-       pop_2010,
-       pct_change_2010_2000
-FROM county_pop_change_2010_2000
-WHERE st = 'NV'
+SELECT county_name,
+       state_name,
+       pop_2019,
+       pct_change_2019_2010
+FROM county_pop_change_2019_2010
+WHERE state_name = 'Nevada'
 LIMIT 5;
 
 -- Listing 17-5: Creating a view on the employees table
@@ -67,14 +65,14 @@ CREATE OR REPLACE VIEW employees_tax_dept AS
      WITH LOCAL CHECK OPTION;
 
 SELECT * FROM employees_tax_dept;
-
+-- SELECT * FROM employees;
 -- Listing 17-6: Successful and rejected inserts via the employees_tax_dept view
 
-INSERT INTO employees_tax_dept (first_name, last_name, dept_id)
-VALUES ('Suzanne', 'Legere', 1);
+INSERT INTO employees_tax_dept (emp_id, first_name, last_name, dept_id)
+VALUES (5, 'Suzanne', 'Legere', 1);
 
-INSERT INTO employees_tax_dept (first_name, last_name, dept_id)
-VALUES ('Jamil', 'White', 2);
+INSERT INTO employees_tax_dept (emp_id, first_name, last_name, dept_id)
+VALUES (6, 'Jamil', 'White', 2);
 
 -- optional:
 SELECT * FROM employees_tax_dept;
@@ -124,15 +122,16 @@ SELECT percent_change(110, 108, 2);
 
 -- Listing 17-11: Testing percent_change() on Census data
 
-SELECT c2010.geo_name,
-       c2010.state_us_abbreviation AS st,
-       c2010.p0010001 AS pop_2010,
-       percent_change(c2010.p0010001, c2000.p0010001) AS pct_chg_func,
-       round( (CAST(c2010.p0010001 AS numeric(8,1)) - c2000.p0010001)
-           / c2000.p0010001 * 100, 1 ) AS pct_chg_formula
-FROM us_counties_2010 c2010 INNER JOIN us_counties_2000 c2000
-ON c2010.state_fips = c2000.state_fips
-   AND c2010.county_fips = c2000.county_fips
+SELECT c2019.county_name,
+       c2019.state_name,
+       c2019.pop_est_2019 AS pop_2019,
+       percent_change(c2019.pop_est_2019, c2010.estimates_base_2010) AS pct_chg_func,
+       round( (c2019.pop_est_2019::numeric - c2010.estimates_base_2010)
+           / c2010.estimates_base_2010 * 100, 1 ) AS pct_chg_formula
+FROM us_counties_pop_est_2019 AS c2019
+    JOIN us_counties_pop_est_2010 AS c2010
+ON c2019.state_fips = c2010.state_fips
+    AND c2019.county_fips = c2010.county_fips
 ORDER BY pct_chg_func DESC
 LIMIT 5;
 
@@ -145,7 +144,7 @@ SELECT first_name,
        hire_date,
        personal_days
 FROM teachers;
-
+SELECT * FROM teachers;
 -- Listing 17-13: Creating an update_personal_days() function
 
 CREATE OR REPLACE FUNCTION update_personal_days()
@@ -167,7 +166,8 @@ SELECT update_personal_days();
 
 -- Listing 17-14: Enabling the PL/Python procedural language
 
-CREATE EXTENSION plpythonu;
+CREATE EXTENSION plpythonu; -- doesn't work on macOS with PostgresApp
+CREATE EXTENSION plpython3u; -- doesn't work on macOS with PostgresApp
 
 -- Listing 17-15: Using PL/Python to create the trim_county() function
 
@@ -194,8 +194,8 @@ LIMIT 5;
 CREATE TABLE grades (
     student_id bigint,
     course_id bigint,
-    course varchar(30) NOT NULL,
-    grade varchar(5) NOT NULL,
+    course text NOT NULL,
+    grade text NOT NULL,
 PRIMARY KEY (student_id, course_id)
 );
 
@@ -210,9 +210,9 @@ CREATE TABLE grades_history (
     student_id bigint NOT NULL,
     course_id bigint NOT NULL,
     change_time timestamp with time zone NOT NULL,
-    course varchar(30) NOT NULL,
-    old_grade varchar(5) NOT NULL,
-    new_grade varchar(5) NOT NULL,
+    course text NOT NULL,
+    old_grade text NOT NULL,
+    new_grade text NOT NULL,
 PRIMARY KEY (student_id, course_id, change_time)
 );  
 
@@ -274,15 +274,16 @@ FROM grades_history;
 -- Listing 17-21: Creating a temperature_test table
 
 CREATE TABLE temperature_test (
-    station_name varchar(50),
+    station_name text,
     observation_date date,
     max_temp integer,
     min_temp integer,
-    max_temp_group varchar(40),
+    max_temp_group text,
 PRIMARY KEY (station_name, observation_date)
 );
 
 -- Listing 17-22: Creating the classify_max_temp() function
+-- CHECK AGAINST CATEGORIES USED PREVIOUSLY
 
 CREATE OR REPLACE FUNCTION classify_max_temp()
     RETURNS trigger AS
