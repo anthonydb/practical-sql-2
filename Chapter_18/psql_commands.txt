@@ -1,13 +1,9 @@
--- FIRST EDITION FILE; IGNORE
-
-
-
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 18 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 
 -- Connecting psql to a database on a local server
@@ -15,39 +11,40 @@
 psql -d [database name] -U [username]
 psql -d analysis -U postgres
 
--- Changing user and database name
+-- Connecting psql to a database on a remote server
 
-\c [database name] [user name]
-\c gis_analysis postgres
+psql -d [database name] -U [username] -h [host name]
+psql -d analysis -U postgres -h example.com
+
 
 -- Listing 18-1: Entering a single-line query in psql
 -- Enter this at the psql prompt:
 
-SELECT geo_name FROM us_counties_2010 LIMIT 3;
+SELECT county_name FROM us_counties_pop_est_2019 ORDER BY county_name LIMIT 3;
 
 -- Listing 18-2: Entering a multi-line query in psql
 -- Type each line separately, followed by Enter
 
-SELECT geo_name
-FROM us_counties_2010
+SELECT county_name
+FROM us_counties_pop_est_2019
+ORDER BY county_name
 LIMIT 3;
-
 
 -- Listing 18-3: Showing open parentheses in the psql prompt
 
 CREATE TABLE wineries (
 id bigint,
-winery_name varchar(100)
+winery_name text
 );
 
 -- Listing 18-4: A query with scrolling results
 
-SELECT geo_name FROM us_counties_2010;
+SELECT county_name FROM us_counties_pop_est_2019 ORDER BY county_name;
 
 -- Listings 18-5 and 18-6: Normal and expanded displays of results
 -- Use \x to toggle expanded on/off
 
-SELECT * FROM grades;
+SELECT * FROM grades ORDER BY student_id, course_id;
 
 -- Listing 18-7: Importing data using \copy
 
@@ -80,6 +77,11 @@ SELECT * FROM grades;
 -- createdb: Create a database named box_office
 
 createdb -U postgres -e box_office
+
+-- Changing user and database name
+
+\c [database name] [user name]
+\c gis_analysis postgres
 
 
 -- Loading shapefiles into PostgreSQL
