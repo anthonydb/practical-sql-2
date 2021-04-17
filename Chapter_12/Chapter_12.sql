@@ -155,8 +155,7 @@ COPY nyc_yellow_taxi_trips (
     improvement_surcharge,
     total_amount
    )
--- FROM 'C:\YourDirectory\nyc_yellow_taxi_trips.csv'
-FROM '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_12/nyc_yellow_taxi_trips.csv'
+FROM 'C:\YourDirectory\nyc_yellow_taxi_trips.csv'
 WITH (FORMAT CSV, HEADER);
 
 CREATE INDEX tpep_pickup_idx
