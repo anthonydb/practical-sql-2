@@ -184,8 +184,7 @@ COPY
     GROUP BY trip_hour
     ORDER BY trip_hour
     )
--- TO 'C:\YourDirectory\hourly_taxi_pickups.csv'
-TO '/Users/adebarros/Desktop/hourly_taxi_pickups.csv'
+TO 'C:\YourDirectory\hourly_taxi_pickups.csv'
 WITH (FORMAT CSV, HEADER);
 
 -- Listing 12-10: Calculating median trip time by hour
