@@ -171,7 +171,7 @@ ORDER BY miles_from_dt ASC;
    -- https://www.census.gov/geo/maps-data/data/cbf/cbf_counties.html
 
 
--- Import
+-- Import (for use on command line if on macOS or Linux; see Chapter 18)
 shp2pgsql -I -s 4269 -W LATIN1 tl_2019_us_county.shp us_counties_2019_shp | psql -d analysis -U postgres
 
 -- Listing 15-13: Checking the geom column's well-known text representation
@@ -244,6 +244,11 @@ WHERE ST_DWithin(sh.geom::geography,
 -- MTFCC MAF/TIGER feature class code
 -- https://www.census.gov/geo/reference/mtfcc.html
 -- Here, H3010: A natural flowing waterway
+
+
+-- Import (for use on command line if on macOS or Linux; see Chapter 18)
+shp2pgsql -I -s 4269 -W LATIN1 tl_2019_35049_linearwater.shp santafe_linearwater_2019 | psql -d analysis -U postgres
+shp2pgsql -I -s 4269 -W LATIN1 tl_2019_35049_roads.shp santafe_roads_2019 | psql -d analysis -U postgres
 
 -- Listing 15-18: Using ST_GeometryType() to determine geometry
 

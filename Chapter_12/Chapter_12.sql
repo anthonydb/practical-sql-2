@@ -155,8 +155,7 @@ COPY nyc_yellow_taxi_trips (
     improvement_surcharge,
     total_amount
    )
--- FROM 'C:\YourDirectory\nyc_yellow_taxi_trips.csv'
-FROM '/Users/adebarros/Dropbox/DataMonky/Book-Writing/PracticalSQL_2e/Code-Repo/Chapter_12/nyc_yellow_taxi_trips.csv'
+FROM 'C:\YourDirectory\nyc_yellow_taxi_trips.csv'
 WITH (FORMAT CSV, HEADER);
 
 CREATE INDEX tpep_pickup_idx
@@ -185,8 +184,7 @@ COPY
     GROUP BY trip_hour
     ORDER BY trip_hour
     )
--- TO 'C:\YourDirectory\hourly_taxi_pickups.csv'
-TO '/Users/adebarros/Desktop/hourly_taxi_pickups.csv'
+TO 'C:\YourDirectory\hourly_taxi_pickups.csv'
 WITH (FORMAT CSV, HEADER);
 
 -- Listing 12-10: Calculating median trip time by hour
