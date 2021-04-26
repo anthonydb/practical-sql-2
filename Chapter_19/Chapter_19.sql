@@ -1,15 +1,9 @@
--- FIRST EDITION FILE; IGNORE
-
-
-
-
-
---------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data
+---------------------------------------------------------------------------
+-- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
 -- Chapter 19 Code Examples
---------------------------------------------------------------
+----------------------------------------------------------------------------
 
 -- VACUUM
 
@@ -88,6 +82,8 @@ SELECT pg_size_pretty(
 
 SHOW config_file;
 
+-- Listing 19-9: Sample postgresql.conf settings (see book for listing)
+
 -- Listing 19-10: Show the location of the data directory
 
 SHOW data_directory;
@@ -100,10 +96,10 @@ SHOW data_directory;
 -- BACKUP AND RESTORE
 
 -- Listing 19-11: Backing up the analysis database with pg_dump
-pg_dump -d analysis -U [user_name] -Fc > analysis_backup.sql
+pg_dump -d analysis -U [user_name] -Fc -v > analysis_backup.sql
 
 -- Back up just a table
-pg_dump -t 'train_rides' -d analysis -U [user_name] -Fc > train_backup.sql 
+pg_dump -t 'train_rides' -d analysis -U [user_name] -Fc -v > train_backup.sql 
 
 -- Listing 19-12: Restoring the analysis database with pg_restore
 
