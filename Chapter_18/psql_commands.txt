@@ -16,6 +16,9 @@ psql -d analysis -U postgres
 psql -d [database name] -U [username] -h [host name]
 psql -d analysis -U postgres -h example.com
 
+-- Format for password file (pgpass.conf on Windows; .pgpass on macOS/Linux)
+hostname:port:database:username:password
+
 
 -- Listing 18-1: Entering a single-line query in psql
 -- Enter this at the psql prompt:
@@ -48,30 +51,36 @@ SELECT * FROM grades ORDER BY student_id, course_id;
 
 -- Listing 18-7: Importing data using \copy
 
-DROP TABLE state_regions;
-
-CREATE TABLE state_regions (
-    st varchar(2) CONSTRAINT st_key PRIMARY KEY,
-    region varchar(20) NOT NULL
-);
+DELETE FROM state_regions;
 
 \copy state_regions FROM 'C:\YourDirectory\state_regions.csv' WITH (FORMAT CSV, HEADER);
 
--- Listing 18-8: Saving query output to a file
+
+-- Listing 18-8:
+
+DELETE FROM state_regions;
+
+psql -d analysis -U postgres -c "COPY state_regions FROM STDIN WITH (FORMAT CSV, HEADER);" < state_regions.csv
+
+
+-- Listing 18-9: Saving query output to a file
 
 -- Enter psql settings
-\a \f , \pset footer
+\pset format csv
 
 -- This will be the query
-SELECT * FROM grades;
+SELECT * FROM grades ORDER BY student_id, course_id;
 
 -- Set psql to output results
--- Note that Windows users must suppply forward slashes for
+-- Note that Windows users must supply forward slashes for
 -- this command, which is opposite of normal use.
 \o 'C:/YourDirectory/query_output.csv'
 
 -- Run the query and output
-SELECT * FROM grades;
+SELECT * FROM grades ORDER BY student_id, course_id;
+
+
+-- ADDITIONAL COMMAND LINE UTILITIES
 
 
 -- createdb: Create a database named box_office
@@ -81,14 +90,15 @@ createdb -U postgres -e box_office
 -- Changing user and database name
 
 \c [database name] [user name]
-\c gis_analysis postgres
+\c box_office
+\c box_office yourname
 
 
 -- Loading shapefiles into PostgreSQL
 
 -- For the US Census county shapefile in Chapter 14:
-shp2pgsql -I -s 4269 -W Latin1 tl_2010_us_county10.shp us_counties_2010_shp | psql -d gis_analysis -U postgres
+shp2pgsql -I -s 4269 -W Latin1 tl_2019_us_county.shp us_counties_2019_shp | psql -d analysis -U postgres
 
 -- For the Santa Fe roads and waterways shapfiles in Chapter 14:
-shp2pgsql -I -s 4269 tl_2016_35049_roads.shp santafe_roads_2016 | psql -d gis_analysis -U postgres
-shp2pgsql -I -s 4269 tl_2016_35049_linearwater.shp santafe_linearwater_2016 | psql -d gis_analysis -U postgres
+shp2pgsql -I -s 4269 tl_2016_35049_roads.shp santafe_roads_2016 | psql -d analysis -U postgres
+shp2pgsql -I -s 4269 tl_2016_35049_linearwater.shp santafe_linearwater_2016 | psql -d analysis -U postgres
