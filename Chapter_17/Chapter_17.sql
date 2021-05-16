@@ -270,7 +270,7 @@ BEGIN
          OLD.grade,
          NEW.grade);
     END IF;
-    RETURN NEW;
+    RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
 
