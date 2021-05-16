@@ -175,7 +175,6 @@ FROM teachers;
 -- Listing 17-15: Creating an update_personal_days() procedure
 
 CREATE OR REPLACE PROCEDURE update_personal_days()
-LANGUAGE plpgsql
 AS $$
 BEGIN
     UPDATE teachers
@@ -191,7 +190,8 @@ BEGIN
         END;
     RAISE NOTICE 'personal_days updated!';
 END
-$$;
+$$
+LANGUAGE plpgsql;
 
 -- To invoke the procedure:
 CALL update_personal_days();
@@ -207,7 +207,8 @@ RETURNS text AS $$
     import re
     cleaned = re.sub(r' County', '', input_string)
     return cleaned
-$$ LANGUAGE plpython3u;
+$$
+LANGUAGE plpython3u;
 
 -- Listing 17-18: Testing the trim_county() function
 
