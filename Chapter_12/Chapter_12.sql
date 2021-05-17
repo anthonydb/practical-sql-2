@@ -8,8 +8,6 @@
 
 -- Listing 12-1: Extracting components of a timestamp value using date_part()
 
-SHOW ALL;
-
 SELECT
     date_part('year', '2022-12-01 18:37:12 EST'::timestamptz) AS year,
     date_part('month', '2022-12-01 18:37:12 EST'::timestamptz) AS month,
