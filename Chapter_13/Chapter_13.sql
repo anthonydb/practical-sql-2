@@ -168,7 +168,8 @@ LEFT JOIN LATERAL (SELECT *
                    WHERE teacher_id = t.id
                    ORDER BY access_time DESC
                    LIMIT 2) a
-ON true;
+ON true
+ORDER BY t.id;
 
 -- Common Table Expressions
 
@@ -252,6 +253,7 @@ WITH (FORMAT CSV, HEADER);
 -- view the data
 SELECT * 
 FROM ice_cream_survey
+ORDER BY response_id
 LIMIT 5;
 
 -- Listing 13-17: Generating the ice cream survey crosstab
@@ -293,7 +295,7 @@ WITH (FORMAT CSV, HEADER);
 SELECT *
 FROM crosstab('SELECT
                   station_name,
-                  date_part(''month'', observation_date),
+                  date_part($$month$$, observation_date),
                   percentile_cont(.5)
                       WITHIN GROUP (ORDER BY max_temp)
                FROM temperature_readings
@@ -350,19 +352,3 @@ SELECT station_name, max_temperature_group, count(*)
 FROM temps_collapsed
 GROUP BY station_name, max_temperature_group
 ORDER BY station_name, count(*) DESC;
-
-
-
--- UNUSED
-SELECT county_name,
-       state_name,
-       pop_est_2019,
-       natural_chg,
-       net_migration,
-       natural_chg + net_migration AS total_chg
-FROM us_counties_pop_est_2019,
-    LATERAL (SELECT births_2019 - deaths_2019 AS natural_chg) AS nc, 
-    LATERAL (SELECT international_migr_2019 + domestic_migr_2019 AS net_migration) AS nm
-WHERE (net_migration > 0 AND natural_chg < 0) 
-    AND (abs(net_migration) > abs(natural_chg))
-ORDER BY total_chg DESC;
