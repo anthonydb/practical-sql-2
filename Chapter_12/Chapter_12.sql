@@ -20,11 +20,9 @@ SELECT
     date_part('quarter', '2022-12-01 18:37:12 EST'::timestamptz) AS quarter,
     date_part('epoch', '2022-12-01 18:37:12 EST'::timestamptz) AS epoch;
 
-SELECT '2022-12-01 18:37:12 EST'::timestamp AT TIME ZONE 'US/Pacific'
-
 -- Bonus: Using the SQL-standard extract() for similar datetime parsing:
 
-SELECT extract('year' from '2022-12-01 18:37:12 EST'::timestamptz) AS year;
+SELECT extract(year from '2022-12-01 18:37:12 EST'::timestamptz) AS year;
 
 -- Listing 12-2: Three functions for making datetimes from components
 
@@ -49,8 +47,8 @@ SELECT
 
 CREATE TABLE current_time_example (
     time_id integer GENERATED ALWAYS AS IDENTITY,
-    current_timestamp_col timestamp with time zone,
-    clock_timestamp_col timestamp with time zone
+    current_timestamp_col timestamptz,
+    clock_timestamp_col timestamptz
 );
 
 INSERT INTO current_time_example
@@ -66,6 +64,10 @@ SELECT * FROM current_time_example;
 -- Listing 12-4: Viewing your current time zone setting
 
 SHOW timezone; -- Note: You can see all run-time defaults with SHOW ALL;
+SELECT current_setting('timezone');
+
+-- Using current_setting() inside another function:
+SELECT make_timestamptz(2022, 2, 22, 18, 4, 30.3, current_setting('timezone'));
 
 -- Listing 12-5: Showing time zone abbreviations and names
 
@@ -82,10 +84,9 @@ ORDER BY name;
 SET TIME ZONE 'US/Pacific';
 
 CREATE TABLE time_zone_test (
-    test_date timestamp with time zone
+    test_date timestamptz
 );
 INSERT INTO time_zone_test VALUES ('2023-01-01 4:00');
-INSERT INTO time_zone_test VALUES ('2023-07-01 4:00');
 
 SELECT test_date
 FROM time_zone_test;
@@ -97,7 +98,6 @@ FROM time_zone_test;
 
 SELECT test_date AT TIME ZONE 'Asia/Seoul'
 FROM time_zone_test;
-
 
 -- Math with dates!
 
@@ -112,8 +112,8 @@ SELECT '1929-09-30'::date + '5 years'::interval;
 CREATE TABLE nyc_yellow_taxi_trips (
     trip_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     vendor_id text NOT NULL,
-    tpep_pickup_datetime timestamp with time zone NOT NULL,
-    tpep_dropoff_datetime timestamp with time zone NOT NULL,
+    tpep_pickup_datetime timestamptz NOT NULL,
+    tpep_dropoff_datetime timestamptz NOT NULL,
     passenger_count integer NOT NULL,
     trip_distance numeric(8,2) NOT NULL,
     pickup_longitude numeric(18,15) NOT NULL,
@@ -201,8 +201,8 @@ ORDER BY trip_hour;
 CREATE TABLE train_rides (
     trip_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     segment text NOT NULL,
-    departure timestamp with time zone NOT NULL,
-    arrival timestamp with time zone NOT NULL
+    departure timestamptz NOT NULL,
+    arrival timestamptz NOT NULL
 );
 
 INSERT INTO train_rides (segment, departure, arrival)
@@ -222,20 +222,21 @@ SELECT * FROM train_rides;
 
 SELECT segment,
        to_char(departure, 'YYYY-MM-DD HH12:MI a.m. TZ') AS departure,
-       arrival - departure AS segment_time
+       arrival - departure AS segment_duration
 FROM train_rides;
 
 -- Listing 12-13: Calculating cumulative intervals using OVER
 
 SELECT segment,
-       arrival - departure AS segment_time,
-       sum(arrival - departure) OVER (ORDER BY trip_id) AS cume_time
+       arrival - departure AS segment_duration,
+       sum(arrival - departure) OVER (ORDER BY trip_id) AS cume_duration
 FROM train_rides;
 
--- Listing 12-14: Better formatting for cumulative trip time
+-- Listing 12-14: Using justify_interval() to better format cumulative trip duration
 
 SELECT segment,
-       arrival - departure AS segment_time,
-       sum(date_part('epoch', (arrival - departure)))
-           OVER (ORDER BY trip_id) * interval '1 second' AS cume_time
+       arrival - departure AS segment_duration,
+       justify_interval(sum(arrival - departure)
+                        OVER (ORDER BY trip_id)) AS cume_duration
 FROM train_rides;
+
