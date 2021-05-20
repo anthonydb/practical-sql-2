@@ -295,7 +295,7 @@ WITH (FORMAT CSV, HEADER);
 SELECT *
 FROM crosstab('SELECT
                   station_name,
-                  date_part($$month$$, observation_date),
+                  date_part(''month'', observation_date),
                   percentile_cont(.5)
                       WITHIN GROUP (ORDER BY max_temp)
                FROM temperature_readings
@@ -332,7 +332,8 @@ SELECT max_temp,
             WHEN max_temp < 20 THEN 'Inhumane'
             ELSE 'No reading'
         END AS temperature_group
-FROM temperature_readings;
+FROM temperature_readings
+ORDER BY station_name, observation_date;
 
 -- Listing 13-21: Using CASE in a Common Table Expression
 
