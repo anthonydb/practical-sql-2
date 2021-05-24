@@ -35,7 +35,7 @@ SELECT right('703-555-1212', 8);
 SELECT replace('bat', 'b', 'c');
 
 
--- Table 14-1: Regular Expression Matching Examples
+-- Table 14-2: Regular Expression Matching Examples
 
 -- Any character one or more times
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '.+');
@@ -64,6 +64,15 @@ FROM us_counties_pop_est_2019
 WHERE county_name ~* '.+ash.+' AND county_name !~ 'Wash.+'
 ORDER BY county_name;
 
+SELECT county_name
+FROM us_counties_pop_est_2019
+WHERE county_name ~* '(lade|lare)'
+ORDER BY county_name;
+
+SELECT county_name
+FROM us_counties_pop_est_2019
+WHERE county_name ~* 'ash' AND county_name !~ 'Wash'
+ORDER BY county_name;
 
 -- Listing 14-2: Regular expression functions to replace and split
 
@@ -86,8 +95,8 @@ SELECT array_length(regexp_split_to_array('Phil Mike Tony Steve', ' '), 1);
 CREATE TABLE crime_reports (
     crime_id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     case_number text,
-    date_1 timestamp with time zone,
-    date_2 timestamp with time zone,
+    date_1 timestamptz,  -- note: this is the PostgreSQL shortcut for timestamp with time zone
+    date_2 timestamptz,  -- note: this is the PostgreSQL shortcut for timestamp with time zone
     street text,
     city text,
     crime_type text,
@@ -212,8 +221,6 @@ SET date_1 =
           (regexp_match(original_text, '\/\d{2}\n\d{4}-(\d{4})'))[1] 
               ||' US/Eastern'
           )::timestamptz 
-    -- if neither of those conditions exist, provide a NULL
-        ELSE NULL 
     END,
     street = (regexp_match(original_text, 'hrs.\n(\d+ .+(?:Sq.|Plz.|Dr.|Ter.|Rd.))'))[1],
     city = (regexp_match(original_text,
@@ -241,23 +248,25 @@ ORDER BY crime_id;
 
 -- Listing 14-15: Converting text to tsvector data
 
-SELECT to_tsvector('I am walking across the sitting room to sit with you.');
+SELECT to_tsvector('english', 'I am walking across the sitting room to sit with you.');
 
 -- Listing 14-16: Converting search terms to tsquery data
 
-SELECT to_tsquery('walking & sitting');
+SELECT to_tsquery('english', 'walking & sitting');
 
 -- Listing 14-17: Querying a tsvector type with a tsquery
 
-SELECT to_tsvector('I am walking across the sitting room') @@ to_tsquery('walking & sitting');
+SELECT to_tsvector('english', 'I am walking across the sitting room') @@
+       to_tsquery('english', 'walking & sitting');
 
-SELECT to_tsvector('I am walking across the sitting room') @@ to_tsquery('walking & running');
+SELECT to_tsvector('english', 'I am walking across the sitting room') @@ 
+       to_tsquery('english', 'walking & running');
 
 -- Listing 14-18: Creating and filling the president_speeches table
 
 -- Sources:
 -- https://archive.org/details/State-of-the-Union-Addresses-1945-2006
--- http://www.presidency.ucsb.edu/ws/index.php
+-- https://www.presidency.ucsb.edu/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union
 -- https://www.eisenhower.archives.gov/all_about_ike/speeches.html
 
 CREATE TABLE president_speeches (
@@ -273,7 +282,7 @@ COPY president_speeches (president, title, speech_date, speech_text)
 FROM 'C:\YourDirectory\president_speeches.csv'
 WITH (FORMAT CSV, DELIMITER '|', HEADER OFF, QUOTE '@');
 
-SELECT * FROM president_speeches;
+SELECT * FROM president_speeches ORDER BY speech_date;
 
 -- Listing 14-19: Converting speeches to tsvector in the search_speech_text column
 
@@ -288,69 +297,81 @@ CREATE INDEX search_idx ON president_speeches USING gin(search_speech_text);
 
 SELECT president, speech_date
 FROM president_speeches
-WHERE search_speech_text @@ to_tsquery('Vietnam')
+WHERE search_speech_text @@ to_tsquery('english', 'Vietnam')
 ORDER BY speech_date;
 
 -- Listing 14-22: Displaying search results with ts_headline()
 
 SELECT president,
        speech_date,
-       ts_headline(speech_text, to_tsquery('tax'),
+       ts_headline(speech_text, to_tsquery('english', 'tax'),
                    'StartSel = <,
                     StopSel = >,
                     MinWords=5,
                     MaxWords=7,
                     MaxFragments=1')
 FROM president_speeches
-WHERE search_speech_text @@ to_tsquery('tax');
+WHERE search_speech_text @@ to_tsquery('english', 'tax')
+ORDER BY speech_date;
 
 
 -- Listing 14-23: Finding speeches with the word "transportation" but not "roads"
 
 SELECT president,
        speech_date,
-       ts_headline(speech_text, to_tsquery('transportation & !roads'),
+       ts_headline(speech_text,
+                   to_tsquery('english', 'transportation & !roads'),
                    'StartSel = <,
                     StopSel = >,
                     MinWords=5,
                     MaxWords=7,
                     MaxFragments=1')
 FROM president_speeches
-WHERE search_speech_text @@ to_tsquery('transportation & !roads');
+WHERE search_speech_text @@
+      to_tsquery('english', 'transportation & !roads')
+ORDER BY speech_date;
 
 -- Listing 14-24: Find speeches where "defense" follows "military"
 
 SELECT president,
        speech_date,
-       ts_headline(speech_text, to_tsquery('military <-> defense'),
+       ts_headline(speech_text, 
+                   to_tsquery('english', 'military <-> defense'),
                    'StartSel = <,
                     StopSel = >,
                     MinWords=5,
                     MaxWords=7,
                     MaxFragments=1')
 FROM president_speeches
-WHERE search_speech_text @@ to_tsquery('military <-> defense');
+WHERE search_speech_text @@ 
+      to_tsquery('english', 'military <-> defense')
+ORDER BY speech_date;
 
 -- Bonus: Example with a distance of 2:
 SELECT president,
        speech_date,
-       ts_headline(speech_text, to_tsquery('military <2> defense'),
+       ts_headline(speech_text, 
+                   to_tsquery('english', 'military <2> defense'),
                    'StartSel = <,
                     StopSel = >,
                     MinWords=5,
                     MaxWords=7,
                     MaxFragments=2')
 FROM president_speeches
-WHERE search_speech_text @@ to_tsquery('military <2> defense');
+WHERE search_speech_text @@ 
+      to_tsquery('english', 'military <2> defense')
+ORDER BY speech_date;
 
 -- Listing 14-25: Scoring relevance with ts_rank()
 
 SELECT president,
        speech_date,
        ts_rank(search_speech_text,
-               to_tsquery('war & security & threat & enemy')) AS score
+               to_tsquery('english', 'war & security & threat & enemy'))
+               AS score
 FROM president_speeches
-WHERE search_speech_text @@ to_tsquery('war & security & threat & enemy')
+WHERE search_speech_text @@ 
+      to_tsquery('english', 'war & security & threat & enemy')
 ORDER BY score DESC
 LIMIT 5;
 
@@ -359,10 +380,11 @@ LIMIT 5;
 SELECT president,
        speech_date,
        ts_rank(search_speech_text,
-               to_tsquery('war & security & threat & enemy'), 2)::numeric 
+               to_tsquery('english', 'war & security & threat & enemy'), 2)::numeric 
                AS score
 FROM president_speeches
-WHERE search_speech_text @@ to_tsquery('war & security & threat & enemy')
+WHERE search_speech_text @@ 
+      to_tsquery('english', 'war & security & threat & enemy')
 ORDER BY score DESC
 LIMIT 5;
 
