@@ -16,6 +16,12 @@ psql -d analysis -U postgres
 psql -d [database name] -U [username] -h [host name]
 psql -d analysis -U postgres -h example.com
 
+-- Changing user and database name
+
+\c [database name] [user name]
+\c test
+\c test yourname
+
 -- Format for password file (pgpass.conf on Windows; .pgpass on macOS/Linux)
 hostname:port:database:username:password
 
@@ -86,13 +92,6 @@ SELECT * FROM grades ORDER BY student_id, course_id;
 -- createdb: Create a database named box_office
 
 createdb -U postgres -e box_office
-
--- Changing user and database name
-
-\c [database name] [user name]
-\c box_office
-\c box_office yourname
-
 
 -- Loading shapefiles into PostgreSQL
 
