@@ -1,20 +1,20 @@
-## Practical SQL, 2nd Edition
-## A Beginner's Guide to Storytelling with Data
+# Practical SQL, 2nd Edition
+### A Beginner's Guide to Storytelling with Data
 
-[Practical SQL, 2nd Edition](https://www.nostarch.com/practicalSQL2) from No Starch Press is a beginner-friendly guide to the database programming language SQL. Journalist and data analyst [Anthony DeBarros](https://www.anthonydebarros.com) begins with SQL basics, using the free open-source database PostgreSQL and interface pgAdmin, and walks through intermediate and advanced topics including statistics, aggregation, cleaning data, GIS and automating tasks. Along the way, you'll use real-world data from the U.S. Census and other government agencies and learn the fundamentals of good database design. This book is ideal for beginners as well as those who know some SQL and want to go deeper.
+[Practical SQL, 2nd Edition](https://www.nostarch.com/practicalSQL2) is a beginner-friendly guide to the database programming language SQL. Journalist and data analyst [Anthony DeBarros](https://www.anthonydebarros.com) starts with SQL basics, using the free open-source database PostgreSQL and interface pgAdmin, and works through intermediate and advanced topics including statistics, aggregation, cleaning data, GIS and automating tasks. Along the way, you'll use real-world data from the U.S. Census and other government agencies and learn the fundamentals of good database design. This book is ideal for beginners as well as those who know some SQL and want to go deeper.
 
-Practical SQL, 2nd Edition is [available in PDF, .mobi, .epub, and classic print formats](https://www.nostarch.com/practicalSQL).
+Practical SQL, 2nd Edition is [available in PDF, .mobi, .epub, and classic print formats](https://www.nostarch.com/practicalSQL2).
 
-Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gmail.com).
+Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gmail.com). You can also open an issue in this repository.
 
 ## Which Edition Are You Using?
-The code and data presented here are for the 2nd Edition of Practical SQL, published in 20XX. If you're using the original edition of the book, please [visit its repository for the appropriate resources](https://github.com/anthonydb/practical-sql/). If the cover of your copy does not say, "2nd Edition," then you're using the original edition. 
+The code and data presented here are for the 2nd Edition of Practical SQL, published in 20XX. If you're using the original edition of the book, please [use that repository for the appropriate resources](https://github.com/anthonydb/practical-sql/). If the cover of your copy does not say, "2nd Edition," then you're using the original edition. 
 
 ## What's Here
 
 **Code**: All the SQL statements and command-line listings used in each chapter, organized by chapter folders.
 
-**Data**: CSV files and GIS shapefiles for you to import, also organized by chapter. **NOTE!** See the warning below about opening CSV files with Excel or text editors in the section on Getting the Code and Data.
+**Data**: CSV and JSON files plus GIS shapefiles for you to import, also organized by chapter. **NOTE!** See the warning below about opening CSV files with Excel or text editors in the section on Getting the Code and Data.
 
 **Exercises**: The "Try It Yourself" questions and answers for each chapter, listed separately. Try working through the questions before peeking at the answers!
 
@@ -39,7 +39,7 @@ The code and data presented here are for the 2nd Edition of Practical SQL, publi
 * Chapter 13: Advanced Query Techniques
 * Chapter 14: Mining Text to Find Meaningful Data
 * Chapter 15: Analyzing Spatial Data with PostGIS
-* Chapter 16: JSON
+* Chapter 16: Working With JSON Data
 * Chapter 17: Saving Time with Views, Functions, and Triggers
 * Chapter 18: Using PostgreSQL from the Command Line
 * Chapter 19: Maintaining Your Database
@@ -55,6 +55,7 @@ You can obtain all the code and data at once by downloading this repository as a
 * Click the **Code** button at top right.
 * Click **Download ZIP**
 * Unzip the file on your computer. Place it in a directory that's easy to remember so you can reference it during the exercises that include importing data to PostgreSQL.
+* For additional instructions, please read Chapter 1 in the book.
 
 **Warning about CSV files!**: Opening CSV files with Excel could lead to data loss. Excel will remove leading zeros from numbers that are intended to be stored as text, such as zip codes. If you wish to view the contents of a CSV file, only do so with a plain-text editor and be careful not to save the file in an encoding other than UTF-8 (e.g., `Notepad.exe` on Windows defaults to ANSI).
 
