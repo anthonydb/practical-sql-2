@@ -1,28 +1,32 @@
-## Practical SQL: A Beginner's Guide to Storytelling with Data
+## Practical SQL, 2nd Edition
 
-[Practical SQL](https://www.nostarch.com/practicalsql/) by Anthony DeBarros is available from No Starch Press.
+[Practical SQL](https://www.nostarch.com/practicalsql2/) by Anthony DeBarros is available from No Starch Press.
 
 ### Resources
 
-The Appendix of Practical SQL contains a list of resources to help you stay informed about PostgreSQL developments, find additional software, and get help. Below is an ongoing list updated from the original in the book. If you'd like to suggest an addition or edit, please submit an issue ticket.
+The Appendix of Practical SQL, 2nd Edition contains a list of resources to help you stay informed about PostgreSQL developments, find additional software, and get help. Below is an ongoing list updated from the original in the book. If you'd like to suggest an addition or edit, please open an issue.
 
 ### PostgreSQL Development Environments
 
-Throughout the book, we’ve used the graphical user interface [pgAdmin](https://www.pgadmin.org) to connect to PostgreSQL, run queries, and view database objects. Although pgAdmin is free, open source, and popular, it’s not your only choice for working with PostgreSQL. You can read the entry called “Community Guide to PostgreSQL GUI Tools,” which catalogs many alternatives, on the PostgreSQL wiki at [https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools](https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools).
+Throughout the book, we’ve used the graphical user interface pgAdmin to connect to PostgreSQL, run queries, and view database objects. Although pgAdmin is free, open source, and popular, it’s not your only choice for working with PostgreSQL. The wiki entry “PostgreSQL Clients” at [https://wiki.postgresql.org/wiki/PostgreSQL_Clients](https://wiki.postgresql.org/wiki/PostgreSQL_Clients) catalogs many alternatives. 
 
-The following list contains information on several tools I’ve tried, including free and paid options. The free tools work well for general analysis work. But if you wade deeper into database development, you might want to upgrade to the paid options, which typically offer advanced features and support:
+The following list shows several tools I’ve tried, including free and paid options. The free tools work well for general analysis work. If you wade deeper into database development, you might want to upgrade to the paid options, which typically offer advanced features and support:
 
-[DataGrip](http://www.jetbrains.com/datagrip/): A SQL development environment that offers code completion, bug detection, and suggestions for streamlining code, among many other features. It’s a paid product, but the company, JetBrains, offers discounts and free versions for students, educators, and nonprofits.
+[Beekeeper Studio](https://www.beekeeperstudio.io/): Free and open source GUI for PostgreSQL, MySQL, Microsoft SQL Server, SQLite and other platforms. Beekeeper works on Windows, macOS, and Linux and features one of the more refined app designs among database GUIs.
 
-[Navicat](https://www.navicat.com/): A richly featured SQL development environment with ver- sions that support PostgreSQL as well as other databases, including MySQL, Oracle, and Microsoft SQL Server. Navicat is a paid version only, but the company offers a 14-day free trial.
+[DBeaver](https://dbeaver.com/): Described as a “universal database tool” that works with PostgreSQL. MySQL, and many other databases, it includes a visual query builder, code auto-completion and other advanced features. Paid and free versions for Windows, macOS, and Linux.
 
-[pgManage](https://github.com/pgManage/pgManage/): A free, open source GUI client for Windows, macOS, and Linux, formerly known as Postage.
+[DataGrip](https://www.jetbrains.com/datagrip/): A SQL development environment that offers code completion, bug detection, and suggestions for streamlining code, among many other features. It’s a paid product, but the company, JetBrains, offers discounts and free versions for students, educators, and nonprofits.
 
-[Postico](https://eggerapps.at/postico/): A macOS-only client from the maker of Postgres.app that looks like it takes its cues from Apple design. The full version is paid, but a restricted-feature version is available with no time limit.
+[Navicat](https://www.navicat.com/): A richly featured SQL development environment with versions that support PostgreSQL as well as other databases, including MySQL, Oracle, MongoDB, and Microsoft SQL Server. Navicat is a paid version only, but the company offers a 14-day free trial.
 
-[PSequel](http://www.psequel.com/): Also macOS-only, PSequel is a free PostgreSQL client that is decidedly minimalist.
+[Postbird](https://github.com/Paxa/postbird/): A simple cross-platform PostgreSQL GUI for writing queries and viewing objects. Free and open source.
 
-A trial version can help you decide whether the product is right for you.
+[Postico](https://eggerapps.at/postico/): A macOS-only client from the maker of Postgres.app that takes its cues from Apple design. The full version is paid, but a restricted-feature version is available with no time limit.
+
+[PSequel](https://www.psequel.com/): Also macOS-only, PSequel is a free PostgreSQL client that is decidedly minimalist (see ).
+
+A trial version can help you decide whether a paid product is right for you.
 
 ### PostgreSQL Utilities, Tools, and Extensions
 
@@ -32,15 +36,17 @@ You can expand the capabilities of PostgreSQL via numerous third-party utilities
 
 [MADlib](http://madlib.apache.org/): A machine learning and analytics library for large data sets.
 
-[pgAgent](https://www.pgadmin.org/docs/pgadmin4/dev/pgagent.html): A job manager that lets you run queries at scheduled times, among other tasks.
+[pgAgent](https://www.pgadmin.org/docs/pgadmin4/development/pgagent.html): A job manager that lets you run queries at scheduled times, among other tasks.
+
+[pgBackRest](https://pgbackrest.org/):An advanced database backup and restore management tool.
 
 [pgcli](https://github.com/dbcli/pgcli/): A replacement for psql that includes improved formatting when writing queries and viewing output.
 
+[pgRouting](https://pgrouting.org/): Enables a PostGIS-enabled PostgreSQL database to perform network analysis tasks, such as finding driving distance along roadways.
+
 [PL/R](http://www.joeconway.com/plr.html): A loadable procedural language that provides the ability to use the R statistical programming language within PostgreSQL functions and triggers.
 
-[SciPy](https://www.scipy.org/): A collection of Python science and engineering libraries you can use with the PL/Python procedural language in PostgreSQL.
-
-[TimescaleDB](https://www.timescale.com/): A PostgreSQL extension that specializes in handling time-series data. 
+[pspg](https://github.com/okbob/pspg/): Formats the output of psql into sortable, scrollable tables with support for several color themes.
 
 ### PostgreSQL News
 
@@ -56,7 +62,9 @@ Here’s a collection of online resources you can use to stay informed:
 
 [PostgreSQL News Archive](https://www.postgresql.org/about/newsarchive/): Official news from the Postgres team.
 
-[PostGIS Blog](http://postgis.net/blog/): Announcements and updates on the PostGIS extension covered in Chapter 14.
+[PostgreSQL User Groups](https://www.postgresql.org/community/user-groups/): A list of community groups that offer meetups and other activities.
+
+[PostGIS Blog](http://postgis.net/blog/): Announcements and updates on the PostGIS extension covered in Chapter 15.
 
 Additionally, I recommend paying attention to developer notes for any of the PostgreSQL-related software you use, such as pgAdmin.
 
