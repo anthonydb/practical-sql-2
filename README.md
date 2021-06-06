@@ -1,10 +1,14 @@
-## Practical SQL: A Beginner's Guide to Storytelling with Data
+## Practical SQL, 2nd Edition
+## A Beginner's Guide to Storytelling with Data
 
-[Practical SQL](https://www.nostarch.com/practicalSQL) from No Starch Press is a beginner-friendly guide to the database programming language SQL. Journalist and data analyst [Anthony DeBarros](https://www.anthonydebarros.com) begins with SQL basics, using the free open-source database PostgreSQL and interface pgAdmin, and walks through intermediate and advanced topics including statistics, aggregation, cleaning data, GIS and automating tasks. Along the way, you'll use real-world data from the U.S. Census and other government agencies and learn the fundamentals of good database design. This book is ideal for beginners as well as those who know some SQL and want to go deeper.
+[Practical SQL, 2nd Edition](https://www.nostarch.com/practicalSQL2) from No Starch Press is a beginner-friendly guide to the database programming language SQL. Journalist and data analyst [Anthony DeBarros](https://www.anthonydebarros.com) begins with SQL basics, using the free open-source database PostgreSQL and interface pgAdmin, and walks through intermediate and advanced topics including statistics, aggregation, cleaning data, GIS and automating tasks. Along the way, you'll use real-world data from the U.S. Census and other government agencies and learn the fundamentals of good database design. This book is ideal for beginners as well as those who know some SQL and want to go deeper.
 
-Practical SQL is [available in PDF, .mobi, .epub, and classic print formats](https://www.nostarch.com/practicalSQL).
+Practical SQL, 2nd Edition is [available in PDF, .mobi, .epub, and classic print formats](https://www.nostarch.com/practicalSQL).
 
-Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gmail.com)
+Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gmail.com).
+
+## Which Edition Are You Using?
+The code and data presented here are for the 2nd Edition of Practical SQL, published in 20XX. If you're using the original edition of the book, please [visit its repository for the appropriate resources](https://github.com/anthonydb/practical-sql/). If the cover of your copy does not say, "2nd Edition," then you're using the original edition. 
 
 ## What's Here
 
@@ -14,9 +18,9 @@ Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gma
 
 **Exercises**: The "Try It Yourself" questions and answers for each chapter, listed separately. Try working through the questions before peeking at the answers!
 
-**FAQ, Updates, and Errata**: Answers to frequently asked questions,  updates, and corrections are noted at [faq-updates-errata.md](https://github.com/anthonydb/practical-sql/blob/master/faq-updates-errata.md).
+**FAQ, Updates, and Errata**: Answers to frequently asked questions,  updates, and corrections are noted at [faq-updates-errata.md](https://github.com/anthonydb/practical-sql-2/blob/master/faq-updates-errata.md).
 
-**Resources**: Updates to the book's Appendix on Additional PostgreSQL Resources at [resources.md](https://github.com/anthonydb/practical-sql/blob/master/resources.md).
+**Resources**: Updates to the book's Appendix on Additional PostgreSQL Resources at [resources.md](https://github.com/anthonydb/practical-sql-2/blob/master/resources.md).
 
 ## Chapters
 
@@ -39,7 +43,7 @@ Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gma
 * Chapter 17: Saving Time with Views, Functions, and Triggers
 * Chapter 18: Using PostgreSQL from the Command Line
 * Chapter 19: Maintaining Your Database
-* Chapter 20: Identifying and Telling the Story Behind Your Data
+* Chapter 20: Telling Your Data's Story
 * Appendix: Additional PostgreSQL Resources
 
 ## Getting the Code and Data on Your Computer
