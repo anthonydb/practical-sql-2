@@ -8,7 +8,7 @@ The Appendix of Practical SQL, 2nd Edition contains a list of resources to help 
 
 ### PostgreSQL Development Environments
 
-Throughout the book, we’ve used the graphical user interface pgAdmin to connect to PostgreSQL, run queries, and view database objects. Although pgAdmin is free, open source, and popular, it’s not your only choice for working with PostgreSQL. The wiki entry “PostgreSQL Clients” at [https://wiki.postgresql.org/wiki/PostgreSQL_Clients](https://wiki.postgresql.org/wiki/PostgreSQL_Clients) catalogs many alternatives. 
+Throughout the book, we’ve used the graphical user interface [pgAdmin](https://www.pgadmin.org) to connect to PostgreSQL, run queries, and view database objects. Although pgAdmin is free, open source, and popular, it’s not your only choice for working with PostgreSQL. The wiki entry “PostgreSQL Clients” at [https://wiki.postgresql.org/wiki/PostgreSQL_Clients](https://wiki.postgresql.org/wiki/PostgreSQL_Clients) catalogs many alternatives. 
 
 The following list shows several tools I’ve tried, including free and paid options. The free tools work well for general analysis work. If you wade deeper into database development, you might want to upgrade to the paid options, which typically offer advanced features and support:
 
