@@ -2,7 +2,7 @@
 
 ### FAQ, Updates, and Errata
 
-This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata related Practical SQL, 2nd Edition.
+This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition.
 
 
 ### Introduction
