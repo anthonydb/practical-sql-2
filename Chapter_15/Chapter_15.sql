@@ -110,17 +110,17 @@ ALTER TABLE farmers_markets ADD COLUMN geog_point geography(POINT,4326);
 -- Now fill that column with the lat/long
 UPDATE farmers_markets
 SET geog_point = ST_SetSRID(
-                            ST_MakePoint(longitude,latitude),4326
-                           )::geography;
+                            ST_MakePoint(longitude,latitude)::geography,4326
+                           );
 
--- Add a GiST index
+-- Add a spatial (R-Tree) index using GIST
 CREATE INDEX market_pts_idx ON farmers_markets USING GIST (geog_point);
 
 -- View the geography column
 SELECT longitude,
        latitude,
        geog_point,
-       ST_AsText(geog_point)
+       ST_AsEWKT(geog_point)
 FROM farmers_markets
 WHERE longitude IS NOT NULL
 LIMIT 5;
@@ -153,7 +153,7 @@ SELECT market_name,
        round(
            (ST_Distance(geog_point,
                         ST_GeogFromText('POINT(-93.6204386 41.5853202)')
-                        ) / 1609.344)::numeric(8,5), 2
+                        ) / 1609.344)::numeric, 2
             ) AS miles_from_dt
 FROM farmers_markets
 WHERE ST_DWithin(geog_point,
@@ -161,6 +161,19 @@ WHERE ST_DWithin(geog_point,
                  10000)
 ORDER BY miles_from_dt ASC;
 
+-- Listing 15-13: Using the <-> distance operator for a nearest neighbors search
+
+SELECT market_name,
+       city,
+       st,
+       round(
+           (ST_Distance(geog_point,
+                        ST_GeogFromText('POINT(-68.2041607 44.3876414)')
+                        ) / 1609.344)::numeric, 2
+            ) AS miles_from_bh
+FROM farmers_markets
+ORDER BY geog_point <-> ST_GeogFromText('POINT(-68.2041607 44.3876414)')
+LIMIT 3;
 
 -- WORKING WITH SHAPEFILES
 
@@ -174,14 +187,14 @@ ORDER BY miles_from_dt ASC;
 -- Import (for use on command line if on macOS or Linux; see Chapter 18)
 shp2pgsql -I -s 4269 -W LATIN1 tl_2019_us_county.shp us_counties_2019_shp | psql -d analysis -U postgres
 
--- Listing 15-13: Checking the geom column's well-known text representation
+-- Listing 15-14: Checking the geom column's well-known text representation
 
 SELECT ST_AsText(geom)
 FROM us_counties_2019_shp
 ORDER BY gid
 LIMIT 1;
 
--- Listing 15-14: Find the largest counties by area using ST_Area()
+-- Listing 15-15: Find the largest counties by area using ST_Area()
 
 SELECT name,
        statefp AS st,
@@ -192,7 +205,7 @@ FROM us_counties_2019_shp
 ORDER BY square_miles DESC
 LIMIT 5;
 
--- Listing 15-15: Using ST_Within() to find the county belonging to a pair of coordinates
+-- Listing 15-16: Using ST_Within() to find the county belonging to a pair of coordinates
 
 SELECT sh.name,
        c.state_name
@@ -202,16 +215,19 @@ WHERE ST_Within(
          'SRID=4269;POINT(-118.3419063 34.0977076)'::geometry, geom
 );
 
-
--- Listing 15-16: Using ST_DWithin() to count people near Lincoln, Nebraska
+-- Listing 15-17: Using ST_DWithin() to count people near Lincoln, Nebraska
 SELECT sum(c.pop_est_2019) AS pop_est_2019
 FROM us_counties_2019_shp sh JOIN us_counties_pop_est_2019 c
     ON sh.statefp = c.state_fips AND sh.countyfp = c.county_fips
 WHERE ST_DWithin(sh.geom::geography, 
           ST_GeogFromText('SRID=4269;POINT(-96.699656 40.811567)'),
           80467);
+          
+-- Note: You can speed up the above query by creating a functional index
+-- that covers the casting of the geom column to a geography type.
+CREATE INDEX us_counties_2019_shp_geog_idx ON us_counties_2019_shp USING GIST (CAST(geom AS geography));
 
--- Listing 15-17: Displaying counties near Lincoln, Nebraska
+-- Listing 15-18: Displaying counties near Lincoln, Nebraska
 SELECT sh.name,
        c.state_name,
        c.pop_est_2019,
@@ -250,7 +266,7 @@ WHERE ST_DWithin(sh.geom::geography,
 shp2pgsql -I -s 4269 -W LATIN1 tl_2019_35049_linearwater.shp santafe_linearwater_2019 | psql -d analysis -U postgres
 shp2pgsql -I -s 4269 -W LATIN1 tl_2019_35049_roads.shp santafe_roads_2019 | psql -d analysis -U postgres
 
--- Listing 15-18: Using ST_GeometryType() to determine geometry
+-- Listing 15-19: Using ST_GeometryType() to determine geometry
 
 SELECT ST_GeometryType(geom)
 FROM santafe_linearwater_2019
@@ -260,7 +276,7 @@ SELECT ST_GeometryType(geom)
 FROM santafe_roads_2019
 LIMIT 1;
 
--- Listing 15-19: Spatial join with ST_Intersects() to find roads crossing the Santa Fe river
+-- Listing 15-20: Spatial join with ST_Intersects() to find roads crossing the Santa Fe river
 
 SELECT water.fullname AS waterway,
        roads.rttyp,
@@ -280,7 +296,7 @@ WHERE water.fullname = 'Santa Fe Riv'
       AND roads.fullname IS NOT NULL
 ORDER BY roads.fullname;    
 
--- Listing 15-20: Using ST_Intersection() to show where roads cross the river
+-- Listing 15-21: Using ST_Intersection() to show where roads cross the river
 
 SELECT water.fullname AS waterway,
        roads.rttyp,
@@ -290,6 +306,5 @@ FROM santafe_linearwater_2019 water JOIN santafe_roads_2019 roads
     ON ST_Intersects(water.geom, roads.geom)
 WHERE water.fullname = 'Santa Fe Riv'
       AND roads.fullname IS NOT NULL
-ORDER BY roads.fullname
-LIMIT 5;
+ORDER BY roads.fullname;
 

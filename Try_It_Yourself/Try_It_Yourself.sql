@@ -1009,8 +1009,33 @@ FROM farmers_markets markets JOIN us_counties_2019_shp census
     WHERE markets.county IS NULL
 ORDER BY census.statefp, census.name;
 
--- Note that this query also highlights a farmer's market that is mis-geocoded.
+-- Note that the query returns 496 rows; not all of the columns missing a county
+-- value have values present in the geog_point, latitude, and longitude columns.
+
+-- Also, this query highlights a farmer's market that is mis-geocoded.
 -- Can you spot it?
+
+-- 4. The nyc_yellow_taxi_trips table you created in Chapter 12 contains
+-- the longitude and latitude where each trip began and ended. Use PostGIS
+-- functions to turn the dropoff coordinates into a geometry type and 
+-- count the state/county pairs where each drop-off occurred. As with the
+-- previous exercise, you’ll need to join to the us_counties_2019_shp table
+-- and use its geom column for the spatial join.
+
+-- Answer:
+
+SELECT census.statefp,
+       census.name as county,
+       count(*) AS dropoffs
+FROM nyc_yellow_taxi_trips taxi JOIN us_counties_2019_shp census
+ON ST_Within(
+            ST_SetSRID(ST_MakePoint(taxi.dropoff_longitude, taxi.dropoff_latitude),4269)::geometry, census.geom
+            )
+GROUP BY census.statefp, census.name
+ORDER BY count(*) DESC;
+
+-- Thank you to reader Eric Mortenson for suggesting this exercise.
+
 
 ----------------------------------------------------------------------------
 -- Chapter 16: Working with JSON Data

@@ -1,17 +1,17 @@
 FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
-1012063, Caledonia Farmers Market Association - Danville,,Danville ,Caledonia,Vermont,05828,-72.140305,44.411013,Y
-1011871, Stearns Homestead Farmers' Market,6975 Ridge Road,Parma ,Cuyahoga,Ohio,44130,-81.7285969,41.3751180,-
+1012063,Caledonia Farmers Market Association - Danville,,Danville,Caledonia,Vermont,05828,-72.140305,44.411013,Y
+1011871,Stearns Homestead Farmers' Market,6975 Ridge Road,Parma,Cuyahoga,Ohio,44130,-81.7285969,41.3751180,-
 1009364,106 S. Main Street Farmers Market,106 S. Main Street,Six Mile,,South Carolina,29682,-82.8187,34.8042,-
-1010691,10th Steet Community Farmers Market,10th Street and Poplar,Lamar ,Barton,Missouri,64759,-94.2746191,37.4956280,-
+1010691,10th Steet Community Farmers Market,10th Street and Poplar,Lamar,Barton,Missouri,64759,-94.2746191,37.4956280,-
 1002454,112st Madison Avenue,112th Madison Avenue,New York,New York,New York,10029,-73.9493,40.7939,-
 1011100,12 South Farmers Market,3000 Granny White Pike,Nashville,Davidson,Tennessee,37204,-86.790709,36.118370,Y
 1009845,125th Street Fresh Connect Farmers' Market,"163 West 125th Street and Adam Clayton Powell, Jr. Blvd.",New York,New York,New York,10027,-73.9482477,40.8089533,Y
 1005586,12th & Brandywine Urban Farm Market,12th & Brandywine Streets,Wilmington,New Castle,Delaware,19801,-75.534460,39.742117,N
-1008071,14&U Farmers' Market,1400 U Street NW ,Washington,District of Columbia,District of Columbia,20009,-77.0320505,38.9169984,Y
-1012710,14th & Kennedy Street Farmers Market,"5500 Colorado Avenue, NW",Washington ,District of Columbia,District of Columbia,20011,-77.0334486,38.9559783,N
-1016782,175th Street Greenmarket,175th Street between Wadsworth & Broadway,New York ,New York,New York,10033,-73.938049,40.846354,N
+1008071,14&U Farmers' Market,1400 U Street NW,Washington,District of Columbia,District of Columbia,20009,-77.0320505,38.9169984,Y
+1012710,14th & Kennedy Street Farmers Market,"5500 Colorado Avenue, NW",Washington,District of Columbia,District of Columbia,20011,-77.0334486,38.9559783,N
+1016782,175th Street Greenmarket,175th Street between Wadsworth & Broadway,New York,New York,New York,10033,-73.938049,40.846354,N
 1003877,17th Ave Market,1622 6th St NE,Minneapolis,Hennepin,Minnesota,55413,-93.2591,45.0044,-
-1016784,17th Street Farmers Market,100 North 17th St.,Richmond ,Richmond City,Virginia,23219,-77.428364,37.533850,-
+1016784,17th Street Farmers Market,100 North 17th St.,Richmond,Richmond City,Virginia,23219,-77.428364,37.533850,-
 1010968,18th and Christian Farmers' Market,18th Street and Christian Street,Philadelphia,Philadelphia,Pennsylvania,19146,-75.173431,39.940943,N
 1009994,18th Street Farmer's Market,18th and Broadway,Scottsbluff,Scotts Bluff,Nebraska,69361,-103.662538,41.864268,Y
 1010376,18th Street Farmers Market,825 18th Street,Charleston,Coles,Illinois,61920,-88.163254,39.490737,-
@@ -25,12 +25,12 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1005299,29th and Wharton Farmers' Market,29th and Wharton Streets,Philadelphia,Philadelphia,Pennsylvania,19146,-75.19204,39.9373,N
 1010994,2nd Street Farmers' Market,194 second street,Amherst,Amherst,Virginia,24521,-79.048573,37.583311,N
 1009959,2nd Street Market - Five Rivers MetroPark,600 E. 2nd Street,Dayton,Montgomery,Ohio,45402,-84.181030,39.762593,Y
-1004950,3 French Hens French Country Market,123 W. Illinois ave. ,Morris,Grundy,Illinois,60450,-88.425186,41.356383,Y
+1004950,3 French Hens French Country Market,123 W. Illinois Ave.,Morris,Grundy,Illinois,60450,-88.425186,41.356383,Y
 1010775,30A Farmers' Market,Rosmary Beach Town Center,Rosemary Beach,Walton,Florida,32461,-86.002754,30.279017,-
 1012342,31 & Main Farmers Market at Campus Town,1928 Pennington Road,Ewing,Mercer,New Jersey,08618,-74.783264,40.267025,Y
 1005636,32nd Street/Waverly Farmers Market,E. 32nd & Barclay Street,Baltimore,Baltimore,Maryland,21218,-76.611,39.3272,Y
 1005310,33rd and Diamond Farmers' Market,N 33rd and Diamond Streets,Philadelphia,Philadelphia,Pennsylvania,19121,-75.187167,39.988802,N
-1018014,38th & Meridian Farmer's Market ,3808 N Meridian St,Indianapolis,Marion,Indiana,46208,-86.1575468,39.8255595,-
+1018014,38th & Meridian Farmer's Market,3808 N Meridian St,Indianapolis,Marion,Indiana,46208,-86.1575468,39.8255595,-
 1012280,39 North Marketplace,Downtown Sparks Victorian Ave,Sparks,Washoe,Nevada,89431,-119.754962,39.534773,-
 1004414,3rd & Curry St. Farmers Market,3rd & Curry Street,Carson City,Carson City,Nevada,89703,-119.7678,39.16257,Y
 1011213,441 Ministries Farm Stand,441 Parsells Avenue,Rochester,Monroe,New York,14609,-77.5666043,43.1658344,N
@@ -41,7 +41,7 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1000060,57th Street Greenmarket,W 57 St. & 9 Ave,New York,New York,New York,10019,-73.985839,40.768159,N
 1005306,58th and Chester Farmers' Market,58th Street and Chester Avenue,Philadelphia,Philadelphia,Pennsylvania,19143,-75.228303,39.935721,N
 1011895,61st Street Farmers Market,6100 S Blackstone Ave,Chicago,Cook,Illinois,60637,-87.5905903,41.7841364,Y
-1012500,6th Street Market in Downtown Tempe,6th Street and Mill Avenue,Tempe ,Maricopa,Arizona,85281,-111.939512,33.424420,Y
+1012500,6th Street Market in Downtown Tempe,6th Street and Mill Avenue,Tempe,Maricopa,Arizona,85281,-111.939512,33.424420,Y
 1000061,79th Street Greenmarket,Columbus - W 78 & 81 Sts.,New York,New York,New York,10024,-73.9757,40.7818,N
 1000062,82nd Street Greenmarket,E 82nd St. - 1st & York Ave,New York,New York,New York,10028,-73.950090,40.773749,Y
 1008391,84 west farmers market (Dothan),,Dothan,Houston,Alabama,,-85.449944,31.232252,N
@@ -49,10 +49,10 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1000063,92nd Street Greenmarket,1st Ave - E 92nd & 93 Sts.,New York,New York,New York,10128,-73.946421,40.780931,Y
 1000064,97th Street Greenmarket,W 97 St. & Columbus,New York,New York,New York,10025,-73.9670120,40.7935600,N
 1011989,9th and Grand Farmers Market,304 West Grand Avenue,Salina,Saline,Kansas,67401,-97.6117504,38.8528359,N
-1000986,9th West Farmers Market/People's Market ,1060 South 900 West,SALT LAKE CITY,Salt Lake,Utah,84110,-111.9195223,40.7470177,N
-1010617,A + Organic Farmers Market,Lee Rd. Farm,Boynton Beach ,Palm Beach,Florida,33473,-80.221052,26.489351,Y
+1000986,9th West Farmers Market/People's Market,1060 South 900 West,SALT LAKE CITY,Salt Lake,Utah,84110,-111.9195223,40.7470177,N
+1010617,A + Organic Farmers Market,Lee Rd. Farm,Boynton Beach,Palm Beach,Florida,33473,-80.221052,26.489351,Y
 1001683,A Better Choice Bakery & Market,27 W Potomac Street,Brunswick,Frederick,Maryland,21716,-77.6277075,39.3130660,Y
-1009004,A Growers' Market,229 Lake Ella Drive,Tallahassee ,Leon,Florida,32303,-84.2792304,30.4624713,Y
+1009004,A Growers' Market,229 Lake Ella Drive,Tallahassee,Leon,Florida,32303,-84.2792304,30.4624713,Y
 1001887,AAFFA Community Farmers Market,402 North Murray Avenue,Anderson,Anderson,South Carolina,29624,-82.652159,34.506706,-
 1007585,AAMC Farmers's Market,"2001 Medical Parkway, Sajak Pavilion",Annapolis,Anne Arundel,Maryland,21401,-76.6123,39.006,-
 1004573,Abbeville Farmers Market,118 Trinity Street at Livery Stable,Abbeville,Abbeville,South Carolina,29620,-82.380242,34.177429,N
@@ -277,7 +277,7 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1005081,Arvada Farmers Market,57th St. & Olde Wadsworth St.,Arvada,Jefferson,Colorado,80002,-105.081455,39.800138,N
 1009285,Arvada Five Parks Farmers Market,13810 W. 85th Dr.,Arvada,,Colorado,80005,-105.155,39.8488,-
 1009272,Asbury Fresh,Kennedy Park (on Cookman Ave next to Ivan & Andys,Asbury Park,,New Jersey,07712,-74.0094,40.2164,-
-1004350,Asbury Park Carousel Farmers' Market, First and Ocean Avenue,Asbury Park,Monmouth,New Jersey,07712,-74.0007788,40.2193390,Y
+1004350,Asbury Park Carousel Farmers' Market,First and Ocean Avenue,Asbury Park,Monmouth,New Jersey,07712,-74.0007788,40.2193390,Y
 1000397,Ashboro Downtown Farmers Market,134 South Church Street,Asheboro,Randolph,North Carolina,28801,-79.8175,35.7049,-
 1002490,Ashburn (Chicago) Farmers Market,6700 S. Kedzie Ave.,Chicago,Cook,Illinois,60629,-87.626,41.8851,-
 1003061,Ashburn Farmers Market,"One Loudoun, 20357 Exchange St.",Ashburn,Loudoun,Virginia,20147,-77.454253,39.053581,Y
@@ -298,7 +298,7 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1006964,Ashley Farmers Market,"On East Main Street,",Ashley,McIntosh County,North Dakota,,-99.3684,46.0344,-
 1000836,Ashley Valley Farmers' Market (Vernal),Old Dinosaur Gardens on Main Street (~240East),Vernal,Uintah,Utah,,-109.524091666667,40.4557472222222,-
 1008599,Ashmont/Peabody Square Farmers Market,Ashmont MBTA Plaza,Dorchester,Suffolk,Massachusetts,02124,-71.064236,42.285528,-
-1004530,Ashotn Farmers Market,Off Main Street,Ashton,Fremont,Idaho,83420,-111.446,44.0714,-
+1004530,Ashton Farmers Market,Off Main Street,Ashton,Fremont,Idaho,83420,-111.446,44.0714,-
 1009244,Ashtabula Farmers Market,1119 Bridge Street,Ashtabula,,Ohio,44004,-80.7998,41.8995,-
 1004692,Aspen Grove Farmers' Market,7301 S Santa Fe Dr,Littleton,Arapahoe,Colorado,80120,-105.025219,39.585505,Y
 1005837,Aspen Saturday Market,East Hopkins and South Hunter,Aspen,Pitkin,Colorado,81611,-106.817,39.1894,-
@@ -307,7 +307,7 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1001245,ASU Regional Farmers Market,3300 Aggie Road,Jonesboro,Craighead,Arkansas,72401,-90.667327,35.840771,N
 1004818,ASUEP Natchez Farmers Market,199 St. Catherine Street,Natchez,Adams,Mississippi,39120,-91.384921,31.556011,N
 1009516,ATACs Capitan Farmers Market,115 Smokey Bear Blvd.,Capitan,,New Mexico,88316,-105.573,33.5455,-
-1009447,Atascadero  Farmers Market,Albertson's parking lot on El Camino Real,Atascadero,,California,93422,-120.664,35.4858,-
+1009447,Atascadero Farmers Market,Albertson's parking lot on El Camino Real,Atascadero,,California,93422,-120.664,35.4858,-
 1003911,Atascadero Farmers Market,Morro Road & El Camino Real,Paso Robles,San Luis Obispo,California,93447,-120.667,35.4882,-
 1001294,Atascadero Main Street CFM,Palma & Entrada,Atascadero,San Luis Obispo,California,93422,-120.669,35.4901,-
 1002984,Atchison Farmers Market,Between 4th & 6th on Main St.,Atchison,Atchison,Kansas,66002,-95.119747,39.560806,N
@@ -397,7 +397,7 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1006519,Baltimore County Farmers' Market,2200 York Road,Lutherville=Timonium,Baltimore,Maryland,21093,-76.6264,39.4398,-
 1000790,Baltimore Farmers' Market,400 unit block of Saratoga Street,Baltimore,Baltimore City,Maryland,21210,-76.6214780,39.2929004,Y
 1001027,Bancroft Street Farmers Market,2702 S 10th St.,Omaha,,Nebraska,68114,-95.93,41.2339,-
-1010688,Bandera Farmers Market, 702 Main St,Bandera,Bandera,Texas,78003,-99.0742510,29.7277140,N
+1010688,Bandera Farmers Market,702 Main St,Bandera,Bandera,Texas,78003,-99.0742510,29.7277140,N
 1008053,Bangor Farmers Market,Center St. & Monroe St.,Bangor,Van Buren,Michigan,49056,-86.1090777,42.3123539,Y
 1012081,Bangor Farmers' Market,Corner of Franklin and Harlow Streets,Bangor,Penobscot,Maine,04401,-68.7716490,44.8039587,Y
 1012134,banning market night,1170 W Ramsey Street,banning,Riverside,California,92220,-116.8895240,33.9248970,-
@@ -411,7 +411,7 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1003082,Barker Farmers Market,"Main St., & Quaker Rd.",Barker,Niagara,New York,14012,-78.5548023,43.3301158,-
 1005428,Barker's Island Farmers Market,Highway 2\53 & Marina Drive,Superior,Douglas,Wisconsin,54880,-92.062100,46.722392,-
 1001604,Barnegat Farmers Market,East Bay Ave. and Rt. 9,Barnegat,Ocean,New Jersey,08005,-74.2225,39.7536,-
-1003211,Barnesville Farmers Market, 300 E.Church St.,Barnesville,Belmont,Ohio,43713,-81.1739,39.9881,-
+1003211,Barnesville Farmers Market,300 E.Church St.,Barnesville,Belmont,Ohio,43713,-81.1739,39.9881,-
 1000353,Barnesville/Lamar County Farmers Market,Market Street,Barnesville,Lamar,Georgia,30204,-84.1573,33.0515,-
 1002354,Barre Farmer's Market,,Barre,Worcester,Massachusetts,01005,-72.105138,42.421809,Y
 1010903,Barre Farmers Market,7 Jones Brother Way,Barre ,Washington,Vermont,05641,-72.5210670,44.2116630,Y
@@ -462,7 +462,7 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1006359,Beacon Farmers Market (Summer),"Ferry Dock, Train Station Parking Lot",Beacon,Dutchess,New York,12508,-73.985119,41.504816,Y
 1018020,Bean Blossom Farmers' Market,Corner St Rd 45 and St Rd 135,Bean Blossom,Morgan,Indiana,46160,-86.446203,39.4815289,-
 1009334,Bear Creek Farmers Market,CC Shook Park,Belmont,,Mississippi,38827,-88.2108,34.5108,-
-1010739,Beaumont Farmers Market,,"Beaumont, TX ",Jefferson,Texas,77707,-94.164226,30.067909,N
+1010739,Beaumont Farmers Market,,"Beaumont, TX",Jefferson,Texas,77707,-94.164226,30.067909,N
 1001275,"Beaumont Hospital Royal Oak, Farmers Market",3601 West Thirteen Mile Rd.,Royal Oak,Oakland,Michigan,48073,-83.191990,42.513900,N
 1001827,Beaver County Fruit Company I,Beaver County Courthouse parking lot,Beaver,Beaver,Pennsylvania,15009,-80.3239,40.7199,-
 1011675,Beaver Dam Farmer's Market,231 South Main,"Beaver Dam, Kentucky",Ohio,Kentucky,42320,-86.870931,37.400207,N
@@ -507,7 +507,7 @@ FMID,MarketName,street,city,County,State,zip,longitude,latitude,Organic
 1010259,Bellevue Farmers' Market,20th & Franklin,Bellevue,Sarpy,Nebraska,68005,-95.8936715,41.1396043,Y
 1004973,Bellflower Farmers Market,Oak & Clark Street,Bellflower,Los Angeles,California,90706,-118.134,33.8847,-
 1008140,Bellingham Farmers Market,1207 10th Street,Bellingham,Whatcom,Washington,98226,-122.469657,48.75262,Y
-1008824,Bellows Falls Farmers Market, Waypoint Center on the Island,Bellows Falls,Windham,Vermont,05101,-72.444878,43.135697,Y
+1008824,Bellows Falls Farmers Market,Waypoint Center on the Island,Bellows Falls,Windham,Vermont,05101,-72.444878,43.135697,Y
 1000940,Bellville Farmers Market,142 Park Place,Bellville,Richland,Ohio,44813,-82.5116,40.6198,-
 1009929,Belmar Fresh Market,Wadsworth & Alameda,Lakewood,Jefferson,Colorado,,-105.0813552,39.7111007,Y
 1005168,Belmond Area Farmers Market,Corner of 2nd Street NE & 1st Aveene NE,Belmond,Wright,Iowa,50421,-93.6155,42.8478,-
