@@ -5,7 +5,7 @@
 -- Chapter 16 Code Examples
 ----------------------------------------------------------------------------
 
--- Listing 16-1: JSON with information on two films
+-- Listing 16-1: JSON with information about two films
 
 [{
 	"title": "The Incredibles",
