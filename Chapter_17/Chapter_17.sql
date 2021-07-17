@@ -15,8 +15,7 @@ CREATE OR REPLACE VIEW nevada_counties_pop_2019 AS
            county_fips,
            pop_est_2019
     FROM us_counties_pop_est_2019
-    WHERE state_name = 'Nevada'
-    ORDER BY county_fips;
+    WHERE state_name = 'Nevada';
 
 -- Listing 17-2: Querying the nevada_counties_pop_2019 view
 
@@ -39,8 +38,7 @@ CREATE OR REPLACE VIEW county_pop_change_2019_2010 AS
     FROM us_counties_pop_est_2019 AS c2019
         JOIN us_counties_pop_est_2010 AS c2010
     ON c2019.state_fips = c2010.state_fips
-        AND c2019.county_fips = c2010.county_fips
-        ORDER BY c2019.state_fips, c2019.county_fips;
+        AND c2019.county_fips = c2010.county_fips;
 
 -- Listing 17-4: Selecting columns from the county_pop_change_2019_2010 view
 
@@ -63,28 +61,35 @@ CREATE MATERIALIZED VIEW nevada_counties_pop_2019 AS
            county_fips,
            pop_est_2019
     FROM us_counties_pop_est_2019
-    WHERE state_name = 'Nevada'
-    ORDER BY county_fips;
+    WHERE state_name = 'Nevada';
 
 -- Listing 17-6: Refreshing a materialized view 
 
 REFRESH MATERIALIZED VIEW nevada_counties_pop_2019;
 
--- Bonus: You can drop a materialized view using:
--- DROP MATERIALIZED VIEW nevada_counties_pop_2019;
+-- Optionally add the CONCURRENTLY keyword to prevent locking out SELECTs
+-- while the view refresh is in progress. To use CONCURRENTLY, the view must
+-- have at least one UNIQUE index:
 
-SELECT * FROM employees ORDER BY emp_id;
+CREATE UNIQUE INDEX nevada_counties_pop_2019_fips_idx ON nevada_counties_pop_2019 (state_fips, county_fips);
+REFRESH MATERIALIZED VIEW CONCURRENTLY nevada_counties_pop_2019;
+
+-- To drop a materialized view, use:
+-- DROP MATERIALIZED VIEW nevada_counties_pop_2019;
 
 -- Listing 17-7: Creating a view on the employees table
 
-CREATE OR REPLACE VIEW employees_tax_dept AS
+-- Optional: Check the emplyees table:
+SELECT * FROM employees ORDER BY emp_id;
+
+-- Create view:
+CREATE OR REPLACE VIEW employees_tax_dept WITH (security_barrier) AS
      SELECT emp_id,
             first_name,
             last_name,
             dept_id
      FROM employees
      WHERE dept_id = 1
-     ORDER BY emp_id
      WITH LOCAL CHECK OPTION;
 
 SELECT * FROM employees_tax_dept ORDER BY emp_id;
@@ -315,7 +320,6 @@ PRIMARY KEY (station_name, observation_date)
 );
 
 -- Listing 17-24: Creating the classify_max_temp() function
--- CHECK AGAINST CATEGORIES USED PREVIOUSLY
 
 CREATE OR REPLACE FUNCTION classify_max_temp()
     RETURNS trigger AS

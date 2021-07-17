@@ -62,7 +62,7 @@ DELETE FROM state_regions;
 \copy state_regions FROM 'C:\YourDirectory\state_regions.csv' WITH (FORMAT CSV, HEADER);
 
 
--- Listing 18-8:
+-- Listing 18-8: Importing data using psql with COPY
 
 DELETE FROM state_regions;
 
