@@ -88,19 +88,22 @@ SHOW config_file;
 
 SHOW data_directory;
 
--- reload settings
+-- Reload settings using pg_ctl:
 -- Mac and Linux: pg_ctl reload -D '/path/to/data/directory/'
 -- Windows: pg_ctl reload -D "C:\path\to\data\directory\"
+
+-- Reload settings using pg_reload_conf():
+-- SELECT pg_reload_conf(); 
 
 
 -- BACKUP AND RESTORE
 
--- Listing 19-11: Backing up the analysis database with pg_dump
-pg_dump -d analysis -U [user_name] -Fc -v > analysis_backup.sql
+-- Listing 19-11: Exporting the analysis database with pg_dump
+pg_dump -d analysis -U [user_name] -Fc -v -f analysis_backup.dump
 
--- Back up just a table
-pg_dump -t 'train_rides' -d analysis -U [user_name] -Fc -v > train_backup.sql 
+-- Export just a table
+pg_dump -t 'train_rides' -d analysis -U [user_name] -Fc -v -f train_backup.dump
 
 -- Listing 19-12: Restoring the analysis database with pg_restore
 
-pg_restore -C -d postgres -U postgres analysis_backup_custom.sql
+pg_restore -C -d postgres -U postgres analysis_backup.dump
