@@ -77,7 +77,7 @@ SELECT first_name, last_name, salary
 FROM teachers
 WHERE salary >= 43500;
 
--- Teachers who earn between $40,000 and $65,000
+-- Teachers who earn from $40,000 to $65,000
 SELECT first_name, last_name, school, salary
 FROM teachers
 WHERE salary BETWEEN 40000 AND 65000;
