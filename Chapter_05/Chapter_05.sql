@@ -13,7 +13,7 @@ FROM 'C:\YourDirectory\your_file.csv'
 WITH (FORMAT CSV, HEADER);
 
 
--- Listing 5-2: A CREATE TABLE statement for Census county population estimates
+-- Listing 5-2: CREATE TABLE statement for Census county population estimates
 -- Data dictionary for estimates available at: https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/2010-2019/co-est2019-alldata.pdf
 -- Data dictionary for additional columns at: http://www.census.gov/prod/cen2010/doc/pl94-171.pdf
 -- Note: Some columns have been given more descriptive names
@@ -98,7 +98,7 @@ WHERE town = 'New Brillig';
 SELECT * FROM supervisor_salaries;
 
 
--- Listing 5-7: Use a temporary table to add a default value to a column during
+-- Listing 5-7: Using a temporary table to add a default value to a column during
 -- import
 
 DELETE FROM supervisor_salaries;
@@ -120,7 +120,7 @@ DROP TABLE supervisor_salaries_temp;
 SELECT * FROM supervisor_salaries ORDER BY id LIMIT 2;
 
 
--- Listing 5-8: Export an entire table with COPY
+-- Listing 5-8: Exporting an entire table with COPY
 
 COPY us_counties_pop_est_2019
 TO 'C:\YourDirectory\us_counties_export.txt'
