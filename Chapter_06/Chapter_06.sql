@@ -107,7 +107,7 @@ SELECT department,
                     spend_2019 * 100, 1 ) AS pct_change
 FROM percent_change;
 
--- Listing 6-9: Using sum() and avg() aggregate functions
+-- Listing 6-9: Using the sum() and avg() aggregate functions
 
 SELECT sum(pop_est_2019) AS county_sum,
        round(avg(pop_est_2019), 0) AS county_average
@@ -165,5 +165,5 @@ FROM us_counties_pop_est_2019;
 
 -- Listing 6-14: Finding the most-frequent value with mode()
 
-SELECT mode() WITHIN GROUP (ORDER BY pop_est_2019)
+SELECT mode() WITHIN GROUP (ORDER BY births_2019)
 FROM us_counties_pop_est_2019;
