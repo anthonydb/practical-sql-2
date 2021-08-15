@@ -113,15 +113,18 @@ ORDER BY district_2020.id;
 -- Listing 7-9: Using CROSS JOIN
 
 SELECT *
-FROM district_2020 CROSS JOIN district_2035;
+FROM district_2020 CROSS JOIN district_2035
+ORDER BY district_2020.id, district_2035.id;
 
 -- Alternately, a CROSS JOIN can be written with a comma-join syntax:
 SELECT *
-FROM district_2020, district_2035;
+FROM district_2020, district_2035
+ORDER BY district_2020.id, district_2035.id;
 
 -- Or it can be written as a JOIN with true in the ON clause:
 SELECT *
-FROM district_2020 JOIN district_2035 ON true;
+FROM district_2020 JOIN district_2035 ON true
+ORDER BY district_2020.id, district_2035.id;
 
 -- Listing 7-10: Filtering to show missing values with IS NULL
 

@@ -310,9 +310,9 @@ GROUP BY state_name;
 -- Chapter 7: Joining Tables in a Relational Database
 ----------------------------------------------------------------------------
 
--- 1. According to the Census population estimates, which county had the
+-- 1. According to the census population estimates, which county had the
 -- greatest percentage loss of population between 2010 and 2019? Try
--- an Internet search to find out what happened. (Hint: The loss is related
+-- an internet search to find out what happened. (Hint: The loss is related
 -- to a particular type of facility.)
 
 -- Answer: 
@@ -337,7 +337,7 @@ ORDER BY pct_change ASC;
 
 
 -- 2. Apply the concepts you learned about UNION to create query 
--- results that merge queries of the Census county population estimates
+-- results that merge queries of the census county population estimates
 -- for 2010 and 2019. Your results should include a column called year
 -- that specifies the year of the estimate for each row in the results.
 
