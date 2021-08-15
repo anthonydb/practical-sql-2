@@ -26,6 +26,8 @@ CREATE TABLE natural_key_example (
 );
 
 -- Listing 8-2: Example of a primary key violation
+-- Note: You will need to create the natural_key_example table
+-- using either of the two statements in Listing 8-1.
 
 INSERT INTO natural_key_example (license_id, first_name, last_name)
 VALUES ('T229901', 'Gem', 'Godfrey');
@@ -44,13 +46,13 @@ CREATE TABLE natural_key_composite_example (
 
 -- Listing 8-4: Example of a composite primary key violation
 INSERT INTO natural_key_composite_example (student_id, school_day, present)
-VALUES(775, '1/22/2022', 'Y');
+VALUES(775, '2022-01-22', 'Y');
 
 INSERT INTO natural_key_composite_example (student_id, school_day, present)
-VALUES(775, '1/23/2022', 'Y');
+VALUES(775, '2022-01-23', 'Y');
 
 INSERT INTO natural_key_composite_example (student_id, school_day, present)
-VALUES(775, '1/23/2022', 'N');
+VALUES(775, '2022-01-23', 'N');
 
 -- Listing 8-5: Declaring a bigint column as a surrogate key using IDENTITY
 
@@ -68,7 +70,7 @@ VALUES ('Beachball Polish', '2020-03-15 09:21-07'),
 
 SELECT * FROM surrogate_key_example;
 
--- Listing 8-6:
+-- Listing 8-6: Restarting an IDENTITY sequence
 
 INSERT INTO surrogate_key_example
 OVERRIDING SYSTEM VALUE
@@ -101,12 +103,12 @@ INSERT INTO licenses (license_id, first_name, last_name)
 VALUES ('T229901', 'Steve', 'Rothery');
 
 INSERT INTO registrations (registration_id, registration_date, license_id)
-VALUES ('A203391', '3/17/2022', 'T229901');
+VALUES ('A203391', '2022-03-17', 'T229901');
 
 INSERT INTO registrations (registration_id, registration_date, license_id)
-VALUES ('A75772', '3/17/2022', 'T000001');
+VALUES ('A75772', '2022-03-17', 'T000001');
 
--- Listing 8-8: CHECK constraint examples
+-- Listing 8-8: Examples of CHECK constraints
 
 CREATE TABLE check_constraint_example (
     user_id bigint GENERATED ALWAYS AS IDENTITY,
@@ -124,7 +126,7 @@ VALUES ('admin');
 INSERT INTO check_constraint_example (salary)
 VALUES (-10000);
 
--- Listing 8-9: UNIQUE constraint example
+-- Listing 8-9: A UNIQUE constraint example
 
 CREATE TABLE unique_constraint_example (
     contact_id bigint GENERATED ALWAYS AS IDENTITY,
@@ -144,7 +146,7 @@ VALUES ('Betty', 'Diaz', 'bdiaz@example.org');
 INSERT INTO unique_constraint_example (first_name, last_name, email)
 VALUES ('Sasha', 'Lee', 'slee@example.org');
 
--- Listing 8-10: NOT NULL constraint example
+-- Listing 8-10: A NOT NULL constraint example
 
 CREATE TABLE not_null_example (
     student_id bigint GENERATED ALWAYS AS IDENTITY,
@@ -194,6 +196,6 @@ WHERE street = '52 STREET';
 EXPLAIN ANALYZE SELECT * FROM new_york_addresses
 WHERE street = 'ZWICKY AVENUE';
 
--- Listing 8-14: Creating a B-Tree index on the new_york_addresses table
+-- Listing 8-14: Creating a B-tree index on the new_york_addresses table
 
 CREATE INDEX street_idx ON new_york_addresses (street);
