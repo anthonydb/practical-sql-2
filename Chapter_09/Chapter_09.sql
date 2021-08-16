@@ -250,7 +250,7 @@ FROM pls_fy2018_libraries
 GROUP BY stabr
 ORDER BY count(*) DESC;
 
--- Listing 9-10: GROUP BY with count() on the stabr and stataddr columns
+-- Listing 9-10: Using GROUP BY with count() on the stabr and stataddr columns
 
 SELECT stabr, stataddr, count(*)
 FROM pls_fy2018_libraries
