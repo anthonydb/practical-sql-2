@@ -141,7 +141,7 @@ ALTER TABLE meat_poultry_egg_establishments ADD COLUMN company_standard text;
 UPDATE meat_poultry_egg_establishments
 SET company_standard = company;
 
--- Listing 10-14: Use UPDATE to modify column values that match a string
+-- Listing 10-14: Using an UPDATE statement to modify column values that match a string
 
 UPDATE meat_poultry_egg_establishments
 SET company_standard = 'Armour-Eckrich Meats'
@@ -197,16 +197,16 @@ FROM meat_poultry_egg_establishments
 GROUP BY st, inspection_deadline
 ORDER BY st;
 
--- Listing 10-21: Delete rows matching an expression
+-- Listing 10-21: Deleting rows matching an expression
 
 DELETE FROM meat_poultry_egg_establishments
 WHERE st IN('AS','GU','MP','PR','VI');
 
--- Listing 10-22: Remove a column from a table using DROP
+-- Listing 10-22: Removing a column from a table using DROP
 
 ALTER TABLE meat_poultry_egg_establishments DROP COLUMN zip_copy;
 
--- Listing 10-23: Remove a table from a database using DROP
+-- Listing 10-23: Removing a table from a database using DROP
 
 DROP TABLE meat_poultry_egg_establishments_backup;
 
@@ -252,8 +252,11 @@ FROM meat_poultry_egg_establishments;
 
 -- Listing 10-26: Swapping table names using ALTER TABLE
 
-ALTER TABLE meat_poultry_egg_establishments RENAME TO meat_poultry_egg_establishments_temp;
-ALTER TABLE meat_poultry_egg_establishments_backup RENAME TO meat_poultry_egg_establishments;
-ALTER TABLE meat_poultry_egg_establishments_temp RENAME TO meat_poultry_egg_establishments_backup;
+ALTER TABLE meat_poultry_egg_establishments 
+    RENAME TO meat_poultry_egg_establishments_temp;
+ALTER TABLE meat_poultry_egg_establishments_backup 
+    RENAME TO meat_poultry_egg_establishments;
+ALTER TABLE meat_poultry_egg_establishments_temp 
+    RENAME TO meat_poultry_egg_establishments_backup;
 
 
