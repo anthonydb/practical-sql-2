@@ -668,9 +668,9 @@ WHERE meat_processing = TRUE AND
 
 -- 1. In Listing 11-2, the correlation coefficient, or r value, of the
 -- variables pct_bachelors_higher and median_hh_income was about .70.
--- Write a query to show the correlation between pct_masters_higher and
--- median_hh_income. Is the r value higher or lower? What might explain
--- the difference?
+-- Write a query using the same dataset to show the correlation between
+-- pct_masters_higher and median_hh_income. Is the r value higher or lower?
+-- What might explain the difference?
 
 -- Answer:
 -- The r value of pct_bachelors_higher and median_hh_income is about .60, which

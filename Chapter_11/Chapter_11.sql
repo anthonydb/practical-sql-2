@@ -5,7 +5,7 @@
 -- Chapter 11 Code Examples
 ----------------------------------------------------------------------------
 
--- Listing 11-1: Create Census 2014-2018 ACS 5-Year stats table and import data
+-- Listing 11-1: Creating the census 2014-2018 ACS 5-Year Estimates stats table and importing data
 
 CREATE TABLE acs_2014_2018_stats (
     geoid text CONSTRAINT geoid_key PRIMARY KEY,
@@ -72,7 +72,7 @@ FROM acs_2014_2018_stats;
 SELECT stddev_pop(median_hh_income)
 FROM acs_2014_2018_stats;
 
--- Listing 11-6: The rank() and dense_rank() window functions
+-- Listing 11-6: Using the rank() and dense_rank() window functions
 
 CREATE TABLE widget_companies (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
