@@ -17,7 +17,7 @@ WHERE pop_est_2019 >= (
     )
 ORDER BY pop_est_2019 DESC;
 
--- Listing 13-2: Using a subquery in a WHERE clause for DELETE
+-- Listing 13-2: Using a subquery in a WHERE clause with DELETE
 
 CREATE TABLE us_counties_2019_top10 AS
 SELECT * FROM us_counties_pop_est_2019;
@@ -109,7 +109,8 @@ SELECT first_name, last_name
 FROM employees
 WHERE emp_id IN (
     SELECT id
-    FROM retirees);
+    FROM retirees)
+ORDER BY emp_id;
     
 -- Listing 13-9: Using a correlated subquery with WHERE EXISTS
 
