@@ -7,7 +7,7 @@
 
 
 -- Commonly used string functions
--- Full list at https://www.postgresql.org/docs/current/static/functions-string.html
+-- Full list at https://www.postgresql.org/docs/current/functions-string.html
 
 -- Case formatting
 SELECT upper('Neal7');
@@ -39,7 +39,7 @@ SELECT replace('bat', 'b', 'c');
 
 -- Any character one or more times
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '.+');
--- One or two digits followed by a space and p.m.
+-- One or two digits followed by a space and a.m. or p.m. in a noncapture group
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '\d{1,2} (?:a.m.|p.m.)');
 -- One or more word characters at the start
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '^\w+');
@@ -56,16 +56,6 @@ SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from 'May \d, \d{4}
 
 SELECT county_name
 FROM us_counties_pop_est_2019
-WHERE county_name ~* '(.+lade.+|.+lare.+)'
-ORDER BY county_name;
-
-SELECT county_name
-FROM us_counties_pop_est_2019
-WHERE county_name ~* '.+ash.+' AND county_name !~ 'Wash.+'
-ORDER BY county_name;
-
-SELECT county_name
-FROM us_counties_pop_est_2019
 WHERE county_name ~* '(lade|lare)'
 ORDER BY county_name;
 
@@ -74,7 +64,7 @@ FROM us_counties_pop_est_2019
 WHERE county_name ~* 'ash' AND county_name !~ 'Wash'
 ORDER BY county_name;
 
--- Listing 14-2: Regular expression functions to replace and split
+-- Listing 14-2: Regular expression functions to replace and split text
 
 SELECT regexp_replace('05/12/2024', '\d{4}', '2023');
 
@@ -125,14 +115,14 @@ ORDER BY crime_id;
 -- Listing 14-8: Using regexp_match() to find the second date
 -- Note that the result includes an unwanted hyphen
 SELECT crime_id,
-       regexp_match(original_text, '-\d{1,2}\/\d{1,2}\/\d{1,2}')
+       regexp_match(original_text, '-\d{1,2}\/\d{1,2}\/\d{2}')
 FROM crime_reports
 ORDER BY crime_id;
 
 -- Listing 14-9: Using a capture group to return only the date
 -- Eliminates the hyphen
 SELECT crime_id,
-       regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{1,2})')
+       regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{2})')
 FROM crime_reports
 ORDER BY crime_id;
 
@@ -151,8 +141,8 @@ ORDER BY crime_id;
 
 SELECT crime_id,
        regexp_match(original_text, '\d{1,2}\/\d{1,2}\/\d{2}') AS date_1,
-       CASE WHEN EXISTS (SELECT regexp_matches(original_text, '-(\d{1,2}\/\d{1,2}\/\d{1,2})'))
-            THEN regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{1,2})')
+       CASE WHEN EXISTS (SELECT regexp_matches(original_text, '-(\d{1,2}\/\d{1,2}\/\d{2})'))
+            THEN regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{2})')
             ELSE NULL
             END AS date_2,
        regexp_match(original_text, '\/\d{2}\n(\d{4})') AS hour_1,
@@ -203,7 +193,7 @@ SET date_1 =
     date_2 = 
     CASE 
     -- if there is no second date but there is a second hour
-        WHEN (SELECT regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{1,2})') IS NULL)
+        WHEN (SELECT regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{2})') IS NULL)
                      AND (SELECT regexp_match(original_text, '\/\d{2}\n\d{4}-(\d{4})') IS NOT NULL)
         THEN 
           ((regexp_match(original_text, '\d{1,2}\/\d{1,2}\/\d{2}'))[1]
@@ -213,10 +203,10 @@ SET date_1 =
           )::timestamptz 
 
     -- if there is both a second date and second hour
-        WHEN (SELECT regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{1,2})') IS NOT NULL)
+        WHEN (SELECT regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{2})') IS NOT NULL)
               AND (SELECT regexp_match(original_text, '\/\d{2}\n\d{4}-(\d{4})') IS NOT NULL)
         THEN 
-          ((regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{1,2})'))[1]
+          ((regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{2})'))[1]
               || ' ' ||
           (regexp_match(original_text, '\/\d{2}\n\d{4}-(\d{4})'))[1] 
               ||' US/Eastern'
@@ -245,6 +235,10 @@ ORDER BY crime_id;
 -- & (AND)
 -- | (OR)
 -- ! (NOT)
+
+-- Note: You can view installed PostgreSQL search language configurations by running:
+SELECT cfgname FROM pg_ts_config;
+
 
 -- Listing 14-15: Converting text to tsvector data
 
@@ -331,7 +325,7 @@ WHERE search_speech_text @@
       to_tsquery('english', 'transportation & !roads')
 ORDER BY speech_date;
 
--- Listing 14-24: Find speeches where "defense" follows "military"
+-- Listing 14-24: Finding speeches where "defense" follows "military"
 
 SELECT president,
        speech_date,
