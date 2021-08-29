@@ -260,7 +260,7 @@ FROM earthquakes
 ORDER BY (earthquake #>> '{properties, mag}')::numeric DESC NULLS LAST
 LIMIT 5;
 
--- Listing 16-16: Finding earthquakes with most Did You Feel It? reports
+-- Listing 16-16: Finding earthquakes with the most Did You Feel It? reports
 -- https://earthquake.usgs.gov/data/dyfi/
 
 SELECT earthquake #>> '{properties, place}' AS place,
@@ -367,7 +367,7 @@ UPDATE films
 SET film = jsonb_set(film,
                  '{genre}',
                   film #> '{genre}' || '["World War II"]',
-                  false)
+                  true)
 WHERE film @> '{"title": "Cinema Paradiso"}'::jsonb; 
 
 SELECT film FROM films -- check the updated data
