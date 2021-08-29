@@ -55,7 +55,7 @@ SELECT ST_SetSRID(ST_MakePoint(-74.9233606, 42.699992), 4326);
 -- Listing 15-6: Functions specific to making LineStrings
 
 SELECT ST_LineFromText('LINESTRING(-105.90 35.67,-105.91 35.67)', 4326);
-SELECT ST_MakeLine(ST_MakePoint(-74.92, 42.69), ST_MakePoint(-74.12, 42.45));
+SELECT ST_MakeLine(ST_MakePoint(-74.9, 42.7), ST_MakePoint(-74.1, 42.4));
 
 -- Listing 15-7: Functions specific to making Polygons
 
@@ -76,7 +76,6 @@ SELECT ST_MPolyFromText('MULTIPOLYGON((
 
 
 -- ANALYZING FARMERS MARKETS DATA
--- https://catalog.data.gov/dataset/farmers-markets-geographic-data
 -- https://www.ams.usda.gov/local-food-directories/farmersmarkets
 
 
@@ -286,15 +285,6 @@ FROM santafe_linearwater_2019 water JOIN santafe_roads_2019 roads
 WHERE water.fullname = 'Santa Fe Riv' 
       AND roads.fullname IS NOT NULL
 ORDER BY roads.fullname;
-
-SELECT water.fullname AS waterway,
-       roads.rttyp,
-       roads.fullname AS road
-FROM santafe_linearwater_2019 water JOIN santafe_roads_2019 roads
-    ON ST_Intersects(water.geom, roads.geom)
-WHERE water.fullname = 'Santa Fe Riv' 
-      AND roads.fullname IS NOT NULL
-ORDER BY roads.fullname;    
 
 -- Listing 15-21: Using ST_Intersection() to show where roads cross the river
 
