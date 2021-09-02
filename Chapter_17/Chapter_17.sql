@@ -138,11 +138,9 @@ percent_change(new_value numeric,
                old_value numeric,
                decimal_places integer DEFAULT 1)
 RETURNS numeric AS
-$$
-    SELECT round(
-            ((new_value - old_value) / old_value) * 100, decimal_places
-    );
-$$
+'SELECT round(
+       ((new_value - old_value) / old_value) * 100, decimal_places
+);'
 LANGUAGE SQL
 IMMUTABLE
 RETURNS NULL ON NULL INPUT;
@@ -151,7 +149,7 @@ RETURNS NULL ON NULL INPUT;
 
 SELECT percent_change(110, 108, 2);
 
--- Listing 17-13: Testing percent_change() on Census data
+-- Listing 17-13: Testing percent_change() on census data
 
 SELECT c2019.county_name,
        c2019.state_name,
