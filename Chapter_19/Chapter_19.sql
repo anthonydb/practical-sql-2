@@ -84,7 +84,7 @@ SHOW config_file;
 
 -- Listing 19-9: Sample postgresql.conf settings (see book for listing)
 
--- Listing 19-10: Show the location of the data directory
+-- Listing 19-10: Showing the location of the data directory
 
 SHOW data_directory;
 
