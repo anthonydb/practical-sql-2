@@ -47,7 +47,7 @@ SELECT
 FROM number_data_types
 WHERE numeric_column = .7;
 
--- Listing 4-4: Timestamp and interval types in action
+-- Listing 4-4: The timestamp and interval types in action
 
 CREATE TABLE date_time_types (
     timestamp_column timestamp with time zone,
