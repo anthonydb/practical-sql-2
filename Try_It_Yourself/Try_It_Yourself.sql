@@ -6,20 +6,14 @@
 ----------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------
--- Chapter 1: Setting Up Your Coding Environment
-----------------------------------------------------------------------------
-
--- There are no Try It Yourself exercises in this chapter!
-
-----------------------------------------------------------------------------
 -- Chapter 2: Creating Your First Database and Table
 ----------------------------------------------------------------------------
 
 -- 1. Imagine you're building a database to catalog all the animals at your
--- local zoo. You want one table for tracking all the kinds of animals and
--- another table to track the specifics on each animal. Write CREATE TABLE
--- statements for each table that include some of the columns you need. Why did
--- you include the columns you chose?
+-- local zoo. You want one table to track the kinds of animals in the
+-- collection and another table to track the specifics on each animal. Write
+-- CREATE TABLE statements for each table that include some of the columns
+-- you need. Why did you include the columns you chose?
 
 -- Answer (yours will vary):
 
