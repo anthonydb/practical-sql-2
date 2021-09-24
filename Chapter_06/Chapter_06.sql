@@ -36,7 +36,7 @@ SELECT (7 + 8) * 9;	-- answer: 135
 SELECT 3 ^ 3 - 1;   -- answer: 26
 SELECT 3 ^ (3 - 1); -- answer: 9
 
--- Listing 6-4: Selecting Census population estimate columns with aliases
+-- Listing 6-4: Selecting census population estimate columns with aliases
 
 SELECT county_name AS county,
        state_name AS state,
@@ -60,7 +60,7 @@ SELECT county_name AS county,
 FROM us_counties_pop_est_2019
 ORDER BY state_name, county_name;
 
--- Listing 6-6: Checking Census data totals
+-- Listing 6-6: Checking census data totals
 
 SELECT county_name AS county,
        state_name AS state,
@@ -104,7 +104,7 @@ SELECT department,
        spend_2019,
        spend_2022,
        round( (spend_2022 - spend_2019) /
-                    spend_2019 * 100, 1 ) AS pct_change
+                    spend_2019 * 100, 1) AS pct_change
 FROM percent_change;
 
 -- Listing 6-9: Using the sum() and avg() aggregate functions

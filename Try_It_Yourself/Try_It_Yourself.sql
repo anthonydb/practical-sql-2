@@ -167,7 +167,7 @@ SELECT CAST('4//2021' AS timestamp with time zone);
 ----------------------------------------------------------------------------
 
 -- 1. Write a WITH statement to include with COPY to handle the import of an
--- imaginary text file that has a first couple of rows that look like this:
+-- imaginary text file whose first couple of rows look like this:
 
 id:movie:actor
 50:#Mission: Impossible#:Tom Cruise
