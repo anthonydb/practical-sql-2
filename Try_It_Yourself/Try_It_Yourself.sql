@@ -306,7 +306,7 @@ GROUP BY state_name;
 
 -- 1. According to the census population estimates, which county had the
 -- greatest percentage loss of population between 2010 and 2019? Try
--- an internet search to find out what happened. (Hint: The loss is related
+-- an internet search to find out what happened. (Hint: The decrease is related
 -- to a particular type of facility.)
 
 -- Answer: 
@@ -378,27 +378,27 @@ ON c2019.state_fips = c2010.state_fips
 -- track of your vinyl LP collection. Start by reviewing these CREATE TABLE
 -- statements.
 
--- The albums table includes information specific to the overall collection
--- of songs on the disc. The songs table catalogs each track on the album.
--- Each song has a title and a column for its composers, who might be 
--- different than the album artist.
-
 CREATE TABLE albums (
-    album_id bigserial,
-    catalog_code varchar(100),
+    album_id bigint GENERATED ALWAYS AS IDENTITY,
+    catalog_code text,
     title text,
     artist text,
     release_date date,
-    genre varchar(40),
+    genre text,
     description text
 );
 
 CREATE TABLE songs (
-    song_id bigserial,
+    song_id bigint GENERATED ALWAYS AS IDENTITY,
     title text,
     composers text,
     album_id bigint
 );
+
+-- The albums table includes information specific to the overall collection
+-- of songs on the disc. The songs table catalogs each track on the album.
+-- Each song has a title and a column for its composers, who might be 
+-- different than the album artist.
 
 -- Use the tables to answer these questions:
 

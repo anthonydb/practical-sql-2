@@ -155,6 +155,10 @@ CREATE TABLE not_null_example (
     CONSTRAINT student_id_key PRIMARY KEY (student_id)
 );
 
+-- This will fail:
+INSERT INTO not_null_example (first_name, last_name)
+VALUES ('Sting', NULL);
+
 -- Listing 8-11: Dropping and adding a primary key and a NOT NULL constraint
 
 -- Drop
