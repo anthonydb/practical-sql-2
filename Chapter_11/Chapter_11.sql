@@ -5,7 +5,7 @@
 -- Chapter 11 Code Examples
 ----------------------------------------------------------------------------
 
--- Listing 11-1: Creating the census 2014-2018 ACS 5-Year Estimates stats table and importing data
+-- Listing 11-1: Creating a 2014-2018 ACS 5-Year Estimates table and importing data
 
 CREATE TABLE acs_2014_2018_stats (
     geoid text CONSTRAINT geoid_key PRIMARY KEY,

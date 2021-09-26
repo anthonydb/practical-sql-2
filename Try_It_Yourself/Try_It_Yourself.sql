@@ -606,16 +606,18 @@ WHERE pls16.fscskey IS NULL OR pls17.fscskey IS NULL;
 -- Chapter 10: Inspecting and Modifying Data
 --------------------------------------------------------------
 
--- In this exercise, you’ll turn the meat_poultry_egg_inspect table into useful
--- information. You needed to answer two questions: How many of the companies
--- in the table process meat, and how many process poultry?
+-- In this exercise, you’ll turn the meat_poultry_egg_establishments table
+-- into useful information. You need to answer two questions: How many 
+-- of the companies in the table process meat, and how many process poultry?
 
--- Create two new columns called meat_processing and poultry_processing. Each
+-- Your tasks are as follows:
+
+-- 1. Create two new columns called meat_processing and poultry_processing. Each
 -- can be of the type boolean.
 
--- Using UPDATE, set meat_processing = TRUE on any row where the activities
+-- 2. Using UPDATE, set meat_processing = TRUE on any row where the activities
 -- column contains the text 'Meat Processing'. Do the same update on the
--- poultry_processing column, but this time lookup for the text
+-- poultry_processing column, but this time look for the text
 -- 'Poultry Processing' in activities.
 
 -- Use the data from the new, updated columns to count how many companies
@@ -657,7 +659,7 @@ WHERE meat_processing = TRUE AND
       poultry_processing = TRUE;
 
 ----------------------------------------------------------------------------
--- Chapter 11: Creating Your First Database and Table
+-- Chapter 11: Statistical Functions in SQL
 ----------------------------------------------------------------------------
 
 -- 1. In Listing 11-2, the correlation coefficient, or r value, of the
