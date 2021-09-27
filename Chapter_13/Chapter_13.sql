@@ -322,7 +322,7 @@ AS (station text,
     dec numeric(3,0)
 );
 
--- Listing 13-20: Re-classifying temperature data with CASE
+-- Listing 13-20: Reclassifying temperature data with CASE
 
 SELECT max_temp,
        CASE WHEN max_temp >= 90 THEN 'Hot'

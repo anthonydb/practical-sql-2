@@ -159,6 +159,7 @@ WITH (FORMAT CSV, HEADER);
 CREATE INDEX tpep_pickup_idx
 ON nyc_yellow_taxi_trips (tpep_pickup_datetime);
 
+-- Count the trip records
 SELECT count(*) FROM nyc_yellow_taxi_trips;
 
 -- Listing 12-8: Counting taxi trips by hour
