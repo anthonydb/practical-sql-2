@@ -886,7 +886,7 @@ SELECT regexp_replace('Williams, Sr.', ', ', ' ');
 SELECT (regexp_match('Williams, Sr.', '.*, (.*)'))[1];
 
 
--- 2. Using any one of the presidents' speeches addresses, count the number of
+-- 2. Using any one of the presidents' speeches, count the number of
 -- unique words that are five characters or more. Hint: you can use
 -- regexp_split_to_table() in a subquery to create a table of words to count.
 -- Bonus: remove commas and periods at the end of each word.

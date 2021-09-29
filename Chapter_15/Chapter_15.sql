@@ -79,7 +79,7 @@ SELECT ST_MPolyFromText('MULTIPOLYGON((
 -- https://www.ams.usda.gov/local-food-directories/farmersmarkets
 
 
--- Listing 15-8: Create and load the farmers_markets table
+-- Listing 15-8: Creating and loading the farmers_markets table
 
 CREATE TABLE farmers_markets (
     fmid bigint PRIMARY KEY,
@@ -108,9 +108,10 @@ ALTER TABLE farmers_markets ADD COLUMN geog_point geography(POINT,4326);
 
 -- Now fill that column with the lat/long
 UPDATE farmers_markets
-SET geog_point = ST_SetSRID(
-                            ST_MakePoint(longitude,latitude)::geography,4326
-                           );
+SET geog_point = 
+     ST_SetSRID(
+               ST_MakePoint(longitude,latitude)::geography,4326
+               );
 
 -- Add a spatial (R-Tree) index using GIST
 CREATE INDEX market_pts_idx ON farmers_markets USING GIST (geog_point);
@@ -193,7 +194,7 @@ FROM us_counties_2019_shp
 ORDER BY gid
 LIMIT 1;
 
--- Listing 15-15: Find the largest counties by area using ST_Area()
+-- Listing 15-15: Finding the largest counties by area using ST_Area()
 
 SELECT name,
        statefp AS st,
@@ -215,6 +216,7 @@ WHERE ST_Within(
 );
 
 -- Listing 15-17: Using ST_DWithin() to count people near Lincoln, Nebraska
+
 SELECT sum(c.pop_est_2019) AS pop_est_2019
 FROM us_counties_2019_shp sh JOIN us_counties_pop_est_2019 c
     ON sh.statefp = c.state_fips AND sh.countyfp = c.county_fips
@@ -227,6 +229,7 @@ WHERE ST_DWithin(sh.geom::geography,
 CREATE INDEX us_counties_2019_shp_geog_idx ON us_counties_2019_shp USING GIST (CAST(geom AS geography));
 
 -- Listing 15-18: Displaying counties near Lincoln, Nebraska
+
 SELECT sh.name,
        c.state_name,
        c.pop_est_2019,
