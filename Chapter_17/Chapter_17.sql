@@ -192,7 +192,7 @@ BEGIN
              ELSE 3
         END;
     RAISE NOTICE 'personal_days updated!';
-END
+END;
 $$
 LANGUAGE plpgsql;
 
