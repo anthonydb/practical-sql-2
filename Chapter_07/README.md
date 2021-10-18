@@ -1,7 +1,7 @@
 # Practical SQL, 2nd Edition
 ### A Beginner's Guide to Storytelling with Data
 
-[PracticalSQL, 2nd Edition](https://www.nostarch.com/practicalSQL2) by Anthony DeBarros is [available from No Starch Press](https://www.nostarch.com/practicalSQL2).
+[PracticalSQL, 2nd Edition](https://nostarch.com/practical-sql-2nd-edition/) by Anthony DeBarros is [available from No Starch Press](https://nostarch.com/practical-sql-2nd-edition/).
 
 ### Chapter 7: Joining Tables in a Relational Database
 
