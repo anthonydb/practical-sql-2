@@ -75,4 +75,4 @@ Practical SQL, 2nd Edition is [available in PDF, .mobi, .epub, and classic print
 
 # How Can I Get Help?
 
-Questions? Please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gmail.com). You can also open an issue in this repository.
+Questions? Please open an issue in this repository by navigating to `Issues` and clicking `New Issue`. Fill out the form, and I will answer usually within 1 to 2 business days. For other types of inquiries, please email [practicalsqlbook@gmail.com](mailto:practicalsqlbook@gmail.com). 
