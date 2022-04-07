@@ -11,7 +11,8 @@ None yet
 
 ### Chapter 1: Setting Up Your Coding Environment
 
-None yet
+**Page 13: pgAdmin Dialog to Create Server**
+The location of the pgAdmin dialog to add a server has changed. Now, in the object browser, right-click `Servers` and then click `Register` > `Server`. The remaining steps in the Note on page 13 are the same. (Formerly, the dialog was accessed by right-clicking `Servers` and selecting `Create` > `Server`.)
 
 ### Chapter 2: Creating Your First Database and Table
 
