@@ -48,8 +48,6 @@ SELECT county_name AS county,
        residual_2019 AS residual
 FROM us_counties_pop_est_2019;
 
-SELECT * FROM us_counties_pop_est_2019;
-
 -- Listing 6-5: Subtracting two columns in us_counties_pop_est_2019
 
 SELECT county_name AS county,
