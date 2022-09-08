@@ -1,4 +1,4 @@
----------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
 -- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
 -- by Anthony DeBarros
 
@@ -484,7 +484,7 @@ SELECT pls18.stabr,
        round( (sum(pls18.totstaff::numeric) - sum(pls17.totstaff)) /
             sum(pls17.totstaff) * 100, 1 ) AS chg_2018_17,
        round( (sum(pls17.totstaff::numeric) - sum(pls16.totstaff)) /
-            sum(pls16.hrs_open) * 100, 1 ) AS chg_2017_16
+            sum(pls16.totstaff) * 100, 1 ) AS chg_2017_16
 FROM pls_fy2018_libraries pls18
        JOIN pls_fy2017_libraries pls17 ON pls18.fscskey = pls17.fscskey
        JOIN pls_fy2016_libraries pls16 ON pls18.fscskey = pls16.fscskey
