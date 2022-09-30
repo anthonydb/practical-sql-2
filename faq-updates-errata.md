@@ -77,7 +77,7 @@ None yet
 
 ### Chapter 15: Analyzing Spatial Data with PostGIS
 
-**Pages 282, 288: Geometry Viewer Results Grid Icon**
+**Pages 282, etc.: Geometry Viewer Results Grid Icon**
 
 Beginning with version 6.9 of pgAdmin, released in May 2022, the icon to launch the Geometry Viewer in the result column header was changed from an eye to a map (makes sense). On Page 282 and later in the book, I mention clicking the eye icon to launch the viewer. Now, instead, click the map icon.
 
@@ -97,6 +97,12 @@ None yet
 ### Chapter 19: Maintaining Your Database
 
 None yet
+
+### Index
+
+**Page 417: IN comparison operator**
+
+The entry should reference pages 36, 172, 229.
 
 
 
