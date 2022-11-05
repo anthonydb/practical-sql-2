@@ -137,14 +137,14 @@ WHERE ST_DWithin(geog_point,
                  10000)
 ORDER BY market_name;
 
--- Listing 15-11: Using ST_Distance() to calculate the miles between Yankee Stadium
+-- Listing 15-11: Using ST_Distance() to calculate the km between Yankee Stadium
 -- and Citi Field (Mets)
--- 1609.344 meters/mile
+-- 
 
 SELECT ST_Distance(
                    ST_GeogFromText('POINT(-73.9283685 40.8296466)'),
                    ST_GeogFromText('POINT(-73.8480153 40.7570917)')
-                   ) / 1609.344 AS mets_to_yanks;
+                   ) / 1000 AS mets_to_yanks;
 
 -- Listing 15-12: Using ST_Distance() for each row in farmers_markets
 
@@ -153,13 +153,13 @@ SELECT market_name,
        round(
            (ST_Distance(geog_point,
                         ST_GeogFromText('POINT(-93.6204386 41.5853202)')
-                        ) / 1609.344)::numeric, 2
-            ) AS miles_from_dt
+                        ) / 1000)::numeric, 2
+            ) AS km_from_dt
 FROM farmers_markets
 WHERE ST_DWithin(geog_point,
                  ST_GeogFromText('POINT(-93.6204386 41.5853202)'),
                  10000)
-ORDER BY miles_from_dt ASC;
+ORDER BY km_from_dt ASC;
 
 -- Listing 15-13: Using the <-> distance operator for a nearest neighbors search
 
@@ -169,8 +169,8 @@ SELECT market_name,
        round(
            (ST_Distance(geog_point,
                         ST_GeogFromText('POINT(-68.2041607 44.3876414)')
-                        ) / 1609.344)::numeric, 2
-            ) AS miles_from_bh
+                        ) / 1000)::numeric, 2
+            ) AS km_from_bh
 FROM farmers_markets
 ORDER BY geog_point <-> ST_GeogFromText('POINT(-68.2041607 44.3876414)')
 LIMIT 3;
@@ -199,10 +199,10 @@ LIMIT 1;
 SELECT name,
        statefp AS st,
        round(
-             ( ST_Area(geom::geography) / 2589988.110336 )::numeric, 2
-            )  AS square_miles
+             ( ST_Area(geom::geography) / 1000000 )::numeric, 2
+            )  AS square_km
 FROM us_counties_2019_shp
-ORDER BY square_miles DESC
+ORDER BY square_km DESC
 LIMIT 5;
 
 -- Listing 15-16: Using ST_Within() to find the county belonging to a pair of coordinates
