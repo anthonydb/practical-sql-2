@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- Listing 13-1: Using a subquery in a WHERE clause
+-- 코드 13-1: Using a subquery in a WHERE clause
 
 SELECT county_name,
        state_name,
@@ -15,7 +15,7 @@ WHERE pop_est_2019 >= (
     )
 ORDER BY pop_est_2019 DESC;
 
--- Listing 13-2: Using a subquery in a WHERE clause with DELETE
+-- 코드 13-2: Using a subquery in a WHERE clause with DELETE
 
 CREATE TABLE us_counties_2019_top10 AS
 SELECT * FROM us_counties_pop_est_2019;
@@ -28,7 +28,7 @@ WHERE pop_est_2019 < (
 
 SELECT count(*) FROM us_counties_2019_top10;
 
--- Listing 13-3: Subquery as a derived table in a FROM clause
+-- 코드 13-3: Subquery as a derived table in a FROM clause
 
 SELECT round(calcs.average, 0) as average,
        calcs.median,
@@ -41,7 +41,7 @@ FROM (
      )
 AS calcs;
 
--- Listing 13-4: Joining two derived tables
+-- 코드 13-4: Joining two derived tables
 
 SELECT census.state_name AS st,
        census.pop_est_2018,
@@ -67,7 +67,7 @@ JOIN
 ON est.st = census.state_name
 ORDER BY estabs_per_thousand DESC;
 
--- Listing 13-5: Adding a subquery to a column list
+-- 코드 13-5: Adding a subquery to a column list
 
 SELECT county_name,
        state_name AS st,
@@ -76,7 +76,7 @@ SELECT county_name,
         FROM us_counties_pop_est_2019) AS us_median
 FROM us_counties_pop_est_2019;
 
--- Listing 13-6: Using a subquery in a calculation
+-- 코드 13-6: Using a subquery in a calculation
 
 SELECT county_name,
        state_name AS st,
@@ -88,7 +88,7 @@ WHERE (pop_est_2019 - (SELECT percentile_cont(.5) WITHIN GROUP (ORDER BY pop_est
                        FROM us_counties_pop_est_2019))
        BETWEEN -1000 AND 1000;
 
--- Listing 13-7: Creating and filling a retirees table
+-- 코드 13-7: Creating and filling a retirees table
 
 CREATE TABLE retirees (
     id int,
@@ -101,7 +101,7 @@ VALUES (2, 'Janet', 'King'),
        (4, 'Michael', 'Taylor');
 
 
--- Listing 13-8: Generating values for the IN operator
+-- 코드 13-8: Generating values for the IN operator
 
 SELECT first_name, last_name
 FROM employees
@@ -110,7 +110,7 @@ WHERE emp_id IN (
     FROM retirees)
 ORDER BY emp_id;
     
--- Listing 13-9: Using a correlated subquery with WHERE EXISTS
+-- 코드 13-9: Using a correlated subquery with WHERE EXISTS
 
 SELECT first_name, last_name
 FROM employees
@@ -119,7 +119,7 @@ WHERE EXISTS (
     FROM retirees
     WHERE id = employees.emp_id);
 
--- Listing 13-10: Using a correlated subquery with WHERE NOT EXISTS
+-- 코드 13-10: Using a correlated subquery with WHERE NOT EXISTS
 
 SELECT first_name, last_name
 FROM employees
@@ -128,7 +128,7 @@ WHERE NOT EXISTS (
     FROM retirees
     WHERE id = employees.emp_id);
 
--- Listing 13-11: Using LATERAL subqueries in the FROM clause
+-- 코드 13-11: Using LATERAL subqueries in the FROM clause
 
 SELECT county_name,
        state_name,
@@ -141,7 +141,7 @@ FROM us_counties_pop_est_2019,
      LATERAL (SELECT raw_chg / pop_est_2018::numeric AS pct_chg) pc
 ORDER BY pct_chg DESC;
 
--- Listing 13-12: Using a subquery with a LATERAL join
+-- 코드 13-12: Using a subquery with a LATERAL join
 
 ALTER TABLE teachers ADD CONSTRAINT id_key PRIMARY KEY (id);
 
@@ -172,7 +172,7 @@ ORDER BY t.id;
 
 -- Common Table Expressions
 
--- Listing 13-13: Using a simple CTE to count large counties
+-- 코드 13-13: Using a simple CTE to count large counties
 
 WITH large_counties (county_name, state_name, pop_est_2019)
 AS (
@@ -192,7 +192,7 @@ WHERE pop_est_2019 >= 100000
 GROUP BY state_name
 ORDER BY count(*) DESC;
 
--- Listing 13-14: Using CTEs in a table join
+-- 코드 13-14: Using CTEs in a table join
 
 WITH
     counties (st, pop_est_2018) AS
@@ -215,7 +215,7 @@ FROM counties JOIN establishments
 ON counties.st = establishments.st
 ORDER BY estabs_per_thousand DESC;
 
--- Listing 13-15: Using CTEs to minimize redundant code
+-- 코드 13-15: Using CTEs to minimize redundant code
 
 WITH us_median AS
     (SELECT percentile_cont(.5)
@@ -237,7 +237,7 @@ WHERE (pop_est_2019 - us_median_pop)
 
 CREATE EXTENSION tablefunc;
 
--- Listing 13-16: Creating and filling the ice_cream_survey table
+-- 코드 13-16: Creating and filling the ice_cream_survey table
 
 CREATE TABLE ice_cream_survey (
     response_id integer PRIMARY KEY,
@@ -255,7 +255,7 @@ FROM ice_cream_survey
 ORDER BY response_id
 LIMIT 5;
 
--- Listing 13-17: Generating the ice cream survey crosstab
+-- 코드 13-17: Generating the ice cream survey crosstab
 
 SELECT *
 FROM crosstab('SELECT office,
@@ -275,7 +275,7 @@ AS (office text,
     strawberry bigint,
     vanilla bigint);
 
--- Listing 13-18: Creating and filling a temperature_readings table
+-- 코드 13-18: Creating and filling a temperature_readings table
 
 CREATE TABLE temperature_readings (
     station_name text,
@@ -289,7 +289,7 @@ COPY temperature_readings
 FROM 'C:\YourDirectory\temperature_readings.csv'
 WITH (FORMAT CSV, HEADER);
 
--- Listing 13-19: Generating the temperature readings crosstab
+-- 코드 13-19: Generating the temperature readings crosstab
 
 SELECT *
 FROM crosstab('SELECT
@@ -320,7 +320,7 @@ AS (station text,
     dec numeric(3,0)
 );
 
--- Listing 13-20: Reclassifying temperature data with CASE
+-- 코드 13-20: Reclassifying temperature data with CASE
 
 SELECT max_temp,
        CASE WHEN max_temp >= 90 THEN 'Hot'
@@ -334,7 +334,7 @@ SELECT max_temp,
 FROM temperature_readings
 ORDER BY station_name, observation_date;
 
--- Listing 13-21: Using CASE in a Common Table Expression
+-- 코드 13-21: Using CASE in a Common Table Expression
 
 WITH temps_collapsed (station_name, max_temperature_group) AS
     (SELECT station_name,

@@ -50,7 +50,7 @@ SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '\d{4}');
 -- May followed by a space, digit, comma, space, and four digits.
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from 'May \d, \d{4}');
 
--- Listing 14-1: Using regular expressions in a WHERE clause
+-- 코드 14-1: Using regular expressions in a WHERE clause
 
 SELECT county_name
 FROM us_counties_pop_est_2019
@@ -62,7 +62,7 @@ FROM us_counties_pop_est_2019
 WHERE county_name ~* 'ash' AND county_name !~ 'Wash'
 ORDER BY county_name;
 
--- Listing 14-2: Regular expression functions to replace and split text
+-- 코드 14-2: Regular expression functions to replace and split text
 
 SELECT regexp_replace('05/12/2024', '\d{4}', '2023');
 
@@ -70,14 +70,14 @@ SELECT regexp_split_to_table('Four,score,and,seven,years,ago', ',');
 
 SELECT regexp_split_to_array('Phil Mike Tony Steve', ' ');
 
--- Listing 14-3: Finding an array length
+-- 코드 14-3: Finding an array length
 
 SELECT array_length(regexp_split_to_array('Phil Mike Tony Steve', ' '), 1);
 
 
 -- Turning Text to Data with Regular Expression Functions
 
--- Listing 14-5: Creating and loading the crime_reports table
+-- 코드 14-5: Creating and loading the crime_reports table
 -- Data from https://sheriff.loudoun.gov/dailycrime
 
 CREATE TABLE crime_reports (
@@ -98,33 +98,33 @@ WITH (FORMAT CSV, HEADER OFF, QUOTE '"');
 
 SELECT original_text FROM crime_reports;
 
--- Listing 14-6: Using regexp_match() to find the first date
+-- 코드 14-6: Using regexp_match() to find the first date
 SELECT crime_id,
        regexp_match(original_text, '\d{1,2}\/\d{1,2}\/\d{2}')
 FROM crime_reports
 ORDER BY crime_id;
 
--- Listing 14-7: Using the regexp_matches() function with the 'g' flag
+-- 코드 14-7: Using the regexp_matches() function with the 'g' flag
 SELECT crime_id,
        regexp_matches(original_text, '\d{1,2}\/\d{1,2}\/\d{2}', 'g')
 FROM crime_reports
 ORDER BY crime_id;
 
--- Listing 14-8: Using regexp_match() to find the second date
+-- 코드 14-8: Using regexp_match() to find the second date
 -- Note that the result includes an unwanted hyphen
 SELECT crime_id,
        regexp_match(original_text, '-\d{1,2}\/\d{1,2}\/\d{2}')
 FROM crime_reports
 ORDER BY crime_id;
 
--- Listing 14-9: Using a capture group to return only the date
+-- 코드 14-9: Using a capture group to return only the date
 -- Eliminates the hyphen
 SELECT crime_id,
        regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{2})')
 FROM crime_reports
 ORDER BY crime_id;
 
--- Listing 14-10: Matching case number, date, crime type, and city
+-- 코드 14-10: Matching case number, date, crime type, and city
 
 SELECT
     regexp_match(original_text, '(?:C0|SO)[0-9]+') AS case_number,
@@ -156,7 +156,7 @@ SELECT crime_id,
 FROM crime_reports
 ORDER BY crime_id;
 
--- Listing 14-11: Retrieving a value from within an array
+-- 코드 14-11: Retrieving a value from within an array
 
 SELECT
     crime_id,
@@ -165,7 +165,7 @@ SELECT
 FROM crime_reports
 ORDER BY crime_id;
 
--- Listing 14-12: Updating the crime_reports date_1 column
+-- 코드 14-12: Updating the crime_reports date_1 column
 
 UPDATE crime_reports
 SET date_1 = 
@@ -177,7 +177,7 @@ SET date_1 =
 )::timestamptz
 RETURNING crime_id, date_1, original_text;
 
--- Listing 14-13: Updating all crime_reports columns
+-- 코드 14-13: Updating all crime_reports columns
 
 UPDATE crime_reports
 SET date_1 = 
@@ -217,7 +217,7 @@ SET date_1 =
     description = (regexp_match(original_text, ':\s(.+)(?:C0|SO)'))[1],
     case_number = (regexp_match(original_text, '(?:C0|SO)[0-9]+'))[1];
 
--- Listing 14-14: Viewing selected crime data
+-- 코드 14-14: Viewing selected crime data
 
 SELECT date_1,
        street,
@@ -238,15 +238,15 @@ ORDER BY crime_id;
 SELECT cfgname FROM pg_ts_config;
 
 
--- Listing 14-15: Converting text to tsvector data
+-- 코드 14-15: Converting text to tsvector data
 
 SELECT to_tsvector('english', 'I am walking across the sitting room to sit with you.');
 
--- Listing 14-16: Converting search terms to tsquery data
+-- 코드 14-16: Converting search terms to tsquery data
 
 SELECT to_tsquery('english', 'walking & sitting');
 
--- Listing 14-17: Querying a tsvector type with a tsquery
+-- 코드 14-17: Querying a tsvector type with a tsquery
 
 SELECT to_tsvector('english', 'I am walking across the sitting room') @@
        to_tsquery('english', 'walking & sitting');
@@ -254,7 +254,7 @@ SELECT to_tsvector('english', 'I am walking across the sitting room') @@
 SELECT to_tsvector('english', 'I am walking across the sitting room') @@ 
        to_tsquery('english', 'walking & running');
 
--- Listing 14-18: Creating and filling the president_speeches table
+-- 코드 14-18: Creating and filling the president_speeches table
 
 -- Sources:
 -- https://archive.org/details/State-of-the-Union-Addresses-1945-2006
@@ -276,23 +276,23 @@ WITH (FORMAT CSV, DELIMITER '|', HEADER OFF, QUOTE '@');
 
 SELECT * FROM president_speeches ORDER BY speech_date;
 
--- Listing 14-19: Converting speeches to tsvector in the search_speech_text column
+-- 코드 14-19: Converting speeches to tsvector in the search_speech_text column
 
 UPDATE president_speeches
 SET search_speech_text = to_tsvector('english', speech_text);
 
--- Listing 14-20: Creating a GIN index for text search
+-- 코드 14-20: Creating a GIN index for text search
 
 CREATE INDEX search_idx ON president_speeches USING gin(search_speech_text);
 
--- Listing 14-21: Finding speeches containing the word "Vietnam"
+-- 코드 14-21: Finding speeches containing the word "Vietnam"
 
 SELECT president, speech_date
 FROM president_speeches
 WHERE search_speech_text @@ to_tsquery('english', 'Vietnam')
 ORDER BY speech_date;
 
--- Listing 14-22: Displaying search results with ts_headline()
+-- 코드 14-22: Displaying search results with ts_headline()
 
 SELECT president,
        speech_date,
@@ -307,7 +307,7 @@ WHERE search_speech_text @@ to_tsquery('english', 'tax')
 ORDER BY speech_date;
 
 
--- Listing 14-23: Finding speeches with the word "transportation" but not "roads"
+-- 코드 14-23: Finding speeches with the word "transportation" but not "roads"
 
 SELECT president,
        speech_date,
@@ -323,7 +323,7 @@ WHERE search_speech_text @@
       to_tsquery('english', 'transportation & !roads')
 ORDER BY speech_date;
 
--- Listing 14-24: Finding speeches where "defense" follows "military"
+-- 코드 14-24: Finding speeches where "defense" follows "military"
 
 SELECT president,
        speech_date,
@@ -354,7 +354,7 @@ WHERE search_speech_text @@
       to_tsquery('english', 'military <2> defense')
 ORDER BY speech_date;
 
--- Listing 14-25: Scoring relevance with ts_rank()
+-- 코드 14-25: Scoring relevance with ts_rank()
 
 SELECT president,
        speech_date,
@@ -367,7 +367,7 @@ WHERE search_speech_text @@
 ORDER BY score DESC
 LIMIT 5;
 
--- Listing 14-26: Normalizing ts_rank() by speech length
+-- 코드 14-26: Normalizing ts_rank() by speech length
 
 SELECT president,
        speech_date,

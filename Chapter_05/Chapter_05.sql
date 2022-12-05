@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- Listing 5-1: Using COPY for data import
+-- 코드 5-1: Using COPY for data import
 -- This is example syntax only; running it will produce an error
 
 COPY table_name
@@ -11,7 +11,7 @@ FROM 'C:\YourDirectory\your_file.csv'
 WITH (FORMAT CSV, HEADER);
 
 
--- Listing 5-2: CREATE TABLE statement for Census county population estimates
+-- 코드 5-2: CREATE TABLE statement for Census county population estimates
 -- Data dictionary for estimates available at: https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/2010-2019/co-est2019-alldata.pdf
 -- Data dictionary for additional columns at: http://www.census.gov/prod/cen2010/doc/pl94-171.pdf
 -- Note: Some columns have been given more descriptive names
@@ -38,7 +38,7 @@ CREATE TABLE us_counties_pop_est_2019 (
 
 SELECT * FROM us_counties_pop_est_2019;
 
--- Listing 5-3: Importing Census data using COPY
+-- 코드 5-3: Importing Census data using COPY
 -- Note! If you run into an import error here, be sure you downloaded the code and
 -- data for the book according to the steps listed in Chapter 1.
 -- Windows users: Please check the Note on PAGE XXXXXX as well.
@@ -62,7 +62,7 @@ ORDER BY internal_point_lon DESC
 LIMIT 5;
 
 
--- Listing 5-4: Creating a table to track supervisor salaries
+-- 코드 5-4: Creating a table to track supervisor salaries
 
 CREATE TABLE supervisor_salaries (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -74,7 +74,7 @@ CREATE TABLE supervisor_salaries (
     benefits numeric(10,2)
 );
 
--- Listing 5-5: Importing salaries data from CSV to three table columns
+-- 코드 5-5: Importing salaries data from CSV to three table columns
 
 COPY supervisor_salaries (town, supervisor, salary)
 FROM 'C:\YourDirectory\supervisor_salaries.csv'
@@ -84,7 +84,7 @@ WITH (FORMAT CSV, HEADER);
 SELECT * FROM supervisor_salaries ORDER BY id LIMIT 2;
 
 
--- Listing 5-6: Importing a subset of rows with WHERE
+-- 코드 5-6: Importing a subset of rows with WHERE
 
 DELETE FROM supervisor_salaries;
 
@@ -96,7 +96,7 @@ WHERE town = 'New Brillig';
 SELECT * FROM supervisor_salaries;
 
 
--- Listing 5-7: Using a temporary table to add a default value to a column during
+-- 코드 5-7: Using a temporary table to add a default value to a column during
 -- import
 
 DELETE FROM supervisor_salaries;
@@ -118,21 +118,21 @@ DROP TABLE supervisor_salaries_temp;
 SELECT * FROM supervisor_salaries ORDER BY id LIMIT 2;
 
 
--- Listing 5-8: Exporting an entire table with COPY
+-- 코드 5-8: Exporting an entire table with COPY
 
 COPY us_counties_pop_est_2019
 TO 'C:\YourDirectory\us_counties_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
 
--- Listing 5-9: Exporting selected columns from a table with COPY
+-- 코드 5-9: Exporting selected columns from a table with COPY
 
 COPY us_counties_pop_est_2019 
     (county_name, internal_point_lat, internal_point_lon)
 TO 'C:\YourDirectory\us_counties_latlon_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
--- Listing 5-10: Exporting query results with COPY
+-- 코드 5-10: Exporting query results with COPY
 
 COPY (
     SELECT county_name, state_name

@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- Listing 11-1: Creating a 2014-2018 ACS 5-Year Estimates table and importing data
+-- 코드 11-1: Creating a 2014-2018 ACS 5-Year Estimates table and importing data
 
 CREATE TABLE acs_2014_2018_stats (
     geoid text CONSTRAINT geoid_key PRIMARY KEY,
@@ -22,14 +22,14 @@ WITH (FORMAT CSV, HEADER);
 
 SELECT * FROM acs_2014_2018_stats;
 
--- Listing 11-2: Using corr(Y, X) to measure the relationship between 
+-- 코드 11-2: Using corr(Y, X) to measure the relationship between 
 -- education and income
 
 SELECT corr(median_hh_income, pct_bachelors_higher)
     AS bachelors_income_r
 FROM acs_2014_2018_stats;
 
--- Listing 11-3: Using corr(Y, X) on additional variables
+-- 코드 11-3: Using corr(Y, X) on additional variables
 
 SELECT
     round(
@@ -43,7 +43,7 @@ SELECT
       ) AS bachelors_travel_r
 FROM acs_2014_2018_stats;
 
--- Listing 11-4: Regression slope and intercept functions
+-- 코드 11-4: Regression slope and intercept functions
 
 SELECT
     round(
@@ -54,7 +54,7 @@ SELECT
         ) AS y_intercept
 FROM acs_2014_2018_stats;
 
--- Listing 11-5: Calculating the coefficient of determination, or r-squared
+-- 코드 11-5: Calculating the coefficient of determination, or r-squared
 
 SELECT round(
         regr_r2(median_hh_income, pct_bachelors_higher)::numeric, 3
@@ -70,7 +70,7 @@ FROM acs_2014_2018_stats;
 SELECT stddev_pop(median_hh_income)
 FROM acs_2014_2018_stats;
 
--- Listing 11-6: Using the rank() and dense_rank() window functions
+-- 코드 11-6: Using the rank() and dense_rank() window functions
 
 CREATE TABLE widget_companies (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -97,7 +97,7 @@ SELECT
 FROM widget_companies
 ORDER BY widget_output DESC;
 
--- Listing 11-7: Applying rank() within groups using PARTITION BY
+-- 코드 11-7: Applying rank() within groups using PARTITION BY
 
 CREATE TABLE store_sales (
     store text NOT NULL,
@@ -127,7 +127,7 @@ FROM store_sales
 ORDER BY category, rank() OVER (PARTITION BY category 
         ORDER BY unit_sales DESC);
 
--- Listing 11-8: Creating and filling a table for Census county business pattern data
+-- 코드 11-8: Creating and filling a table for Census county business pattern data
 
 CREATE TABLE cbp_naics_72_establishments (
     state_fips text,
@@ -150,7 +150,7 @@ FROM cbp_naics_72_establishments
 ORDER BY state_fips, county_fips
 LIMIT 5;
 
--- Listing 11-9: Finding business rates per thousand population in counties with 50,000 or more people
+-- 코드 11-9: Finding business rates per thousand population in counties with 50,000 or more people
 
 SELECT
     cbp.county,
@@ -165,7 +165,7 @@ FROM cbp_naics_72_establishments cbp JOIN us_counties_pop_est_2019 pop
 WHERE pop.pop_est_2018 >= 50000 
 ORDER BY cbp.establishments::numeric / pop.pop_est_2018 DESC;
 
--- Listing 11-10: Creating a rolling average for export data
+-- 코드 11-10: Creating a rolling average for export data
 
 CREATE TABLE us_exports (
     year smallint,

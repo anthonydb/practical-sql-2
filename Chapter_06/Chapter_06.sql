@@ -3,20 +3,20 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- Listing 6-1: Basic addition, subtraction and multiplication with SQL
+-- 코드 6-1: Basic addition, subtraction and multiplication with SQL
 
 SELECT 2 + 2;    -- addition
 SELECT 9 - 1;    -- subtraction
 SELECT 3 * 4;    -- multiplication
 
--- Listing 6-2: Integer and decimal division with SQL
+-- 코드 6-2: Integer and decimal division with SQL
 
 SELECT 11 / 6;   -- integer division
 SELECT 11 % 6;   -- modulo division
 SELECT 11.0 / 6; -- decimal division
 SELECT CAST(11 AS numeric(3,1)) / 6;
 
--- Listing 6-3: Exponents, roots and factorials with SQL
+-- 코드 6-3: Exponents, roots and factorials with SQL
 
 SELECT 3 ^ 4;         -- exponentiation
 SELECT |/ 10;         -- square root (operator)
@@ -34,7 +34,7 @@ SELECT (7 + 8) * 9;	-- answer: 135
 SELECT 3 ^ 3 - 1;   -- answer: 26
 SELECT 3 ^ (3 - 1); -- answer: 9
 
--- Listing 6-4: Selecting census population estimate columns with aliases
+-- 코드 6-4: Selecting census population estimate columns with aliases
 
 SELECT county_name AS county,
        state_name AS state,
@@ -46,7 +46,7 @@ SELECT county_name AS county,
        residual_2019 AS residual
 FROM us_counties_pop_est_2019;
 
--- Listing 6-5: Subtracting two columns in us_counties_pop_est_2019
+-- 코드 6-5: Subtracting two columns in us_counties_pop_est_2019
 
 SELECT county_name AS county,
        state_name AS state,
@@ -56,7 +56,7 @@ SELECT county_name AS county,
 FROM us_counties_pop_est_2019
 ORDER BY state_name, county_name;
 
--- Listing 6-6: Checking census data totals
+-- 코드 6-6: Checking census data totals
 
 SELECT county_name AS county,
        state_name AS state,
@@ -70,7 +70,7 @@ SELECT county_name AS county,
 FROM us_counties_pop_est_2019
 ORDER BY difference DESC;
 
--- Listing 6-7: Calculating the percent of a county's area that is water
+-- 코드 6-7: Calculating the percent of a county's area that is water
 
 SELECT county_name AS county,
        state_name AS state,
@@ -79,7 +79,7 @@ FROM us_counties_pop_est_2019
 ORDER BY pct_water DESC;
 
 
--- Listing 6-8: Calculating percent change
+-- 코드 6-8: Calculating percent change
 
 CREATE TABLE percent_change (
     department text,
@@ -103,13 +103,13 @@ SELECT department,
                     spend_2019 * 100, 1) AS pct_change
 FROM percent_change;
 
--- Listing 6-9: Using the sum() and avg() aggregate functions
+-- 코드 6-9: Using the sum() and avg() aggregate functions
 
 SELECT sum(pop_est_2019) AS county_sum,
        round(avg(pop_est_2019), 0) AS county_average
 FROM us_counties_pop_est_2019;
 
--- Listing 6-10: Testing SQL percentile functions
+-- 코드 6-10: Testing SQL percentile functions
 
 CREATE TABLE percentile_test (
     numbers integer
@@ -125,7 +125,7 @@ SELECT
     WITHIN GROUP (ORDER BY numbers)
 FROM percentile_test;
 
--- Listing 6-11: Using sum(), avg(), and percentile_cont() aggregate functions
+-- 코드 6-11: Using sum(), avg(), and percentile_cont() aggregate functions
 
 SELECT sum(pop_est_2019) AS county_sum,
        round(avg(pop_est_2019), 0) AS county_average,
@@ -133,7 +133,7 @@ SELECT sum(pop_est_2019) AS county_sum,
        WITHIN GROUP (ORDER BY pop_est_2019) AS county_median
 FROM us_counties_pop_est_2019;
 
--- Listing 6-12: Passing an array of values to percentile_cont()
+-- 코드 6-12: Passing an array of values to percentile_cont()
 
 -- quartiles
 SELECT percentile_cont(ARRAY[.25,.5,.75])
@@ -151,7 +151,7 @@ SELECT percentile_cont(ARRAY[.1,.2,.3,.4,.5,.6,.7,.8,.9])
        WITHIN GROUP (ORDER BY pop_est_2019) AS deciles
 FROM us_counties_pop_est_2019;
 
--- Listing 6-13: Using unnest() to turn an array into rows
+-- 코드 6-13: Using unnest() to turn an array into rows
 
 SELECT unnest(
             percentile_cont(ARRAY[.25,.5,.75])
@@ -159,7 +159,7 @@ SELECT unnest(
             ) AS quartiles
 FROM us_counties_pop_est_2019;
 
--- Listing 6-14: Finding the most-frequent value with mode()
+-- 코드 6-14: Finding the most-frequent value with mode()
 
 SELECT mode() WITHIN GROUP (ORDER BY births_2019)
 FROM us_counties_pop_est_2019;

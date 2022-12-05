@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- Listing 9-1: Creating and filling the 2018 Public Libraries Survey table
+-- 코드 9-1: Creating and filling the 2018 Public Libraries Survey table
 
 CREATE TABLE pls_fy2018_libraries (
     stabr text NOT NULL,
@@ -61,7 +61,7 @@ WITH (FORMAT CSV, HEADER);
 
 CREATE INDEX libname_2018_idx ON pls_fy2018_libraries (libname);
 
--- Listing 9-2: Creating and filling the 2017 and 2016 Public Libraries Survey tables
+-- 코드 9-2: Creating and filling the 2017 and 2016 Public Libraries Survey tables
 
 CREATE TABLE pls_fy2017_libraries (
     stabr text NOT NULL,
@@ -175,7 +175,7 @@ CREATE INDEX libname_2017_idx ON pls_fy2017_libraries (libname);
 CREATE INDEX libname_2016_idx ON pls_fy2016_libraries (libname);
 
 
--- Listing 9-3: Using count() for table row counts
+-- 코드 9-3: Using count() for table row counts
 
 SELECT count(*)
 FROM pls_fy2018_libraries;
@@ -186,12 +186,12 @@ FROM pls_fy2017_libraries;
 SELECT count(*)
 FROM pls_fy2016_libraries;
 
--- Listing 9-4: Using count() for the number of values in a column
+-- 코드 9-4: Using count() for the number of values in a column
 
 SELECT count(phone)
 FROM pls_fy2018_libraries;
 
--- Listing 9-5: Using count() for the number of distinct values in a column
+-- 코드 9-5: Using count() for the number of distinct values in a column
 
 SELECT count(libname)
 FROM pls_fy2018_libraries;
@@ -210,11 +210,11 @@ SELECT libname, city, stabr
 FROM pls_fy2018_libraries
 WHERE libname = 'OXFORD PUBLIC LIBRARY';
 
--- Listing 9-6: Finding the most and fewest visits using max() and min()
+-- 코드 9-6: Finding the most and fewest visits using max() and min()
 SELECT max(visits), min(visits)
 FROM pls_fy2018_libraries;
 
--- Listing 9-7: Using GROUP BY on the stabr column
+-- 코드 9-7: Using GROUP BY on the stabr column
 
 -- There are 55 in 2018.
 SELECT stabr
@@ -228,7 +228,7 @@ FROM pls_fy2017_libraries
 GROUP BY stabr
 ORDER BY stabr;
 
--- Listing 9-8: Using GROUP BY on the city and stabr columns
+-- 코드 9-8: Using GROUP BY on the city and stabr columns
 
 SELECT city, stabr
 FROM pls_fy2018_libraries
@@ -241,21 +241,21 @@ FROM pls_fy2018_libraries
 GROUP BY city, stabr
 ORDER BY count(*) DESC;
 
--- Listing 9-9: Using GROUP BY with count() on the stabr column
+-- 코드 9-9: Using GROUP BY with count() on the stabr column
 
 SELECT stabr, count(*)
 FROM pls_fy2018_libraries
 GROUP BY stabr
 ORDER BY count(*) DESC;
 
--- Listing 9-10: Using GROUP BY with count() on the stabr and stataddr columns
+-- 코드 9-10: Using GROUP BY with count() on the stabr and stataddr columns
 
 SELECT stabr, stataddr, count(*)
 FROM pls_fy2018_libraries
 GROUP BY stabr, stataddr
 ORDER BY stabr, stataddr;
 
--- Listing 9-11: Using the sum() aggregate function to total visits to
+-- 코드 9-11: Using the sum() aggregate function to total visits to
 -- libraries in 2016, 2017, and 2018
 
 -- 2018
@@ -273,7 +273,7 @@ SELECT sum(visits) AS visits_2016
 FROM pls_fy2016_libraries
 WHERE visits >= 0;
 
--- Listing 9-12: Using sum() to total visits on joined 2018, 2017, and 2016 tables
+-- 코드 9-12: Using sum() to total visits on joined 2018, 2017, and 2016 tables
 
 SELECT sum(pls18.visits) AS visits_2018,
        sum(pls17.visits) AS visits_2017,
@@ -297,7 +297,7 @@ WHERE pls18.wifisess >= 0
        AND pls16.wifisess >= 0;
 
 
--- Listing 9-13: Using GROUP BY to track percent change in library visits by state
+-- 코드 9-13: Using GROUP BY to track percent change in library visits by state
 
 SELECT pls18.stabr,
        sum(pls18.visits) AS visits_2018,
@@ -316,7 +316,7 @@ WHERE pls18.visits >= 0
 GROUP BY pls18.stabr
 ORDER BY chg_2018_17 DESC;
 
--- Listing 9-14: Using HAVING to filter the results of an aggregate query
+-- 코드 9-14: Using HAVING to filter the results of an aggregate query
 
 SELECT pls18.stabr,
        sum(pls18.visits) AS visits_2018,

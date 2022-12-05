@@ -5,7 +5,7 @@
 
 -- VIEWS
 
--- Listing 17-1: Creating a view that displays Nevada 2019 counties
+-- 코드 17-1: Creating a view that displays Nevada 2019 counties
 
 CREATE OR REPLACE VIEW nevada_counties_pop_2019 AS
     SELECT county_name,
@@ -15,14 +15,14 @@ CREATE OR REPLACE VIEW nevada_counties_pop_2019 AS
     FROM us_counties_pop_est_2019
     WHERE state_name = 'Nevada';
 
--- Listing 17-2: Querying the nevada_counties_pop_2019 view
+-- 코드 17-2: Querying the nevada_counties_pop_2019 view
 
 SELECT *
 FROM nevada_counties_pop_2019
 ORDER BY county_fips
 LIMIT 5;
 
--- Listing 17-3: Creating a view showing population change for US counties
+-- 코드 17-3: Creating a view showing population change for US counties
 
 CREATE OR REPLACE VIEW county_pop_change_2019_2010 AS
     SELECT c2019.county_name,
@@ -38,7 +38,7 @@ CREATE OR REPLACE VIEW county_pop_change_2019_2010 AS
     ON c2019.state_fips = c2010.state_fips
         AND c2019.county_fips = c2010.county_fips;
 
--- Listing 17-4: Selecting columns from the county_pop_change_2019_2010 view
+-- 코드 17-4: Selecting columns from the county_pop_change_2019_2010 view
 
 SELECT county_name,
        state_name,
@@ -49,7 +49,7 @@ WHERE state_name = 'Nevada'
 ORDER BY county_fips
 LIMIT 5;
 
--- Listing 17-5: Creating a materialized view
+-- 코드 17-5: Creating a materialized view
 
 DROP VIEW nevada_counties_pop_2019;
 
@@ -61,7 +61,7 @@ CREATE MATERIALIZED VIEW nevada_counties_pop_2019 AS
     FROM us_counties_pop_est_2019
     WHERE state_name = 'Nevada';
 
--- Listing 17-6: Refreshing a materialized view 
+-- 코드 17-6: Refreshing a materialized view 
 
 REFRESH MATERIALIZED VIEW nevada_counties_pop_2019;
 
@@ -75,7 +75,7 @@ REFRESH MATERIALIZED VIEW CONCURRENTLY nevada_counties_pop_2019;
 -- To drop a materialized view, use:
 -- DROP MATERIALIZED VIEW nevada_counties_pop_2019;
 
--- Listing 17-7: Creating a view on the employees table
+-- 코드 17-7: Creating a view on the employees table
 
 -- Optional: Check the emplyees table:
 SELECT * FROM employees ORDER BY emp_id;
@@ -92,7 +92,7 @@ CREATE OR REPLACE VIEW employees_tax_dept WITH (security_barrier) AS
 
 SELECT * FROM employees_tax_dept ORDER BY emp_id;
 
--- Listing 17-8: Successful and rejected inserts via the employees_tax_dept view
+-- 코드 17-8: Successful and rejected inserts via the employees_tax_dept view
 
 INSERT INTO employees_tax_dept (emp_id, first_name, last_name, dept_id)
 VALUES (5, 'Suzanne', 'Legere', 1);
@@ -104,7 +104,7 @@ SELECT * FROM employees_tax_dept ORDER BY emp_id;
 
 SELECT * FROM employees ORDER BY emp_id;
 
--- Listing 17-9: Updating a row via the employees_tax_dept view
+-- 코드 17-9: Updating a row via the employees_tax_dept view
 
 UPDATE employees_tax_dept
 SET last_name = 'Le Gere'
@@ -117,7 +117,7 @@ UPDATE employees_tax_dept
 SET salary = 100000
 WHERE emp_id = 5;
 
--- Listing 17-10: Deleting a row via the employees_tax_dept view
+-- 코드 17-10: Deleting a row via the employees_tax_dept view
 
 DELETE FROM employees_tax_dept
 WHERE emp_id = 5;
@@ -128,7 +128,7 @@ WHERE emp_id = 5;
 -- https://www.postgresql.org/docs/current/sql-createprocedure.html
 -- https://www.postgresql.org/docs/current/plpgsql.html
 
--- Listing 17-11: Creating a percent_change function
+-- 코드 17-11: Creating a percent_change function
 -- To delete this function: DROP FUNCTION percent_change(numeric,numeric,integer);
 
 CREATE OR REPLACE FUNCTION
@@ -143,11 +143,11 @@ LANGUAGE SQL
 IMMUTABLE
 RETURNS NULL ON NULL INPUT;
 
--- Listing 17-12: Testing the percent_change() function
+-- 코드 17-12: Testing the percent_change() function
 
 SELECT percent_change(110, 108, 2);
 
--- Listing 17-13: Testing percent_change() on census data
+-- 코드 17-13: Testing percent_change() on census data
 
 SELECT c2019.county_name,
        c2019.state_name,
@@ -163,7 +163,7 @@ ON c2019.state_fips = c2010.state_fips
 ORDER BY pct_chg_func DESC
 LIMIT 5;
 
--- Listing 17-14: Adding a column to the teachers table and seeing the data
+-- 코드 17-14: Adding a column to the teachers table and seeing the data
 
 ALTER TABLE teachers ADD COLUMN personal_days integer;
 
@@ -173,7 +173,7 @@ SELECT first_name,
        personal_days
 FROM teachers;
 
--- Listing 17-15: Creating an update_personal_days() procedure
+-- 코드 17-15: Creating an update_personal_days() procedure
 
 CREATE OR REPLACE PROCEDURE update_personal_days()
 AS $$
@@ -197,11 +197,11 @@ LANGUAGE plpgsql;
 -- To invoke the procedure:
 CALL update_personal_days();
 
--- Listing 17-16: Enabling the PL/Python procedural language
+-- 코드 17-16: Enabling the PL/Python procedural language
 
 CREATE EXTENSION plpython3u;
 
--- Listing 17-17: Using PL/Python to create the trim_county() function
+-- 코드 17-17: Using PL/Python to create the trim_county() function
 
 CREATE OR REPLACE FUNCTION trim_county(input_string text)
 RETURNS text AS $$
@@ -211,7 +211,7 @@ RETURNS text AS $$
 $$
 LANGUAGE plpython3u;
 
--- Listing 17-18: Testing the trim_county() function
+-- 코드 17-18: Testing the trim_county() function
 
 SELECT county_name,
        trim_county(county_name)
@@ -222,7 +222,7 @@ LIMIT 5;
 
 -- TRIGGERS
 
--- Listing 17-19: Creating the grades and grades_history tables
+-- 코드 17-19: Creating the grades and grades_history tables
 
 CREATE TABLE grades (
     student_id bigint,
@@ -249,7 +249,7 @@ CREATE TABLE grades_history (
 PRIMARY KEY (student_id, course_id, change_time)
 );  
 
--- Listing 17-20: Creating the record_if_grade_changed() function
+-- 코드 17-20: Creating the record_if_grade_changed() function
 
 CREATE OR REPLACE FUNCTION record_if_grade_changed()
     RETURNS trigger AS
@@ -275,7 +275,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Listing 17-21: Creating the grades_update trigger
+-- 코드 17-21: Creating the grades_update trigger
 
 CREATE TRIGGER grades_update
   AFTER UPDATE
@@ -283,7 +283,7 @@ CREATE TRIGGER grades_update
   FOR EACH ROW
   EXECUTE PROCEDURE record_if_grade_changed();
 
--- Listing 17-22: Testing the grades_update trigger
+-- 코드 17-22: Testing the grades_update trigger
 
 -- Initially, there should be 0 records in the history
 SELECT * FROM grades_history;
@@ -304,7 +304,7 @@ SELECT student_id,
        new_grade
 FROM grades_history;
 
--- Listing 17-23: Creating a temperature_test table
+-- 코드 17-23: Creating a temperature_test table
 
 CREATE TABLE temperature_test (
     station_name text,
@@ -315,7 +315,7 @@ CREATE TABLE temperature_test (
 PRIMARY KEY (station_name, observation_date)
 );
 
--- Listing 17-24: Creating the classify_max_temp() function
+-- 코드 17-24: Creating the classify_max_temp() function
 
 CREATE OR REPLACE FUNCTION classify_max_temp()
     RETURNS trigger AS
@@ -340,7 +340,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Listing 17-25: Creating the temperature_insert trigger
+-- 코드 17-25: Creating the temperature_insert trigger
 
 CREATE TRIGGER temperature_insert
     BEFORE INSERT
@@ -348,7 +348,7 @@ CREATE TRIGGER temperature_insert
     FOR EACH ROW
     EXECUTE PROCEDURE classify_max_temp();
 
--- Listing 17-26: Inserting rows to test the temperature_update trigger
+-- 코드 17-26: Inserting rows to test the temperature_update trigger
 
 INSERT INTO temperature_test
 VALUES

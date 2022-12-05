@@ -4,7 +4,7 @@
 ----------------------------------------------------------------------------
 
 
--- Listing 12-1: Extracting components of a timestamp value using date_part()
+-- 코드 12-1: Extracting components of a timestamp value using date_part()
 
 SELECT
     date_part('year', '2022-12-01 18:37:12 EST'::timestamptz) AS year,
@@ -22,7 +22,7 @@ SELECT
 
 SELECT extract(year from '2022-12-01 18:37:12 EST'::timestamptz) AS year;
 
--- Listing 12-2: Three functions for making datetimes from components
+-- 코드 12-2: Three functions for making datetimes from components
 
 -- make a date
 SELECT make_date(2022, 2, 22);
@@ -41,7 +41,7 @@ SELECT
     localtime,
     now();
 
--- Listing 12-3: Comparing current_timestamp and clock_timestamp() during row insert
+-- 코드 12-3: Comparing current_timestamp and clock_timestamp() during row insert
 
 CREATE TABLE current_time_example (
     time_id integer GENERATED ALWAYS AS IDENTITY,
@@ -59,7 +59,7 @@ SELECT * FROM current_time_example;
 
 -- Time Zones
 
--- Listing 12-4: Viewing your current time zone setting
+-- 코드 12-4: Viewing your current time zone setting
 
 SHOW timezone; -- Note: You can see all run-time defaults with SHOW ALL;
 SELECT current_setting('timezone');
@@ -67,7 +67,7 @@ SELECT current_setting('timezone');
 -- Using current_setting() inside another function:
 SELECT make_timestamptz(2022, 2, 22, 18, 4, 30.3, current_setting('timezone'));
 
--- Listing 12-5: Showing time zone abbreviations and names
+-- 코드 12-5: Showing time zone abbreviations and names
 
 SELECT * FROM pg_timezone_abbrevs ORDER BY abbrev;
 SELECT * FROM pg_timezone_names ORDER BY name;
@@ -77,7 +77,7 @@ SELECT * FROM pg_timezone_names
 WHERE name LIKE 'Europe%'
 ORDER BY name;
 
--- Listing 12-6: Setting the time zone for a client session
+-- 코드 12-6: Setting the time zone for a client session
 
 SET TIME ZONE 'US/Pacific';
 
@@ -105,7 +105,7 @@ SELECT '1929-09-30'::date + '5 years'::interval;
 
 -- Taxi Rides
 
--- Listing 12-7: Creating a table and importing NYC yellow taxi data
+-- 코드 12-7: Creating a table and importing NYC yellow taxi data
 
 CREATE TABLE nyc_yellow_taxi_trips (
     trip_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -160,7 +160,7 @@ ON nyc_yellow_taxi_trips (tpep_pickup_datetime);
 -- Count the trip records
 SELECT count(*) FROM nyc_yellow_taxi_trips;
 
--- Listing 12-8: Counting taxi trips by hour
+-- 코드 12-8: Counting taxi trips by hour
 
 SET TIME ZONE 'US/Eastern'; -- Set this if your PostgreSQL server defaults to a time zone other than US/Eastern
 
@@ -171,7 +171,7 @@ FROM nyc_yellow_taxi_trips
 GROUP BY trip_hour
 ORDER BY trip_hour;
 
--- Listing 12-9: Exporting taxi pickups per hour to a CSV file
+-- 코드 12-9: Exporting taxi pickups per hour to a CSV file
 
 COPY
     (SELECT
@@ -184,7 +184,7 @@ COPY
 TO 'C:\YourDirectory\hourly_taxi_pickups.csv'
 WITH (FORMAT CSV, HEADER);
 
--- Listing 12-10: Calculating median trip time by hour
+-- 코드 12-10: Calculating median trip time by hour
 
 SELECT
     date_part('hour', tpep_pickup_datetime) AS trip_hour,
@@ -195,7 +195,7 @@ FROM nyc_yellow_taxi_trips
 GROUP BY trip_hour
 ORDER BY trip_hour;
 
--- Listing 12-11: Creating a table to hold train trip data
+-- 코드 12-11: Creating a table to hold train trip data
 
 CREATE TABLE train_rides (
     trip_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -217,21 +217,21 @@ SET TIME ZONE 'US/Central';
 
 SELECT * FROM train_rides;
 
--- Listing 12-12: Calculating the length of each trip segment
+-- 코드 12-12: Calculating the length of each trip segment
 
 SELECT segment,
        to_char(departure, 'YYYY-MM-DD HH12:MI a.m. TZ') AS departure,
        arrival - departure AS segment_duration
 FROM train_rides;
 
--- Listing 12-13: Calculating cumulative intervals using OVER
+-- 코드 12-13: Calculating cumulative intervals using OVER
 
 SELECT segment,
        arrival - departure AS segment_duration,
        sum(arrival - departure) OVER (ORDER BY trip_id) AS cume_duration
 FROM train_rides;
 
--- Listing 12-14: Using justify_interval() to better format cumulative trip duration
+-- 코드 12-14: Using justify_interval() to better format cumulative trip duration
 
 SELECT segment,
        arrival - departure AS segment_duration,

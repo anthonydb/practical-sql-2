@@ -4,19 +4,19 @@
 ----------------------------------------------------------------------------
 
 
--- Listing 15-1: Loading the PostGIS extension
+-- 코드 15-1: Loading the PostGIS extension
 
 CREATE EXTENSION postgis;
 
 SELECT postgis_full_version(); -- shows PostGIS version
 
--- Listing 15-2: Retrieving the well-known text for SRID 4326
+-- 코드 15-2: Retrieving the well-known text for SRID 4326
 
 SELECT srtext
 FROM spatial_ref_sys
 WHERE srid = 4326;
 
--- Listing 15-3: Using ST_GeomFromText() to create spatial objects
+-- 코드 15-3: Using ST_GeomFromText() to create spatial objects
 
 SELECT ST_GeomFromText('POINT(-74.9233606 42.699992)', 4326);
 
@@ -38,24 +38,24 @@ SELECT ST_GeomFromText('MULTIPOLYGON((
                                       -74.98 42.64, -74.98 42.66,
                                       -75.0 42.66)))', 4326);
 
--- Listing 15-4: Using ST_GeogFromText() to create spatial objects
+-- 코드 15-4: Using ST_GeogFromText() to create spatial objects
 
 SELECT
 ST_GeogFromText('SRID=4326;MULTIPOINT(-74.9 42.7, -75.1 42.7, -74.924 42.6)');
 
--- Listing 15-5: Functions specific to making points
+-- 코드 15-5: Functions specific to making points
 
 SELECT ST_PointFromText('POINT(-74.9233606 42.699992)', 4326);
 
 SELECT ST_MakePoint(-74.9233606, 42.699992);
 SELECT ST_SetSRID(ST_MakePoint(-74.9233606, 42.699992), 4326);
 
--- Listing 15-6: Functions specific to making LineStrings
+-- 코드 15-6: Functions specific to making LineStrings
 
 SELECT ST_LineFromText('LINESTRING(-105.90 35.67,-105.91 35.67)', 4326);
 SELECT ST_MakeLine(ST_MakePoint(-74.9, 42.7), ST_MakePoint(-74.1, 42.4));
 
--- Listing 15-7: Functions specific to making Polygons
+-- 코드 15-7: Functions specific to making Polygons
 
 SELECT ST_PolygonFromText('POLYGON((-74.9 42.7, -75.1 42.7,
                                     -75.1 42.6, -74.9 42.7))', 4326);
@@ -77,7 +77,7 @@ SELECT ST_MPolyFromText('MULTIPOLYGON((
 -- https://www.ams.usda.gov/local-food-directories/farmersmarkets
 
 
--- Listing 15-8: Creating and loading the farmers_markets table
+-- 코드 15-8: Creating and loading the farmers_markets table
 
 CREATE TABLE farmers_markets (
     fmid bigint PRIMARY KEY,
@@ -98,7 +98,7 @@ WITH (FORMAT CSV, HEADER);
 
 SELECT count(*) FROM farmers_markets; -- should return 8,681 rows
 
--- Listing 15-9: Creating and indexing a geography column
+-- 코드 15-9: Creating and indexing a geography column
 -- There's also a function: https://postgis.net/docs/AddGeometryColumn.html
 
 -- Add column
@@ -123,7 +123,7 @@ FROM farmers_markets
 WHERE longitude IS NOT NULL
 LIMIT 5;
 
--- Listing 15-10: Using ST_DWithin() to locate farmers' markets within 10 kilometers of a point
+-- 코드 15-10: Using ST_DWithin() to locate farmers' markets within 10 kilometers of a point
 
 SELECT market_name,
        city,
@@ -135,7 +135,7 @@ WHERE ST_DWithin(geog_point,
                  10000)
 ORDER BY market_name;
 
--- Listing 15-11: Using ST_Distance() to calculate the km between Yankee Stadium
+-- 코드 15-11: Using ST_Distance() to calculate the km between Yankee Stadium
 -- and Citi Field (Mets)
 -- 
 
@@ -144,7 +144,7 @@ SELECT ST_Distance(
                    ST_GeogFromText('POINT(-73.8480153 40.7570917)')
                    ) / 1000 AS mets_to_yanks;
 
--- Listing 15-12: Using ST_Distance() for each row in farmers_markets
+-- 코드 15-12: Using ST_Distance() for each row in farmers_markets
 
 SELECT market_name,
        city,
@@ -159,7 +159,7 @@ WHERE ST_DWithin(geog_point,
                  10000)
 ORDER BY km_from_dt ASC;
 
--- Listing 15-13: Using the <-> distance operator for a nearest neighbors search
+-- 코드 15-13: Using the <-> distance operator for a nearest neighbors search
 
 SELECT market_name,
        city,
@@ -185,14 +185,14 @@ LIMIT 3;
 -- Import (for use on command line if on macOS or Linux; see Chapter 18)
 shp2pgsql -I -s 4269 -W LATIN1 tl_2019_us_county.shp us_counties_2019_shp | psql -d analysis -U postgres
 
--- Listing 15-14: Checking the geom column's well-known text representation
+-- 코드 15-14: Checking the geom column's well-known text representation
 
 SELECT ST_AsText(geom)
 FROM us_counties_2019_shp
 ORDER BY gid
 LIMIT 1;
 
--- Listing 15-15: Finding the largest counties by area using ST_Area()
+-- 코드 15-15: Finding the largest counties by area using ST_Area()
 
 SELECT name,
        statefp AS st,
@@ -203,7 +203,7 @@ FROM us_counties_2019_shp
 ORDER BY square_km DESC
 LIMIT 5;
 
--- Listing 15-16: Using ST_Within() to find the county belonging to a pair of coordinates
+-- 코드 15-16: Using ST_Within() to find the county belonging to a pair of coordinates
 
 SELECT sh.name,
        c.state_name
@@ -213,7 +213,7 @@ WHERE ST_Within(
          'SRID=4269;POINT(-118.3419063 34.0977076)'::geometry, geom
 );
 
--- Listing 15-17: Using ST_DWithin() to count people near Lincoln, Nebraska
+-- 코드 15-17: Using ST_DWithin() to count people near Lincoln, Nebraska
 
 SELECT sum(c.pop_est_2019) AS pop_est_2019
 FROM us_counties_2019_shp sh JOIN us_counties_pop_est_2019 c
@@ -226,7 +226,7 @@ WHERE ST_DWithin(sh.geom::geography,
 -- that covers the casting of the geom column to a geography type.
 CREATE INDEX us_counties_2019_shp_geog_idx ON us_counties_2019_shp USING GIST (CAST(geom AS geography));
 
--- Listing 15-18: Displaying counties near Lincoln, Nebraska
+-- 코드 15-18: Displaying counties near Lincoln, Nebraska
 
 SELECT sh.name,
        c.state_name,
@@ -266,7 +266,7 @@ WHERE ST_DWithin(sh.geom::geography,
 shp2pgsql -I -s 4269 -W LATIN1 tl_2019_35049_linearwater.shp santafe_linearwater_2019 | psql -d analysis -U postgres
 shp2pgsql -I -s 4269 -W LATIN1 tl_2019_35049_roads.shp santafe_roads_2019 | psql -d analysis -U postgres
 
--- Listing 15-19: Using ST_GeometryType() to determine geometry
+-- 코드 15-19: Using ST_GeometryType() to determine geometry
 
 SELECT ST_GeometryType(geom)
 FROM santafe_linearwater_2019
@@ -276,7 +276,7 @@ SELECT ST_GeometryType(geom)
 FROM santafe_roads_2019
 LIMIT 1;
 
--- Listing 15-20: Spatial join with ST_Intersects() to find roads crossing the Santa Fe river
+-- 코드 15-20: Spatial join with ST_Intersects() to find roads crossing the Santa Fe river
 
 SELECT water.fullname AS waterway,
        roads.rttyp,
@@ -287,7 +287,7 @@ WHERE water.fullname = 'Santa Fe Riv'
       AND roads.fullname IS NOT NULL
 ORDER BY roads.fullname;
 
--- Listing 15-21: Using ST_Intersection() to show where roads cross the river
+-- 코드 15-21: Using ST_Intersection() to show where roads cross the river
 
 SELECT water.fullname AS waterway,
        roads.rttyp,

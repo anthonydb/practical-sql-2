@@ -4,7 +4,7 @@
 ----------------------------------------------------------------------------
 
 
--- Listing 7-1: Creating the departments and employees tables
+-- 코드 7-1: Creating the departments and employees tables
 
 CREATE TABLE departments (
     dept_id integer,
@@ -35,14 +35,14 @@ VALUES
     (3, 'Arthur', 'Pappas', 72700, 2),
     (4, 'Michael', 'Taylor', 89500, 2);
 
--- Listing 7-2: Joining the employees and departments tables
+-- 코드 7-2: Joining the employees and departments tables
 
 SELECT *
 FROM employees JOIN departments
 ON employees.dept_id = departments.dept_id
 ORDER BY employees.dept_id;
 
--- Listing 7-3: Creating two tables to explore JOIN types
+-- 코드 7-3: Creating two tables to explore JOIN types
 
 CREATE TABLE district_2020 (
     id integer CONSTRAINT id_key_2020 PRIMARY KEY,
@@ -67,7 +67,7 @@ INSERT INTO district_2035 VALUES
     (4, 'Chase Magnet Academy'),
     (6, 'Webutuck High School');
 
--- Listing 7-4: Using JOIN
+-- 코드 7-4: Using JOIN
 
 SELECT *
 FROM district_2020 JOIN district_2035
@@ -80,35 +80,35 @@ FROM district_2020 INNER JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2020.id;
 
--- Listing 7-5: JOIN with USING
+-- 코드 7-5: JOIN with USING
 
 SELECT *
 FROM district_2020 JOIN district_2035
 USING (id)
 ORDER BY district_2020.id;
 
--- Listing 7-6: Using LEFT JOIN
+-- 코드 7-6: Using LEFT JOIN
 
 SELECT *
 FROM district_2020 LEFT JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2020.id;
 
--- Listing 7-7: Using RIGHT JOIN
+-- 코드 7-7: Using RIGHT JOIN
 
 SELECT *
 FROM district_2020 RIGHT JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2035.id;
 
--- Listing 7-8: Using FULL OUTER JOIN
+-- 코드 7-8: Using FULL OUTER JOIN
 
 SELECT *
 FROM district_2020 FULL OUTER JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2020.id;
 
--- Listing 7-9: Using CROSS JOIN
+-- 코드 7-9: Using CROSS JOIN
 
 SELECT *
 FROM district_2020 CROSS JOIN district_2035
@@ -124,7 +124,7 @@ SELECT *
 FROM district_2020 JOIN district_2035 ON true
 ORDER BY district_2020.id, district_2035.id;
 
--- Listing 7-10: Filtering to show missing values with IS NULL
+-- 코드 7-10: Filtering to show missing values with IS NULL
 
 SELECT *
 FROM district_2020 LEFT JOIN district_2035
@@ -137,7 +137,7 @@ FROM district_2020 RIGHT JOIN district_2035
 ON district_2020.id = district_2035.id
 WHERE district_2020.id IS NULL;
 
--- Listing 7-11: Querying specific columns in a join
+-- 코드 7-11: Querying specific columns in a join
 
 SELECT district_2020.id,
        district_2020.school_2020,
@@ -146,7 +146,7 @@ FROM district_2020 LEFT JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2020.id;
 
--- Listing 7-12: Simplifying code with table aliases
+-- 코드 7-12: Simplifying code with table aliases
 
 SELECT d20.id,
        d20.school_2020,
@@ -155,7 +155,7 @@ FROM district_2020 AS d20 LEFT JOIN district_2035 AS d35
 ON d20.id = d35.id
 ORDER BY d20.id;
 
--- Listing 7-13: Joining multiple tables
+-- 코드 7-13: Joining multiple tables
 
 CREATE TABLE district_2020_enrollment (
     id integer,
@@ -191,21 +191,21 @@ JOIN district_2020_grades AS gr
     ON d20.id = gr.id
 ORDER BY d20.id;
 
--- Listing 7-14: Combining query results with UNION
+-- 코드 7-14: Combining query results with UNION
 
 SELECT * FROM district_2020
 UNION
 SELECT * FROM district_2035
 ORDER BY id;
 
--- Listing 7-15: Combining query results with UNION ALL
+-- 코드 7-15: Combining query results with UNION ALL
 
 SELECT * FROM district_2020
 UNION ALL
 SELECT * FROM district_2035
 ORDER BY id;
 
--- Listing 7-16: Customizing a UNION query
+-- 코드 7-16: Customizing a UNION query
 
 SELECT '2020' AS year,
        school_2020 AS school
@@ -218,7 +218,7 @@ SELECT '2035' AS year,
 FROM district_2035
 ORDER BY school, year;
 
--- Listing 7-17: Combining query results with INTERSECT and EXCEPT
+-- 코드 7-17: Combining query results with INTERSECT and EXCEPT
 
 SELECT * FROM district_2020
 INTERSECT
@@ -230,7 +230,7 @@ EXCEPT
 SELECT * FROM district_2035
 ORDER BY id;
 
--- Listing 7-18: Performing math on joined Census population estimates tables
+-- 코드 7-18: Performing math on joined Census population estimates tables
 
 CREATE TABLE us_counties_pop_est_2010 (
     state_fips text,                         -- State FIPS code

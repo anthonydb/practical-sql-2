@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- Listing 3-1: Querying all rows and columns from the teachers table
+-- 코드 3-1: Querying all rows and columns from the teachers table
 
 SELECT * FROM teachers;
 
@@ -11,11 +11,11 @@ SELECT * FROM teachers;
 
 TABLE teachers;
 
--- Listing 3-2: Querying a subset of columns
+-- 코드 3-2: Querying a subset of columns
 
 SELECT last_name, first_name, salary FROM teachers;
 
--- Listing 3-3: Sorting a column with ORDER BY
+-- 코드 3-3: Sorting a column with ORDER BY
 
 SELECT first_name, last_name, salary
 FROM teachers
@@ -28,26 +28,26 @@ SELECT first_name, last_name, salary
 FROM teachers
 ORDER BY 3 DESC;
 
--- Listing 3-4: Sorting multiple columns with ORDER BY
+-- 코드 3-4: Sorting multiple columns with ORDER BY
 
 SELECT last_name, school, hire_date
 FROM teachers
 ORDER BY school ASC, hire_date DESC;
 
--- Listing 3-5: Querying distinct values in the school column
+-- 코드 3-5: Querying distinct values in the school column
 
 SELECT DISTINCT school
 FROM teachers
 ORDER BY school;
 
--- Listing 3-6: Querying distinct pairs of values in the school and salary
+-- 코드 3-6: Querying distinct pairs of values in the school and salary
 -- columns
 
 SELECT DISTINCT school, salary
 FROM teachers
 ORDER BY school, salary;
 
--- Listing 3-7: Filtering rows using WHERE
+-- 코드 3-7: Filtering rows using WHERE
 
 SELECT last_name, school, hire_date
 FROM teachers
@@ -84,7 +84,7 @@ SELECT first_name, last_name, school, salary
 FROM teachers
 WHERE salary >= 40000 AND salary <= 65000;
 
--- Listing 3-8: Filtering with LIKE AND ILIKE
+-- 코드 3-8: Filtering with LIKE AND ILIKE
 
 SELECT first_name
 FROM teachers
@@ -94,7 +94,7 @@ SELECT first_name
 FROM teachers
 WHERE first_name ILIKE 'sam%';
 
--- Listing 3-9: Combining operators using AND and OR
+-- 코드 3-9: Combining operators using AND and OR
 
 SELECT *
 FROM teachers
@@ -120,7 +120,7 @@ FROM teachers
 WHERE school = 'F.D. Roosevelt HS'
       AND salary < 38000 OR salary > 40000;
 
--- Listing 3-10: A SELECT statement including WHERE and ORDER BY
+-- 코드 3-10: A SELECT statement including WHERE and ORDER BY
 
 SELECT first_name, last_name, school, hire_date, salary
 FROM teachers

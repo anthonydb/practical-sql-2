@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- Listing 16-1: JSON with information about two films
+-- 코드 16-1: JSON with information about two films
 
 [{
 	"title": "The Incredibles",
@@ -35,7 +35,7 @@
 	"genre": ["romance", "drama"]
 }]
 
--- Listing 16-2: Creating a table to hold JSON data and adding an index
+-- 코드 16-2: Creating a table to hold JSON data and adding an index
 
 CREATE TABLE films (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -52,7 +52,7 @@ SELECT * FROM films;
 
 -- JSON AND JSONB EXTRACTION OPERATORS
 
--- Listing 16-3: Retrieving a JSON key value with field extraction operators 
+-- 코드 16-3: Retrieving a JSON key value with field extraction operators 
 
 -- Returns the key value as a JSON data type
 SELECT id, film -> 'title' AS title
@@ -69,7 +69,7 @@ SELECT id, film -> 'genre' AS genre
 FROM films
 ORDER BY id;
 
--- Listing 16-4: Retrieving a JSON array value with element extraction operators 
+-- 코드 16-4: Retrieving a JSON array value with element extraction operators 
 
 -- Extracts first element of the JSON array
 -- (array elements are indexed from zero, but negative integers count from the end).
@@ -90,7 +90,7 @@ SELECT id, film -> 'genre' ->> 0 AS genres
 FROM films
 ORDER BY id;
 
--- Listing 16-5: Retrieving a JSON key value with path extraction operators
+-- 코드 16-5: Retrieving a JSON key value with path extraction operators
 
 -- Retrieve the film's MPAA rating.
 SELECT id, film #> '{rating, MPAA}' AS mpaa_rating
@@ -110,7 +110,7 @@ ORDER BY id;
 
 -- JSONB CONTAINMENT AND EXISTENCE OPERATORS
 
--- Listing 16-6: Demonstrating the @> containment operator
+-- 코드 16-6: Demonstrating the @> containment operator
 
 -- Does the film JSON value contain the following key/value pair?
 SELECT id, film ->> 'title' AS title,
@@ -118,21 +118,21 @@ SELECT id, film ->> 'title' AS title,
 FROM films
 ORDER BY id;
 
--- Listing 16-7: Using a containment operator in a WHERE clause
+-- 코드 16-7: Using a containment operator in a WHERE clause
 
 SELECT film ->> 'title' AS title,
        film ->> 'year' AS year
 FROM films
 WHERE film @> '{"title": "The Incredibles"}'::jsonb; 
 
--- Listing 16-8: Demonstrating the <@ containment operator
+-- 코드 16-8: Demonstrating the <@ containment operator
 
 SELECT film ->> 'title' AS title,
        film ->> 'year' AS year
 FROM films
 WHERE '{"title": "The Incredibles"}'::jsonb <@ film; 
 
--- Listing 16-9: Demonstrating existence operators
+-- 코드 16-9: Demonstrating existence operators
 
 -- Does the text string exist as a top-level key or array element within the JSON value?
 SELECT film ->> 'title' AS title
@@ -156,7 +156,7 @@ WHERE film ?& '{rating, genre}';
 
 -- ANALYZING EARTHQUAKE DATA
 
--- Listing 16-10: JSON with data on one earthquake
+-- 코드 16-10: JSON with data on one earthquake
 
 {
 	"type": "Feature",
@@ -195,7 +195,7 @@ WHERE film ?& '{rating, genre}';
 	"id": "av91018173"
 }
 
--- Listing 16-11: Creating and loading an earthquakes table
+-- 코드 16-11: Creating and loading an earthquakes table
 
 CREATE TABLE earthquakes (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -209,14 +209,14 @@ CREATE INDEX idx_earthquakes ON earthquakes USING GIN (earthquake);
 
 SELECT * FROM earthquakes;
 
--- Listing 16-12: Retrieving the earthquake time
+-- 코드 16-12: Retrieving the earthquake time
 -- Note that the time is stored in epoch format
 
 SELECT id, earthquake #>> '{properties, time}' AS time 
 FROM earthquakes
 ORDER BY id LIMIT 5;
 
--- Listing 16-13: Converting the time value to a timestamp
+-- 코드 16-13: Converting the time value to a timestamp
 
 SELECT id, earthquake #>> '{properties, time}' as time,
        to_timestamp(
@@ -230,7 +230,7 @@ SHOW timezone;
 SET timezone TO 'US/Eastern';
 SET timezone TO 'UTC';
 
--- Listing 16-14: Finding the minimum and maximum earthquake times
+-- 코드 16-14: Finding the minimum and maximum earthquake times
 
 SELECT min(to_timestamp(
            (earthquake #>> '{properties, time}')::bigint / 1000
@@ -240,7 +240,7 @@ SELECT min(to_timestamp(
                        )) AT TIME ZONE 'UTC' AS max_timestamp
 FROM earthquakes;
 
--- Listing 16-15: Finding the five earthquakes with the largest magnitude
+-- 코드 16-15: Finding the five earthquakes with the largest magnitude
 
 SELECT earthquake #>> '{properties, place}' AS place,
        to_timestamp((earthquake #>> '{properties, time}')::bigint / 1000)
@@ -259,7 +259,7 @@ FROM earthquakes
 ORDER BY (earthquake #>> '{properties, mag}')::numeric DESC NULLS LAST
 LIMIT 5;
 
--- Listing 16-16: Finding earthquakes with the most Did You Feel It? reports
+-- 코드 16-16: Finding earthquakes with the most Did You Feel It? reports
 -- https://earthquake.usgs.gov/data/dyfi/
 
 SELECT earthquake #>> '{properties, place}' AS place,
@@ -271,7 +271,7 @@ FROM earthquakes
 ORDER BY (earthquake #>> '{properties, felt}')::integer DESC NULLS LAST
 LIMIT 5;
 
--- Listing 16-17: Extracting the earthquake's location data
+-- 코드 16-17: Extracting the earthquake's location data
 
 SELECT id,
        earthquake #>> '{geometry, coordinates}' AS coordinates,
@@ -281,7 +281,7 @@ FROM earthquakes
 ORDER BY id
 LIMIT 5;
 
--- Listing 16-18: Converting JSON location data to PostGIS geography
+-- 코드 16-18: Converting JSON location data to PostGIS geography
 SELECT ST_SetSRID(
          ST_MakePoint(
             (earthquake #>> '{geometry, coordinates, 0}')::numeric,
@@ -291,7 +291,7 @@ SELECT ST_SetSRID(
 FROM earthquakes
 ORDER BY id;
 
--- Listing 16-19: Converting JSON coordinates to a PostGIS geometry column 
+-- 코드 16-19: Converting JSON coordinates to a PostGIS geometry column 
 
 -- Add a column of the geography data type 
 ALTER TABLE earthquakes ADD COLUMN earthquake_point geography(POINT, 4326);
@@ -308,7 +308,7 @@ SET earthquake_point =
 
 CREATE INDEX quake_pt_idx ON earthquakes USING GIST (earthquake_point);
 
--- Listing 16-20: Finding earthquakes within 50 miles of downtown Tulsa, Oklahoma
+-- 코드 16-20: Finding earthquakes within 50 miles of downtown Tulsa, Oklahoma
 
 SELECT earthquake #>> '{properties, place}' AS place,
        to_timestamp((earthquake -> 'properties' ->> 'time')::bigint / 1000)
@@ -323,30 +323,30 @@ ORDER BY time;
 
 -- GENERATING AND MANIPULATING JSON
 
--- Listing 16-21: Turning query results into JSON with to_json()
+-- 코드 16-21: Turning query results into JSON with to_json()
 
 -- Convert an entire row from the table
 SELECT to_json(employees) AS json_rows
 FROM employees;
 
--- Listing 16-22: Specifying columns to convert to JSON
+-- 코드 16-22: Specifying columns to convert to JSON
 -- Returns key names as f1, f2, etc.
 SELECT to_json(row(emp_id, last_name)) AS json_rows
 FROM employees;
 
--- Listing 16-23: Generating key names with a subquery
+-- 코드 16-23: Generating key names with a subquery
 SELECT to_json(employees) AS json_rows
 FROM (
     SELECT emp_id, last_name AS ln FROM employees
 ) AS employees;
 
--- Listing 16-24: Aggregating the rows and converting to JSON
+-- 코드 16-24: Aggregating the rows and converting to JSON
 SELECT json_agg(to_json(employees)) AS json
 FROM (
     SELECT emp_id, last_name AS ln FROM employees
 ) AS employees;
 
--- Listing 16-25: Adding a top-level key/value pair via concatenation
+-- 코드 16-25: Adding a top-level key/value pair via concatenation
 -- Two examples
 
 UPDATE films
@@ -360,7 +360,7 @@ WHERE film @> '{"title": "The Incredibles"}'::jsonb;
 SELECT film FROM films -- check the updated data
 WHERE film @> '{"title": "The Incredibles"}'::jsonb; 
 
--- Listing 16-26: Setting an array value at a path
+-- 코드 16-26: Setting an array value at a path
 
 UPDATE films
 SET film = jsonb_set(film,
@@ -372,7 +372,7 @@ WHERE film @> '{"title": "Cinema Paradiso"}'::jsonb;
 SELECT film FROM films -- check the updated data
 WHERE film @> '{"title": "Cinema Paradiso"}'::jsonb; 
 
--- Listing 16-27: Deleting values from JSON
+-- 코드 16-27: Deleting values from JSON
 
 -- Removes the studio key/value pair from The Incredibles
 UPDATE films
@@ -387,7 +387,7 @@ WHERE film @> '{"title": "Cinema Paradiso"}'::jsonb;
 
 -- JSON PROCESSING FUNCTIONS
 
--- Listing 16-28: Finding the length of an array
+-- 코드 16-28: Finding the length of an array
 
 SELECT id,
        film ->> 'title' AS title,
@@ -395,7 +395,7 @@ SELECT id,
 FROM films
 ORDER BY id;
 
--- Listing 16-29: Returning array elements as rows
+-- 코드 16-29: Returning array elements as rows
 
 SELECT id,
        jsonb_array_elements(film -> 'genre') AS genre_jsonb,
@@ -403,7 +403,7 @@ SELECT id,
 FROM films
 ORDER BY id;
 
--- Listing 16-30: Returning key values from each item in an array
+-- 코드 16-30: Returning key values from each item in an array
 
 SELECT id, 
        jsonb_array_elements(film -> 'characters')
