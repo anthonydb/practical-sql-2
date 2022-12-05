@@ -1,8 +1,6 @@
 ---------------------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
+-- 실용 SQL
 -- by Anthony DeBarros
-
--- Chapter 3 Code Examples
 ----------------------------------------------------------------------------
 
 -- Listing 3-1: Querying all rows and columns from the teachers table

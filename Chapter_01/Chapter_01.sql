@@ -1,11 +1,9 @@
 ---------------------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
+-- 실용 SQL
 -- by Anthony DeBarros
-
--- Chapter 1 Code Examples
 ----------------------------------------------------------------------------
 
--- Listing 1-1: Checking your PostgreSQL version
+-- 코드 1-1 PostgreSQL 버전 확인
 
 SELECT version();
 

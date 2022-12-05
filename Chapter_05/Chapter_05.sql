@@ -1,8 +1,6 @@
 ---------------------------------------------------------------------------
--- Practical SQL: A Beginner's Guide to Storytelling with Data, 2nd Edition
+-- 실용 SQL
 -- by Anthony DeBarros
-
--- Chapter 5 Code Examples
 ----------------------------------------------------------------------------
 
 -- Listing 5-1: Using COPY for data import
