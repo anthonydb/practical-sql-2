@@ -4,22 +4,22 @@
 ----------------------------------------------------------------------------
 
 
--- Commonly used string functions
--- Full list at https://www.postgresql.org/docs/current/functions-string.html
+-- 자주 사용하는 문자열 함수
+-- 참고: https://www.postgresql.org/docs/current/functions-string.html
 
--- Case formatting
+-- 형식 지정
 SELECT upper('Neal7');
 SELECT lower('Randy');
 SELECT initcap('at the end of the day');
 -- Note initcap's imperfect for acronyms
 SELECT initcap('Practical SQL');
 
--- Character Information
+-- 정보 찾기
 SELECT char_length(' Pat ');
 SELECT length(' Pat ');
 SELECT position(', ' in 'Tan, Bella');
 
--- Removing characters
+-- 문자 삭제
 SELECT trim('s' from 'socks');
 SELECT trim(trailing 's' from 'socks');
 SELECT trim(' Pat ');
@@ -27,30 +27,30 @@ SELECT char_length(trim(' Pat ')); -- note the length change
 SELECT ltrim('socks', 's');
 SELECT rtrim('socks', 's');
 
--- Extracting and replacing characters
+-- 문자 추출 및 변경
 SELECT left('703-555-1212', 3);
 SELECT right('703-555-1212', 8);
 SELECT replace('bat', 'b', 'c');
 
 
--- Table 14-2: Regular Expression Matching Examples
+-- 표 14-2: 정규식 표기법을 사용한 예시들
 
--- Any character one or more times
+-- 임의의 문자를 한 번 이상
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '.+');
--- One or two digits followed by a space and a.m. or p.m. in a noncapture group
+-- 한 자리 또는 두 자리 숫자 뒤에 공백과 논캡쳐링 그룹에서 a.m. 또는 p.m.
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '\d{1,2} (?:a.m.|p.m.)');
--- One or more word characters at the start
+-- 시작 부분에 하나 이상의 단어 문자
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '^\w+');
--- One or more word characters followed by any character at the end.
+-- 끝에 임의의 문자가 오는 하나 이상의 단어 문자
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '\w+.$');
--- The words May or June
+-- May 또는 June이라는 단어 중 하나
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from 'May|June');
--- Four digits
+-- 네 자리 수
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from '\d{4}');
--- May followed by a space, digit, comma, space, and four digits.
+-- May 뒤에 공백, 숫자, 쉼표, 공백, 네 자리 숫자
 SELECT substring('The game starts at 7 p.m. on May 2, 2024.' from 'May \d, \d{4}');
 
--- 코드 14-1: Using regular expressions in a WHERE clause
+-- 코드 14-1: WHERE 절에서 정규식 사용하기
 
 SELECT county_name
 FROM us_counties_pop_est_2019
@@ -62,7 +62,7 @@ FROM us_counties_pop_est_2019
 WHERE county_name ~* 'ash' AND county_name !~ 'Wash'
 ORDER BY county_name;
 
--- 코드 14-2: Regular expression functions to replace and split text
+-- 코드 14-2: 텍스트를 바꾸고 분할하는 정규식 함수
 
 SELECT regexp_replace('05/12/2024', '\d{4}', '2023');
 
@@ -70,21 +70,21 @@ SELECT regexp_split_to_table('Four,score,and,seven,years,ago', ',');
 
 SELECT regexp_split_to_array('Phil Mike Tony Steve', ' ');
 
--- 코드 14-3: Finding an array length
+-- 코드 14-3: 배열 길이 찾기
 
 SELECT array_length(regexp_split_to_array('Phil Mike Tony Steve', ' '), 1);
 
 
--- Turning Text to Data with Regular Expression Functions
+-- 정규식을 활용해 텍스트를 데이터로 바꾸기
 
--- 코드 14-5: Creating and loading the crime_reports table
--- Data from https://sheriff.loudoun.gov/dailycrime
+-- 코드 14-5: Ccrime_reports 테이블 생성하고 가져오기
+-- https://sheriff.loudoun.gov/dailycrime
 
 CREATE TABLE crime_reports (
     crime_id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     case_number text,
-    date_1 timestamptz,  -- note: this is the PostgreSQL shortcut for timestamp with time zone
-    date_2 timestamptz,  -- note: this is the PostgreSQL shortcut for timestamp with time zone
+    date_1 timestamptz,  -- PostgreSQL에서만 사용할 수 있는 시간대가 적용된 타임스탬프 명칭입니다
+    date_2 timestamptz,  -- PostgreSQL에서만 사용할 수 있는 시간대가 적용된 타임스탬프 명칭입니다
     street text,
     city text,
     crime_type text,
@@ -98,33 +98,33 @@ WITH (FORMAT CSV, HEADER OFF, QUOTE '"');
 
 SELECT original_text FROM crime_reports;
 
--- 코드 14-6: Using regexp_match() to find the first date
+-- 코드 14-6: regexp_match()를 사용하여 첫 번째로 범죄가 발생한 날짜 찾기
 SELECT crime_id,
        regexp_match(original_text, '\d{1,2}\/\d{1,2}\/\d{2}')
 FROM crime_reports
 ORDER BY crime_id;
 
--- 코드 14-7: Using the regexp_matches() function with the 'g' flag
+-- 코드 14-7: g 플래그와 함께 regexp_matches() 함수 사용하기
 SELECT crime_id,
        regexp_matches(original_text, '\d{1,2}\/\d{1,2}\/\d{2}', 'g')
 FROM crime_reports
 ORDER BY crime_id;
 
--- 코드 14-8: Using regexp_match() to find the second date
--- Note that the result includes an unwanted hyphen
+-- 코드 14-8: regexp_match()를 사용하여 두 번째 날짜 찾기
+-- 결과에는 하이픈(-)이 포함됨
 SELECT crime_id,
        regexp_match(original_text, '-\d{1,2}\/\d{1,2}\/\d{2}')
 FROM crime_reports
 ORDER BY crime_id;
 
--- 코드 14-9: Using a capture group to return only the date
--- Eliminates the hyphen
+-- 코드 14-9: 캡처 그룹을 사용하여 날짜만 반환하기
+-- 하이픈 지우기
 SELECT crime_id,
        regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{2})')
 FROM crime_reports
 ORDER BY crime_id;
 
--- 코드 14-10: Matching case number, date, crime type, and city
+-- 코드 14-10: 사건 번호, 날짜, 범죄 유형, 도시 일치시키기
 
 SELECT
     regexp_match(original_text, '(?:C0|SO)[0-9]+') AS case_number,
@@ -135,7 +135,7 @@ SELECT
 FROM crime_reports
 ORDER BY crime_id;
 
--- Bonus: Get all parsed elements at once
+-- 보너스: 한 번에 모든 값 얻어오기
 
 SELECT crime_id,
        regexp_match(original_text, '\d{1,2}\/\d{1,2}\/\d{2}') AS date_1,
@@ -156,7 +156,7 @@ SELECT crime_id,
 FROM crime_reports
 ORDER BY crime_id;
 
--- 코드 14-11: Retrieving a value from within an array
+-- 코드 14-11: 배열 내에서 값 가져오기
 
 SELECT
     crime_id,
@@ -165,7 +165,7 @@ SELECT
 FROM crime_reports
 ORDER BY crime_id;
 
--- 코드 14-12: Updating the crime_reports date_1 column
+-- 코드 14-12: crime_reports 테이블의 date_1 열 업데이트하기
 
 UPDATE crime_reports
 SET date_1 = 
@@ -177,7 +177,7 @@ SET date_1 =
 )::timestamptz
 RETURNING crime_id, date_1, original_text;
 
--- 코드 14-13: Updating all crime_reports columns
+-- 코드 14-13: 모든 crime_reports 열 업데이트하기
 
 UPDATE crime_reports
 SET date_1 = 
@@ -217,7 +217,7 @@ SET date_1 =
     description = (regexp_match(original_text, ':\s(.+)(?:C0|SO)'))[1],
     case_number = (regexp_match(original_text, '(?:C0|SO)[0-9]+'))[1];
 
--- 코드 14-14: Viewing selected crime data
+-- 코드 14-14: 선택된 범죄 데이터 보기
 
 SELECT date_1,
        street,
@@ -227,26 +227,25 @@ FROM crime_reports
 ORDER BY crime_id;
 
 
--- FULL TEXT SEARCH
+-- 텍스트 검색 데이터 타입
 
--- Full-text search operators:
 -- & (AND)
 -- | (OR)
 -- ! (NOT)
 
--- Note: You can view installed PostgreSQL search language configurations by running:
+-- 노트: PostgreSQL과 함께 설치된 추가 검색 언어 구성을 보려면 SELECT cfgname FROM pg_ts_config; 쿼리를 실행하세요.
 SELECT cfgname FROM pg_ts_config;
 
 
--- 코드 14-15: Converting text to tsvector data
+-- 코드 14-15: 텍스트를 tsvector 데이터로 변환하기
 
 SELECT to_tsvector('english', 'I am walking across the sitting room to sit with you.');
 
--- 코드 14-16: Converting search terms to tsquery data
+-- 코드 14-16: 검색어를 tsquery 데이터로 변환하기
 
 SELECT to_tsquery('english', 'walking & sitting');
 
--- 코드 14-17: Querying a tsvector type with a tsquery
+-- 코드 14-17: tsquery로 tsvector 타입 쿼리하기
 
 SELECT to_tsvector('english', 'I am walking across the sitting room') @@
        to_tsquery('english', 'walking & sitting');
@@ -254,9 +253,9 @@ SELECT to_tsvector('english', 'I am walking across the sitting room') @@
 SELECT to_tsvector('english', 'I am walking across the sitting room') @@ 
        to_tsquery('english', 'walking & running');
 
--- 코드 14-18: Creating and filling the president_speeches table
+-- 코드 14-18: president_speeches 테이블 만들고 채우기
 
--- Sources:
+-- 출처:
 -- https://archive.org/details/State-of-the-Union-Addresses-1945-2006
 -- https://www.presidency.ucsb.edu/documents/presidential-documents-archive-guidebook/annual-messages-congress-the-state-the-union
 -- https://www.eisenhower.archives.gov/all_about_ike/speeches.html
@@ -276,23 +275,23 @@ WITH (FORMAT CSV, DELIMITER '|', HEADER OFF, QUOTE '@');
 
 SELECT * FROM president_speeches ORDER BY speech_date;
 
--- 코드 14-19: Converting speeches to tsvector in the search_speech_text column
+-- 코드 14-19: search_speech_text 열에서 연설을 tsvector 타입으로 변환하기
 
 UPDATE president_speeches
 SET search_speech_text = to_tsvector('english', speech_text);
 
--- 코드 14-20: Creating a GIN index for text search
+-- 코드 14-20: 텍스트 검색을 위한 GIN 인덱스 생성하기
 
 CREATE INDEX search_idx ON president_speeches USING gin(search_speech_text);
 
--- 코드 14-21: Finding speeches containing the word "Vietnam"
+-- 코드 14-21: 베트남이라는 단어가 포함된 연설 찾기
 
 SELECT president, speech_date
 FROM president_speeches
 WHERE search_speech_text @@ to_tsquery('english', 'Vietnam')
 ORDER BY speech_date;
 
--- 코드 14-22: Displaying search results with ts_headline()
+-- 코드 14-22: ts_headline()으로 검색 결과 표시하기
 
 SELECT president,
        speech_date,
@@ -307,7 +306,7 @@ WHERE search_speech_text @@ to_tsquery('english', 'tax')
 ORDER BY speech_date;
 
 
--- 코드 14-23: Finding speeches with the word "transportation" but not "roads"
+-- 코드 14-23: transportation이라는 단어는 언급하지만 roads는 언급하지 않는 연설 찾기
 
 SELECT president,
        speech_date,
@@ -323,7 +322,7 @@ WHERE search_speech_text @@
       to_tsquery('english', 'transportation & !roads')
 ORDER BY speech_date;
 
--- 코드 14-24: Finding speeches where "defense" follows "military"
+-- 코드 14-24: defense가 military를 뒤따르는 연설 찾기
 
 SELECT president,
        speech_date,
@@ -339,7 +338,7 @@ WHERE search_speech_text @@
       to_tsquery('english', 'military <-> defense')
 ORDER BY speech_date;
 
--- Bonus: Example with a distance of 2:
+-- 보너스: military와 defense 사이에 단어가 두 게 끼어있는 연설 찾기:
 SELECT president,
        speech_date,
        ts_headline(speech_text, 
@@ -354,7 +353,7 @@ WHERE search_speech_text @@
       to_tsquery('english', 'military <2> defense')
 ORDER BY speech_date;
 
--- 코드 14-25: Scoring relevance with ts_rank()
+-- 코드 14-25: ts_rank()를 사용해서 scoring relavance
 
 SELECT president,
        speech_date,
