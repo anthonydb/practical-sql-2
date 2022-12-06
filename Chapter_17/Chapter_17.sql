@@ -5,7 +5,7 @@
 
 -- VIEWS
 
--- 코드 17-1: Creating a view that displays Nevada 2019 counties
+-- 코드 17-1: 2019년도 네바다주의 카운티 목록을 뷰로 만들기
 
 CREATE OR REPLACE VIEW nevada_counties_pop_2019 AS
     SELECT county_name,
@@ -15,14 +15,14 @@ CREATE OR REPLACE VIEW nevada_counties_pop_2019 AS
     FROM us_counties_pop_est_2019
     WHERE state_name = 'Nevada';
 
--- 코드 17-2: Querying the nevada_counties_pop_2019 view
+-- 코드 17-2: nevada_counties_pop_2010 뷰 쿼리하기
 
 SELECT *
 FROM nevada_counties_pop_2019
 ORDER BY county_fips
 LIMIT 5;
 
--- 코드 17-3: Creating a view showing population change for US counties
+-- 코드 17-3: 미국 카운티의 인구 변화율을 보여 주는 뷰 생성
 
 CREATE OR REPLACE VIEW county_pop_change_2019_2010 AS
     SELECT c2019.county_name,
@@ -38,7 +38,7 @@ CREATE OR REPLACE VIEW county_pop_change_2019_2010 AS
     ON c2019.state_fips = c2010.state_fips
         AND c2019.county_fips = c2010.county_fips;
 
--- 코드 17-4: Selecting columns from the county_pop_change_2019_2010 view
+-- 코드 17-4: county_pop_change_2019_2010 뷰에서 열 선택하기
 
 SELECT county_name,
        state_name,
@@ -49,7 +49,7 @@ WHERE state_name = 'Nevada'
 ORDER BY county_fips
 LIMIT 5;
 
--- 코드 17-5: Creating a materialized view
+-- 코드 17-5: 구체화된 뷰 생성하기
 
 DROP VIEW nevada_counties_pop_2019;
 
@@ -61,26 +61,24 @@ CREATE MATERIALIZED VIEW nevada_counties_pop_2019 AS
     FROM us_counties_pop_est_2019
     WHERE state_name = 'Nevada';
 
--- 코드 17-6: Refreshing a materialized view 
+-- 코드 17-6: 구체화된 뷰 새로고침하기
 
 REFRESH MATERIALIZED VIEW nevada_counties_pop_2019;
 
--- Optionally add the CONCURRENTLY keyword to prevent locking out SELECTs
--- while the view refresh is in progress. To use CONCURRENTLY, the view must
--- have at least one UNIQUE index:
+-- OREFRESH MATERIALIZED VIEW CONCURRENTLY를 사용하면 새로고침 중에 뷰에 대해 실행되는 SELECT 문을 잠그지 않도록 할 수 있습니다. 자세한 내용은 https://www.postgresql.org/docs/current/sql-refreshmaterializedview.html에서 확인하세요.
 
 CREATE UNIQUE INDEX nevada_counties_pop_2019_fips_idx ON nevada_counties_pop_2019 (state_fips, county_fips);
 REFRESH MATERIALIZED VIEW CONCURRENTLY nevada_counties_pop_2019;
 
--- To drop a materialized view, use:
+-- 구체화된 뷰를 삭제하려면 아래 명령어를 사용하세요
 -- DROP MATERIALIZED VIEW nevada_counties_pop_2019;
 
--- 코드 17-7: Creating a view on the employees table
+-- 코드 17-7: employees 테이블에 뷰 만들기
 
--- Optional: Check the emplyees table:
+-- employees 테이블 확인
 SELECT * FROM employees ORDER BY emp_id;
 
--- Create view:
+-- 뷰 만들기
 CREATE OR REPLACE VIEW employees_tax_dept WITH (security_barrier) AS
      SELECT emp_id,
             first_name,
@@ -92,7 +90,7 @@ CREATE OR REPLACE VIEW employees_tax_dept WITH (security_barrier) AS
 
 SELECT * FROM employees_tax_dept ORDER BY emp_id;
 
--- 코드 17-8: Successful and rejected inserts via the employees_tax_dept view
+-- 코드 17-8: employees_tax_dept 뷰를 통해 성공한 추가와 실패한 추가
 
 INSERT INTO employees_tax_dept (emp_id, first_name, last_name, dept_id)
 VALUES (5, 'Suzanne', 'Legere', 1);
@@ -104,7 +102,7 @@ SELECT * FROM employees_tax_dept ORDER BY emp_id;
 
 SELECT * FROM employees ORDER BY emp_id;
 
--- 코드 17-9: Updating a row via the employees_tax_dept view
+-- 코드 17-9: employees_tax_dept 뷰를 통한 데이터 수정
 
 UPDATE employees_tax_dept
 SET last_name = 'Le Gere'
@@ -112,24 +110,24 @@ WHERE emp_id = 5;
 
 SELECT * FROM employees_tax_dept ORDER BY emp_id;
 
--- Bonus: This will fail because the salary column is not in the view
+-- 보너스: 해당 뷰에는 salary 열이 없어 아래 명령어는 실패합니다.
 UPDATE employees_tax_dept
 SET salary = 100000
 WHERE emp_id = 5;
 
--- 코드 17-10: Deleting a row via the employees_tax_dept view
+-- 코드 17-10: employees_tax_dept 뷰로 행 삭제하기
 
 DELETE FROM employees_tax_dept
 WHERE emp_id = 5;
 
 
--- FUNCTIONS AND PROCEDURES
+-- 함수와 프로시저
 -- https://www.postgresql.org/docs/current/sql-createfunction.html
 -- https://www.postgresql.org/docs/current/sql-createprocedure.html
 -- https://www.postgresql.org/docs/current/plpgsql.html
 
--- 코드 17-11: Creating a percent_change function
--- To delete this function: DROP FUNCTION percent_change(numeric,numeric,integer);
+-- 코드 17-11: percent_change() 함수 만들기
+-- 함수 삭제하는 법: DROP FUNCTION percent_change(numeric,numeric,integer);
 
 CREATE OR REPLACE FUNCTION
 percent_change(new_value numeric,
@@ -143,11 +141,11 @@ LANGUAGE SQL
 IMMUTABLE
 RETURNS NULL ON NULL INPUT;
 
--- 코드 17-12: Testing the percent_change() function
+-- 코드 17-12: percent_change() 함수 테스트
 
 SELECT percent_change(110, 108, 2);
 
--- 코드 17-13: Testing percent_change() on census data
+-- 코드 17-13: 인구조사 데이터에서 percent_change() 사용하기
 
 SELECT c2019.county_name,
        c2019.state_name,
@@ -163,7 +161,7 @@ ON c2019.state_fips = c2010.state_fips
 ORDER BY pct_chg_func DESC
 LIMIT 5;
 
--- 코드 17-14: Adding a column to the teachers table and seeing the data
+-- 코드 17-14: teachers 테이블에 열 추가하기
 
 ALTER TABLE teachers ADD COLUMN personal_days integer;
 
@@ -173,7 +171,7 @@ SELECT first_name,
        personal_days
 FROM teachers;
 
--- 코드 17-15: Creating an update_personal_days() procedure
+-- 코드 17-15: update_personal_days() 함수 만들기
 
 CREATE OR REPLACE PROCEDURE update_personal_days()
 AS $$
@@ -194,14 +192,14 @@ END;
 $$
 LANGUAGE plpgsql;
 
--- To invoke the procedure:
+-- 프로시저 실행
 CALL update_personal_days();
 
--- 코드 17-16: Enabling the PL/Python procedural language
+-- 코드 17-16: PL/Python 절차 언어 사용하기
 
 CREATE EXTENSION plpython3u;
 
--- 코드 17-17: Using PL/Python to create the trim_county() function
+-- 코드 17-17: PL/Python을 사용해 trim_county() 함수 만들기
 
 CREATE OR REPLACE FUNCTION trim_county(input_string text)
 RETURNS text AS $$
@@ -211,7 +209,7 @@ RETURNS text AS $$
 $$
 LANGUAGE plpython3u;
 
--- 코드 17-18: Testing the trim_county() function
+-- 코드 17-18: trim_county() 함수 테스트
 
 SELECT county_name,
        trim_county(county_name)
@@ -220,9 +218,9 @@ ORDER BY state_fips, county_fips
 LIMIT 5;
 
 
--- TRIGGERS
+-- 트리거
 
--- 코드 17-19: Creating the grades and grades_history tables
+-- 코드 17-19: grades 테이블과 grades_history 테이블 생성
 
 CREATE TABLE grades (
     student_id bigint,
@@ -249,7 +247,7 @@ CREATE TABLE grades_history (
 PRIMARY KEY (student_id, course_id, change_time)
 );  
 
--- 코드 17-20: Creating the record_if_grade_changed() function
+-- 코드 17-20: record_if_grade_changed() 함수 작성
 
 CREATE OR REPLACE FUNCTION record_if_grade_changed()
     RETURNS trigger AS
@@ -275,7 +273,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 코드 17-21: Creating the grades_update trigger
+-- 코드 17-21: grades_update 트리거 생성
 
 CREATE TRIGGER grades_update
   AFTER UPDATE
@@ -283,20 +281,20 @@ CREATE TRIGGER grades_update
   FOR EACH ROW
   EXECUTE PROCEDURE record_if_grade_changed();
 
--- 코드 17-22: Testing the grades_update trigger
+-- 코드 17-22: grades_update 트리거 테스트
 
--- Initially, there should be 0 records in the history
+-- 기존 기록은 없습니다
 SELECT * FROM grades_history;
 
--- Check the grades
+-- grades 확인
 SELECT * FROM grades ORDER BY student_id, course_id;
 
--- Update a grade
+-- grade 업데이트
 UPDATE grades
 SET grade = 'C'
 WHERE student_id = 1 AND course_id = 1;
 
--- Now check the history
+-- 기록 확인
 SELECT student_id,
        change_time,
        course,
@@ -304,7 +302,7 @@ SELECT student_id,
        new_grade
 FROM grades_history;
 
--- 코드 17-23: Creating a temperature_test table
+-- 코드 17-23: temperature_test 테이블 생성
 
 CREATE TABLE temperature_test (
     station_name text,
@@ -315,7 +313,7 @@ CREATE TABLE temperature_test (
 PRIMARY KEY (station_name, observation_date)
 );
 
--- 코드 17-24: Creating the classify_max_temp() function
+-- 코드 17-24: classify_max_temp() 함수 만들기
 
 CREATE OR REPLACE FUNCTION classify_max_temp()
     RETURNS trigger AS
@@ -340,7 +338,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 코드 17-25: Creating the temperature_insert trigger
+-- 코드 17-25: temperature_insert 트리거 생성
 
 CREATE TRIGGER temperature_insert
     BEFORE INSERT
@@ -348,7 +346,7 @@ CREATE TRIGGER temperature_insert
     FOR EACH ROW
     EXECUTE PROCEDURE classify_max_temp();
 
--- 코드 17-26: Inserting rows to test the temperature_update trigger
+-- 코드 17-26: temperature_insert 트리거 테스트를 위한 행 삽입
 
 INSERT INTO temperature_test
 VALUES
