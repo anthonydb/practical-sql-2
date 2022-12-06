@@ -4,7 +4,7 @@
 ----------------------------------------------------------------------------
 
 
--- 코드 12-1: Extracting components of a timestamp value using date_part()
+-- 코드 12-1: date_part()를 사용하여 timestamp 값의 구성 요소 추출하기
 
 SELECT
     date_part('year', '2022-12-01 18:37:12 EST'::timestamptz) AS year,
@@ -18,20 +18,20 @@ SELECT
     date_part('quarter', '2022-12-01 18:37:12 EST'::timestamptz) AS quarter,
     date_part('epoch', '2022-12-01 18:37:12 EST'::timestamptz) AS epoch;
 
--- Bonus: Using the SQL-standard extract() for similar datetime parsing:
+-- 보너스: 표준 SQL extract()을 사용한 datetime 파싱
 
 SELECT extract(year from '2022-12-01 18:37:12 EST'::timestamptz) AS year;
 
--- 코드 12-2: Three functions for making datetimes from components
+-- 코드 12-2: 요소에서 datetime을 만드는 세 가지 함수
 
--- make a date
+-- 날짜 만들기
 SELECT make_date(2022, 2, 22);
--- make a time
+-- 시간 만들기
 SELECT make_time(18, 4, 30.3);
--- make a timestamp with time zone
+-- 시간대가 적용된 timestamp 만들기
 SELECT make_timestamptz(2022, 2, 22, 18, 4, 30.3, 'Europe/Lisbon');
 
--- Bonus: Retrieving the current date and time
+-- 보너스: 현재 날짜와 시간 받아오기
 
 SELECT
     current_timestamp,
@@ -41,7 +41,7 @@ SELECT
     localtime,
     now();
 
--- 코드 12-3: Comparing current_timestamp and clock_timestamp() during row insert
+-- 코드 12-3: 행 삽입 중 current_timestamp와 clock_timestamp() 비교하기
 
 CREATE TABLE current_time_example (
     time_id integer GENERATED ALWAYS AS IDENTITY,
@@ -57,27 +57,27 @@ INSERT INTO current_time_example
 
 SELECT * FROM current_time_example;
 
--- Time Zones
+-- 시간대
 
--- 코드 12-4: Viewing your current time zone setting
+-- 코드 12-4: 현재 시간대 확인하기
 
-SHOW timezone; -- Note: You can see all run-time defaults with SHOW ALL;
+SHOW timezone; -- 참고: SHOW ALL을 사용하면 모든 런타임 설정을 확인할 수 있습니다;
 SELECT current_setting('timezone');
 
--- Using current_setting() inside another function:
+-- 다른 함수 입력에는 current_setting() 사용하기:
 SELECT make_timestamptz(2022, 2, 22, 18, 4, 30.3, current_setting('timezone'));
 
--- 코드 12-5: Showing time zone abbreviations and names
+-- 코드 12-5: 시간대 약어와 이름 보이기
 
 SELECT * FROM pg_timezone_abbrevs ORDER BY abbrev;
 SELECT * FROM pg_timezone_names ORDER BY name;
 
--- Filter to find one
+-- 필터를 적용해 한 가지 약어 찾기
 SELECT * FROM pg_timezone_names
 WHERE name LIKE 'Europe%'
 ORDER BY name;
 
--- 코드 12-6: Setting the time zone for a client session
+-- 코드 12-6: 클라이언트 세션의 시간대 설정하기
 
 SET TIME ZONE 'US/Pacific';
 
@@ -97,15 +97,15 @@ FROM time_zone_test;
 SELECT test_date AT TIME ZONE 'Asia/Seoul'
 FROM time_zone_test;
 
--- Math with dates!
+-- 날짜 계산하기!
 
 SELECT '1929-09-30'::date - '1929-09-27'::date;
 SELECT '1929-09-30'::date + '5 years'::interval;
 
 
--- Taxi Rides
+-- 택시 데이터
 
--- 코드 12-7: Creating a table and importing NYC yellow taxi data
+-- 코드 12-7: 테이블 생성 및 뉴욕시의 노란색 택시 데이터 가져오기
 
 CREATE TABLE nyc_yellow_taxi_trips (
     trip_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -157,12 +157,12 @@ WITH (FORMAT CSV, HEADER);
 CREATE INDEX tpep_pickup_idx
 ON nyc_yellow_taxi_trips (tpep_pickup_datetime);
 
--- Count the trip records
+-- 전체 데이터 세기
 SELECT count(*) FROM nyc_yellow_taxi_trips;
 
--- 코드 12-8: Counting taxi trips by hour
+-- 코드 12-8: 시간별 택시 운행 횟수 계산하기
 
-SET TIME ZONE 'US/Eastern'; -- Set this if your PostgreSQL server defaults to a time zone other than US/Eastern
+SET TIME ZONE 'US/Eastern';
 
 SELECT
     date_part('hour', tpep_pickup_datetime) AS trip_hour,
@@ -171,7 +171,7 @@ FROM nyc_yellow_taxi_trips
 GROUP BY trip_hour
 ORDER BY trip_hour;
 
--- 코드 12-9: Exporting taxi pickups per hour to a CSV file
+-- 코드 12-9: 시간당 택시 승차 숫자를 CSV 파일로 내보내기
 
 COPY
     (SELECT
@@ -184,7 +184,7 @@ COPY
 TO 'C:\YourDirectory\hourly_taxi_pickups.csv'
 WITH (FORMAT CSV, HEADER);
 
--- 코드 12-10: Calculating median trip time by hour
+-- 코드 12-10: 시간별 이동 시간 중앙값 계산하기
 
 SELECT
     date_part('hour', tpep_pickup_datetime) AS trip_hour,
@@ -195,7 +195,7 @@ FROM nyc_yellow_taxi_trips
 GROUP BY trip_hour
 ORDER BY trip_hour;
 
--- 코드 12-11: Creating a table to hold train trip data
+-- 코드 12-11: 기차 이동 데이터를 보관할 테이블 만들기
 
 CREATE TABLE train_rides (
     trip_id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -217,21 +217,21 @@ SET TIME ZONE 'US/Central';
 
 SELECT * FROM train_rides;
 
--- 코드 12-12: Calculating the length of each trip segment
+-- 코드 12-12: 각 이동 구간의 길이 계산하기
 
 SELECT segment,
        to_char(departure, 'YYYY-MM-DD HH12:MI a.m. TZ') AS departure,
        arrival - departure AS segment_duration
 FROM train_rides;
 
--- 코드 12-13: Calculating cumulative intervals using OVER
+-- 코드 12-13: OVER를 사용하여 누적 간격 계산하기
 
 SELECT segment,
        arrival - departure AS segment_duration,
        sum(arrival - departure) OVER (ORDER BY trip_id) AS cume_duration
 FROM train_rides;
 
--- 코드 12-14: Using justify_interval() to better format cumulative trip duration
+-- 코드 12-14: justify_interval()을 사용한 누적 여행 기간 형식화
 
 SELECT segment,
        arrival - departure AS segment_duration,
