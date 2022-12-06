@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- 코드 13-1: Using a subquery in a WHERE clause
+-- 코드 13-1: WHERE 절에서 하위 쿼리 사용하기
 
 SELECT county_name,
        state_name,
@@ -15,7 +15,7 @@ WHERE pop_est_2019 >= (
     )
 ORDER BY pop_est_2019 DESC;
 
--- 코드 13-2: Using a subquery in a WHERE clause with DELETE
+-- 코드 13-2: DELETE 내부 WHERE 절에서 하위 쿼리 사용하기
 
 CREATE TABLE us_counties_2019_top10 AS
 SELECT * FROM us_counties_pop_est_2019;
@@ -28,7 +28,7 @@ WHERE pop_est_2019 < (
 
 SELECT count(*) FROM us_counties_2019_top10;
 
--- 코드 13-3: Subquery as a derived table in a FROM clause
+-- 코드 13-3: FROM 절에서 파생된 테이블로 하위 쿼리
 
 SELECT round(calcs.average, 0) as average,
        calcs.median,
@@ -41,7 +41,7 @@ FROM (
      )
 AS calcs;
 
--- 코드 13-4: Joining two derived tables
+-- 코드 13-4: 파생 테이블 두 개 조인하기
 
 SELECT census.state_name AS st,
        census.pop_est_2018,
@@ -67,7 +67,7 @@ JOIN
 ON est.st = census.state_name
 ORDER BY estabs_per_thousand DESC;
 
--- 코드 13-5: Adding a subquery to a column list
+-- 코드 13-5: 열 목록에 하위 쿼리 추가하기
 
 SELECT county_name,
        state_name AS st,
@@ -76,7 +76,7 @@ SELECT county_name,
         FROM us_counties_pop_est_2019) AS us_median
 FROM us_counties_pop_est_2019;
 
--- 코드 13-6: Using a subquery in a calculation
+-- 코드 13-6: 계산에 하위 쿼리 사용하기
 
 SELECT county_name,
        state_name AS st,
@@ -88,7 +88,7 @@ WHERE (pop_est_2019 - (SELECT percentile_cont(.5) WITHIN GROUP (ORDER BY pop_est
                        FROM us_counties_pop_est_2019))
        BETWEEN -1000 AND 1000;
 
--- 코드 13-7: Creating and filling a retirees table
+-- 코드 13-7: retirees 테이블 만들고 채우기
 
 CREATE TABLE retirees (
     id int,
@@ -101,7 +101,7 @@ VALUES (2, 'Janet', 'King'),
        (4, 'Michael', 'Taylor');
 
 
--- 코드 13-8: Generating values for the IN operator
+-- 코드 13-8: IN 연산자에 대한 값 생성하기
 
 SELECT first_name, last_name
 FROM employees
@@ -110,7 +110,7 @@ WHERE emp_id IN (
     FROM retirees)
 ORDER BY emp_id;
     
--- 코드 13-9: Using a correlated subquery with WHERE EXISTS
+-- 코드 13-9: WHERE EXISTS를 사용한 상관 하위 쿼리
 
 SELECT first_name, last_name
 FROM employees
@@ -119,7 +119,7 @@ WHERE EXISTS (
     FROM retirees
     WHERE id = employees.emp_id);
 
--- 코드 13-10: Using a correlated subquery with WHERE NOT EXISTS
+-- 코드 13-10: WHERE NOT EXISTS를 사용한 상관 하위 쿼리
 
 SELECT first_name, last_name
 FROM employees
@@ -128,7 +128,7 @@ WHERE NOT EXISTS (
     FROM retirees
     WHERE id = employees.emp_id);
 
--- 코드 13-11: Using LATERAL subqueries in the FROM clause
+-- 코드 13-11: LATERAL 하위 쿼리를 사용한 FROM 절
 
 SELECT county_name,
        state_name,
@@ -141,7 +141,7 @@ FROM us_counties_pop_est_2019,
      LATERAL (SELECT raw_chg / pop_est_2018::numeric AS pct_chg) pc
 ORDER BY pct_chg DESC;
 
--- 코드 13-12: Using a subquery with a LATERAL join
+-- 코드 13-12: LATERAL 하위 쿼리를 사용한 JOIN
 
 ALTER TABLE teachers ADD CONSTRAINT id_key PRIMARY KEY (id);
 
@@ -170,9 +170,9 @@ LEFT JOIN LATERAL (SELECT *
 ON true
 ORDER BY t.id;
 
--- Common Table Expressions
+-- 공통 테이블 표현식
 
--- 코드 13-13: Using a simple CTE to count large counties
+-- 코드 13-13: 인구가 100,000명 이상인 카운티 수 구하기
 
 WITH large_counties (county_name, state_name, pop_est_2019)
 AS (
@@ -185,14 +185,14 @@ FROM large_counties
 GROUP BY state_name
 ORDER BY count(*) DESC;
 
--- Bonus: You can also write this query as:
+-- 보너스: 같은 쿼리를 다음과 같이 적을 수 있습니다.
 SELECT state_name, count(*)
 FROM us_counties_pop_est_2019
 WHERE pop_est_2019 >= 100000
 GROUP BY state_name
 ORDER BY count(*) DESC;
 
--- 코드 13-14: Using CTEs in a table join
+-- 코드 13-14: CTE를 사용한 테이블 조인
 
 WITH
     counties (st, pop_est_2018) AS
@@ -215,7 +215,7 @@ FROM counties JOIN establishments
 ON counties.st = establishments.st
 ORDER BY estabs_per_thousand DESC;
 
--- 코드 13-15: Using CTEs to minimize redundant code
+-- 코드 13-15: CTE로 코드 반복 줄이기
 
 WITH us_median AS
     (SELECT percentile_cont(.5)
@@ -232,12 +232,12 @@ WHERE (pop_est_2019 - us_median_pop)
        BETWEEN -1000 AND 1000;
 
 
--- Cross tabulations
--- Install the crosstab() function via the tablefunc module
+-- 교차 표
+-- tablefunc 모듈을 통한 crosstab() 함수 설치
 
 CREATE EXTENSION tablefunc;
 
--- 코드 13-16: Creating and filling the ice_cream_survey table
+-- 코드 13-16: ice_cream_survey 테이블 생성 및 채우기
 
 CREATE TABLE ice_cream_survey (
     response_id integer PRIMARY KEY,
@@ -249,13 +249,13 @@ COPY ice_cream_survey
 FROM 'C:\YourDirectory\ice_cream_survey.csv'
 WITH (FORMAT CSV, HEADER);
 
--- view the data
+-- 데이터 보기
 SELECT * 
 FROM ice_cream_survey
 ORDER BY response_id
 LIMIT 5;
 
--- 코드 13-17: Generating the ice cream survey crosstab
+-- 코드 13-17: 아이스크림 설문조사 크로스 탭 생성하기
 
 SELECT *
 FROM crosstab('SELECT office,
@@ -275,7 +275,7 @@ AS (office text,
     strawberry bigint,
     vanilla bigint);
 
--- 코드 13-18: Creating and filling a temperature_readings table
+-- 코드 13-18: temperature_readings 테이블 만들고 채우기
 
 CREATE TABLE temperature_readings (
     station_name text,
@@ -289,7 +289,7 @@ COPY temperature_readings
 FROM 'C:\YourDirectory\temperature_readings.csv'
 WITH (FORMAT CSV, HEADER);
 
--- 코드 13-19: Generating the temperature readings crosstab
+-- 코드 13-19: 온도 판독 값 크로스 탭 생성하기
 
 SELECT *
 FROM crosstab('SELECT
@@ -320,7 +320,7 @@ AS (station text,
     dec numeric(3,0)
 );
 
--- 코드 13-20: Reclassifying temperature data with CASE
+-- 코드 13-20: CASE로 온도 데이터 재분류하기
 
 SELECT max_temp,
        CASE WHEN max_temp >= 90 THEN 'Hot'
@@ -334,7 +334,7 @@ SELECT max_temp,
 FROM temperature_readings
 ORDER BY station_name, observation_date;
 
--- 코드 13-21: Using CASE in a Common Table Expression
+-- 코드 13-21: CTE에서 CASE 사용하기
 
 WITH temps_collapsed (station_name, max_temperature_group) AS
     (SELECT station_name,
