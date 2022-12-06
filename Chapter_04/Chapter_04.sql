@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- 코드 4-1: Character data types in action
+-- 코드 4-1: 실전에서의 문자형 데이터 타입
 
 CREATE TABLE char_data_types (
     char_column char(10),
@@ -20,7 +20,7 @@ COPY char_data_types TO 'C:\YourDirectory\typetest.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
 
--- 코드 4-2: Number data types in action
+-- 코드 4-2: 숫자 데이터 타입 활용하기
 
 CREATE TABLE number_data_types (
     numeric_column numeric(20,5),
@@ -36,8 +36,8 @@ VALUES
 
 SELECT * FROM number_data_types;
 
--- 코드 4-3: Rounding issues with float columns
--- Assumes table created and loaded with 코드 4-2
+-- 코드 4-3: 부동 소수점 열의 오류
+-- 코드 4-2로 테이블이 생성되고 로드되었다고 가정하세요.
 
 SELECT
     numeric_column * 10000000 AS fixed,
@@ -45,7 +45,7 @@ SELECT
 FROM number_data_types
 WHERE numeric_column = .7;
 
--- 코드 4-4: The timestamp and interval types in action
+-- 코드 4-4: timestamp 타입과 interval 타입
 
 CREATE TABLE date_time_types (
     timestamp_column timestamp with time zone,
@@ -61,8 +61,8 @@ VALUES
 
 SELECT * FROM date_time_types;
 
--- 코드 4-5: Using the interval data type
--- Assumes script 4-4 has been run
+-- 코드 4-5: interval 데이터 타입 사용하기
+-- 코드 4-4를 실행 후 실행하세요
 
 SELECT
     timestamp_column,
@@ -70,7 +70,7 @@ SELECT
     timestamp_column - interval_column AS new_date
 FROM date_time_types;
 
--- 코드 4-6: Three CAST() examples
+-- 코드 4-6: CAST() 코드 3개
 
 SELECT timestamp_column, CAST(timestamp_column AS varchar(10))
 FROM date_time_types;
@@ -80,9 +80,9 @@ SELECT numeric_column,
        CAST(numeric_column AS text)
 FROM number_data_types;
 
--- Does not work:
+-- 작동하지 않는 코드입니다.
 SELECT CAST(char_column AS integer) FROM char_data_types;
 
--- Alternate notation for CAST is the double-colon:
+-- CAST를 이중 콜론(::)으로 대체한 코드입니다.
 SELECT timestamp_column::varchar(10)
 FROM date_time_types;
