@@ -4,7 +4,7 @@
 ----------------------------------------------------------------------------
 
 
--- 코드 7-1: Creating the departments and employees tables
+-- 코드 7-1: departments 테이블과 employees 테이블 만들기
 
 CREATE TABLE departments (
     dept_id integer,
@@ -35,14 +35,14 @@ VALUES
     (3, 'Arthur', 'Pappas', 72700, 2),
     (4, 'Michael', 'Taylor', 89500, 2);
 
--- 코드 7-2: Joining the employees and departments tables
+-- 코드 7-2: employees 테이블과 departments 테이블 조인하기
 
 SELECT *
 FROM employees JOIN departments
 ON employees.dept_id = departments.dept_id
 ORDER BY employees.dept_id;
 
--- 코드 7-3: Creating two tables to explore JOIN types
+-- 코드 7-3: JOIN을 살펴보기 위한 두 테이블 생성하기
 
 CREATE TABLE district_2020 (
     id integer CONSTRAINT id_key_2020 PRIMARY KEY,
@@ -67,77 +67,77 @@ INSERT INTO district_2035 VALUES
     (4, 'Chase Magnet Academy'),
     (6, 'Webutuck High School');
 
--- 코드 7-4: Using JOIN
+-- 코드 7-4: JOIN 사용하기
 
 SELECT *
 FROM district_2020 JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2020.id;
 
--- Bonus: Also can be specified as INNER JOIN
+-- INNER JOIN을 사용할 수도 있습니다.
 SELECT *
 FROM district_2020 INNER JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2020.id;
 
--- 코드 7-5: JOIN with USING
+-- 코드 7-5: USING을 사용한 JOIN
 
 SELECT *
 FROM district_2020 JOIN district_2035
 USING (id)
 ORDER BY district_2020.id;
 
--- 코드 7-6: Using LEFT JOIN
+-- 코드 7-6: LEFT JOIN 사용
 
 SELECT *
 FROM district_2020 LEFT JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2020.id;
 
--- 코드 7-7: Using RIGHT JOIN
+-- 코드 7-7: RIGHT JOIN 사용
 
 SELECT *
 FROM district_2020 RIGHT JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2035.id;
 
--- 코드 7-8: Using FULL OUTER JOIN
+-- 코드 7-8: FULL OUTER JOIN 사용
 
 SELECT *
 FROM district_2020 FULL OUTER JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2020.id;
 
--- 코드 7-9: Using CROSS JOIN
+-- 코드 7-9: CROSS JOIN 사용
 
 SELECT *
 FROM district_2020 CROSS JOIN district_2035
 ORDER BY district_2020.id, district_2035.id;
 
--- Alternately, a CROSS JOIN can be written with a comma-join syntax:
+-- CROSS JOIN은 쉼표(,)로 대체할 수 있습니다.
 SELECT *
 FROM district_2020, district_2035
 ORDER BY district_2020.id, district_2035.id;
 
--- Or it can be written as a JOIN with true in the ON clause:
+-- 또한 JOIN ... ON true로도 대체할 수 있습니다.
 SELECT *
 FROM district_2020 JOIN district_2035 ON true
 ORDER BY district_2020.id, district_2035.id;
 
--- 코드 7-10: Filtering to show missing values with IS NULL
+-- 코드 7-10: IS NULL로 결측값을 표시하도록 필터링하기
 
 SELECT *
 FROM district_2020 LEFT JOIN district_2035
 ON district_2020.id = district_2035.id
 WHERE district_2035.id IS NULL;
 
--- alternately, with a RIGHT JOIN
+-- RIGHT JOIN을 사용한 방법
 SELECT *
 FROM district_2020 RIGHT JOIN district_2035
 ON district_2020.id = district_2035.id
 WHERE district_2020.id IS NULL;
 
--- 코드 7-11: Querying specific columns in a join
+-- 코드 7-11: 조인의 특정 열 쿼리하기
 
 SELECT district_2020.id,
        district_2020.school_2020,
@@ -146,7 +146,7 @@ FROM district_2020 LEFT JOIN district_2035
 ON district_2020.id = district_2035.id
 ORDER BY district_2020.id;
 
--- 코드 7-12: Simplifying code with table aliases
+-- 코드 7-12: 테이블 별칭으로 코드 단순화하기
 
 SELECT d20.id,
        d20.school_2020,
@@ -155,7 +155,7 @@ FROM district_2020 AS d20 LEFT JOIN district_2035 AS d35
 ON d20.id = d35.id
 ORDER BY d20.id;
 
--- 코드 7-13: Joining multiple tables
+-- 코드 7-13: 여러 테이블 조인하기
 
 CREATE TABLE district_2020_enrollment (
     id integer,
@@ -191,21 +191,21 @@ JOIN district_2020_grades AS gr
     ON d20.id = gr.id
 ORDER BY d20.id;
 
--- 코드 7-14: Combining query results with UNION
+-- 코드 7-14: UNION을 이용한 쿼리 결합
 
 SELECT * FROM district_2020
 UNION
 SELECT * FROM district_2035
 ORDER BY id;
 
--- 코드 7-15: Combining query results with UNION ALL
+-- 코드 7-15: UNION ALL을 이용한 쿼리 결합
 
 SELECT * FROM district_2020
 UNION ALL
 SELECT * FROM district_2035
 ORDER BY id;
 
--- 코드 7-16: Customizing a UNION query
+-- 코드 7-16: UNION 쿼리 커스터마이징
 
 SELECT '2020' AS year,
        school_2020 AS school
@@ -218,7 +218,7 @@ SELECT '2035' AS year,
 FROM district_2035
 ORDER BY school, year;
 
--- 코드 7-17: Combining query results with INTERSECT and EXCEPT
+-- 코드 7-17: INTERSECT와 EXCEPT를 사용한 쿼리 결합
 
 SELECT * FROM district_2020
 INTERSECT
@@ -230,7 +230,7 @@ EXCEPT
 SELECT * FROM district_2035
 ORDER BY id;
 
--- 코드 7-18: Performing math on joined Census population estimates tables
+-- 코드 7-18: 조인된 인구조사 테이블에서 수학 연산 수행하기
 
 CREATE TABLE us_counties_pop_est_2010 (
     state_fips text,                         -- State FIPS code
