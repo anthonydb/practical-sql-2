@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- 코드 16-1: JSON with information about two films
+-- 코드 16-1: 두 영화에 대한 정보가 담긴 JSON
 
 [{
 	"title": "The Incredibles",
@@ -35,7 +35,7 @@
 	"genre": ["romance", "drama"]
 }]
 
--- 코드 16-2: Creating a table to hold JSON data and adding an index
+-- 코드 16-2: JSON 데이터를 저장할 테이블 생성하고 인덱스 추가하기
 
 CREATE TABLE films (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -50,29 +50,29 @@ CREATE INDEX idx_film ON films USING GIN (film);
 SELECT * FROM films;
 
 
--- JSON AND JSONB EXTRACTION OPERATORS
+-- json 및 jsonb 추출 연산자 사용하기
 
--- 코드 16-3: Retrieving a JSON key value with field extraction operators 
+-- 코드 16-3: 필드 추출 연산자로 JSON 키 값 검색하기
 
--- Returns the key value as a JSON data type
+-- 키 값을 JSON 타입으로 반환하기
 SELECT id, film -> 'title' AS title
 FROM films
 ORDER BY id;
 
--- Returns the key value as text
+-- 키 값을 텍스트로 반환하기
 SELECT id, film ->> 'title' AS title
 FROM films
 ORDER BY id;
 
--- Returns the entire array as a JSON data type
+-- 전체 배열을 JSON 타입으로 반환하기
 SELECT id, film -> 'genre' AS genre
 FROM films
 ORDER BY id;
 
--- 코드 16-4: Retrieving a JSON array value with element extraction operators 
+-- 코드 16-4: 요소 추출 연산자로 JSON 배열 값 검색하기
 
--- Extracts first element of the JSON array
--- (array elements are indexed from zero, but negative integers count from the end).
+-- JSON 배열의 첫 번째 값 추출하기
+-- (배열 요소는 0부터 번호가 매겨지며 음수는 배열의 끝부터 세어나갑니다).
 SELECT id, film -> 'genre' -> 0 AS genres
 FROM films
 ORDER BY id;
@@ -85,68 +85,68 @@ SELECT id, film -> 'genre' -> 2 AS genres
 FROM films
 ORDER BY id;
 
--- Return the array element as text
+-- 배열 요소를 텍스트로 반환하기
 SELECT id, film -> 'genre' ->> 0 AS genres
 FROM films
 ORDER BY id;
 
--- 코드 16-5: Retrieving a JSON key value with path extraction operators
+-- 코드 16-5: 경로 추출 연산자로 JSON 키 값 검색하기
 
--- Retrieve the film's MPAA rating.
+-- 영화의 MPAA 등급 얻기.
 SELECT id, film #> '{rating, MPAA}' AS mpaa_rating
 FROM films
 ORDER BY id;
 
--- Retrieve the name of the first character
+-- 첫번째 캐릭터의 이름 얻기
 SELECT id, film #> '{characters, 0, name}' AS name
 FROM films
 ORDER BY id;
 
--- Same as above but return it as text
+-- 같은 값을 텍스트로 얻기
 SELECT id, film #>> '{characters, 0, name}' AS name
 FROM films
 ORDER BY id;
 
 
--- JSONB CONTAINMENT AND EXISTENCE OPERATORS
+-- jsonb 포함 및 존재 여부 확인 연산자
 
--- 코드 16-6: Demonstrating the @> containment operator
+-- 코드 16-6: @> 포함 여부 확인 연산자 사용하기
 
--- Does the film JSON value contain the following key/value pair?
+-- 첫 번째 JSON 값에 두 번째 JSON 값이 포함되어 있는지 여부를 확인
 SELECT id, film ->> 'title' AS title,
        film @> '{"title": "The Incredibles"}'::jsonb AS is_incredible
 FROM films
 ORDER BY id;
 
--- 코드 16-7: Using a containment operator in a WHERE clause
+-- 코드 16-7: WHERE 절에서 포함 연산자 사용하기
 
 SELECT film ->> 'title' AS title,
        film ->> 'year' AS year
 FROM films
 WHERE film @> '{"title": "The Incredibles"}'::jsonb; 
 
--- 코드 16-8: Demonstrating the <@ containment operator
+-- 코드 16-8: <@ 포함 여부 확인 연산자 사용하기
 
 SELECT film ->> 'title' AS title,
        film ->> 'year' AS year
 FROM films
 WHERE '{"title": "The Incredibles"}'::jsonb <@ film; 
 
--- 코드 16-9: Demonstrating existence operators
+-- 코드 16-9: 존재 여부 확인 연산자 사용하기
 
--- Does the text string exist as a top-level key or array element within the JSON value?
+-- 단일 키나 배열 요소의 존재를 확인
 SELECT film ->> 'title' AS title
 FROM films
 WHERE film ? 'rating';
 
--- Do any of the strings in the text array exist as top-level keys or array elements?
+-- 최상위 키 중 하나가 존재하는지 확인
 SELECT film ->> 'title' AS title,
        film ->> 'rating' AS rating,
        film ->> 'genre' AS genre
 FROM films
 WHERE film ?| '{rating, genre}';
 
--- Do all of the strings in the text array exist as top-level keys or array elements?
+-- 최상위 키가 모두 존재하는지 확인
 SELECT film ->> 'title' AS title,
        film ->> 'rating' AS rating,
        film ->> 'genre' AS genre
@@ -154,9 +154,9 @@ FROM films
 WHERE film ?& '{rating, genre}';
 
 
--- ANALYZING EARTHQUAKE DATA
+-- 지진 데이터 분석하기
 
--- 코드 16-10: JSON with data on one earthquake
+-- 코드 16-10: 한 지진에 대한 데이터를 정리한 JSON
 
 {
 	"type": "Feature",
@@ -195,7 +195,7 @@ WHERE film ?& '{rating, genre}';
 	"id": "av91018173"
 }
 
--- 코드 16-11: Creating and loading an earthquakes table
+-- 코드 16-11: 지진 테이블 생성 및 로드
 
 CREATE TABLE earthquakes (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -209,14 +209,13 @@ CREATE INDEX idx_earthquakes ON earthquakes USING GIN (earthquake);
 
 SELECT * FROM earthquakes;
 
--- 코드 16-12: Retrieving the earthquake time
--- Note that the time is stored in epoch format
+-- 코드 16-12: 지진 시간 검색하기 (시간은 에포크 단위로 저장)
 
 SELECT id, earthquake #>> '{properties, time}' AS time 
 FROM earthquakes
 ORDER BY id LIMIT 5;
 
--- 코드 16-13: Converting the time value to a timestamp
+-- 코드 16-13: 시간 값을 타임스탬프로 변환하기
 
 SELECT id, earthquake #>> '{properties, time}' as time,
        to_timestamp(
@@ -225,12 +224,12 @@ SELECT id, earthquake #>> '{properties, time}' as time,
 FROM earthquakes
 ORDER BY id LIMIT 5;
 
--- See and set time zone if desired
+-- 시간대 확인 후 설정하기
 SHOW timezone;
 SET timezone TO 'US/Eastern';
 SET timezone TO 'UTC';
 
--- 코드 16-14: Finding the minimum and maximum earthquake times
+-- 코드 16-14: 지진 시각의 최솟값, 최댓값 찾기
 
 SELECT min(to_timestamp(
            (earthquake #>> '{properties, time}')::bigint / 1000
@@ -240,7 +239,7 @@ SELECT min(to_timestamp(
                        )) AT TIME ZONE 'UTC' AS max_timestamp
 FROM earthquakes;
 
--- 코드 16-15: Finding the five earthquakes with the largest magnitude
+-- 코드 16-15: 진도가 가장 큰 지진 5개 찾기
 
 SELECT earthquake #>> '{properties, place}' AS place,
        to_timestamp((earthquake #>> '{properties, time}')::bigint / 1000)
@@ -259,7 +258,7 @@ FROM earthquakes
 ORDER BY (earthquake #>> '{properties, mag}')::numeric DESC NULLS LAST
 LIMIT 5;
 
--- 코드 16-16: Finding earthquakes with the most Did You Feel It? reports
+-- 코드 16-16: 가장 많이 신고된 지진 찾기
 -- https://earthquake.usgs.gov/data/dyfi/
 
 SELECT earthquake #>> '{properties, place}' AS place,
@@ -271,7 +270,7 @@ FROM earthquakes
 ORDER BY (earthquake #>> '{properties, felt}')::integer DESC NULLS LAST
 LIMIT 5;
 
--- 코드 16-17: Extracting the earthquake's location data
+-- 코드 16-17: 지진의 위치 데이터 추출하기
 
 SELECT id,
        earthquake #>> '{geometry, coordinates}' AS coordinates,
@@ -281,7 +280,7 @@ FROM earthquakes
 ORDER BY id
 LIMIT 5;
 
--- 코드 16-18: Converting JSON location data to PostGIS geography
+-- 코드 16-18: JSON 위치 데이터를 PostGIS geography로 변환하기
 SELECT ST_SetSRID(
          ST_MakePoint(
             (earthquake #>> '{geometry, coordinates, 0}')::numeric,
@@ -291,12 +290,12 @@ SELECT ST_SetSRID(
 FROM earthquakes
 ORDER BY id;
 
--- 코드 16-19: Converting JSON coordinates to a PostGIS geometry column 
+-- 코드 16-19: JSON 좌표를 PostGIS geography 열로 변환하기
 
--- Add a column of the geography data type 
+-- geography 데이터 타입 열 추가
 ALTER TABLE earthquakes ADD COLUMN earthquake_point geography(POINT, 4326);
 
--- Update the earthquakes table with a Point
+-- earthquakes 테이블 업데이트
 UPDATE earthquakes
 SET earthquake_point = 
         ST_SetSRID(
@@ -308,7 +307,7 @@ SET earthquake_point =
 
 CREATE INDEX quake_pt_idx ON earthquakes USING GIST (earthquake_point);
 
--- 코드 16-20: Finding earthquakes within 50 miles of downtown Tulsa, Oklahoma
+-- 코드 16-20: 오클라호마 털사의 80km 이내에서 발생한 지진 찾기
 
 SELECT earthquake #>> '{properties, place}' AS place,
        to_timestamp((earthquake -> 'properties' ->> 'time')::bigint / 1000)
@@ -318,36 +317,35 @@ SELECT earthquake #>> '{properties, place}' AS place,
 FROM earthquakes
 WHERE ST_DWithin(earthquake_point,
                  ST_GeogFromText('POINT(-95.989505 36.155007)'),
-                 80468)
+                 80000)
 ORDER BY time;
 
--- GENERATING AND MANIPULATING JSON
+-- JSON 생성 및 수정
 
--- 코드 16-21: Turning query results into JSON with to_json()
+-- 코드 16-21: to_json()을 사용하여 쿼리 결과를 JSON으로 변환
 
--- Convert an entire row from the table
+-- 테이블의 한 행 전체 변환
 SELECT to_json(employees) AS json_rows
 FROM employees;
 
--- 코드 16-22: Specifying columns to convert to JSON
--- Returns key names as f1, f2, etc.
+-- 코드 16-22: JSON으로 변환할 열 지정하기
+-- 키 이름을 f1, f2 형태로 반환
 SELECT to_json(row(emp_id, last_name)) AS json_rows
 FROM employees;
 
--- 코드 16-23: Generating key names with a subquery
+-- 코드 16-23: 하위 쿼리로 키 이름 생성하기
 SELECT to_json(employees) AS json_rows
 FROM (
     SELECT emp_id, last_name AS ln FROM employees
 ) AS employees;
 
--- 코드 16-24: Aggregating the rows and converting to JSON
+-- 코드 16-24: 행을 집계해 JSON으로 변환
 SELECT json_agg(to_json(employees)) AS json
 FROM (
     SELECT emp_id, last_name AS ln FROM employees
 ) AS employees;
 
--- 코드 16-25: Adding a top-level key/value pair via concatenation
--- Two examples
+-- 코드 16-25: 문자열 연결 연산자로 최상위 키/값 쌍 추가하기
 
 UPDATE films
 SET film = film || '{"studio": "Pixar"}'::jsonb
@@ -360,7 +358,7 @@ WHERE film @> '{"title": "The Incredibles"}'::jsonb;
 SELECT film FROM films -- check the updated data
 WHERE film @> '{"title": "The Incredibles"}'::jsonb; 
 
--- 코드 16-26: Setting an array value at a path
+-- 코드 16-26: jsonb_set()을 사용해 경로에 배열 값 추가하기
 
 UPDATE films
 SET film = jsonb_set(film,
@@ -372,22 +370,22 @@ WHERE film @> '{"title": "Cinema Paradiso"}'::jsonb;
 SELECT film FROM films -- check the updated data
 WHERE film @> '{"title": "Cinema Paradiso"}'::jsonb; 
 
--- 코드 16-27: Deleting values from JSON
+-- 코드 16-27: JSON에서 값 삭제하기
 
--- Removes the studio key/value pair from The Incredibles
+-- The Incredibles에 추가한 studio 키와 그 값을 제거
 UPDATE films
 SET film = film - 'studio'
 WHERE film @> '{"title": "The Incredibles"}'::jsonb; 
 
--- Removes the third element in the genre array of Cinema Paradiso
+-- Cinema Paradiso의 장르 배열에서 세 번째 요소 제거
 UPDATE films
 SET film = film #- '{genre, 2}'
 WHERE film @> '{"title": "Cinema Paradiso"}'::jsonb; 
 
 
--- JSON PROCESSING FUNCTIONS
+-- JSON 처리 함수 사용하기
 
--- 코드 16-28: Finding the length of an array
+-- 코드 16-28: 배열의 길이 찾기
 
 SELECT id,
        film ->> 'title' AS title,
@@ -395,7 +393,7 @@ SELECT id,
 FROM films
 ORDER BY id;
 
--- 코드 16-29: Returning array elements as rows
+-- 코드 16-29: 배열 요소를 행으로 반환하기
 
 SELECT id,
        jsonb_array_elements(film -> 'genre') AS genre_jsonb,
@@ -403,7 +401,7 @@ SELECT id,
 FROM films
 ORDER BY id;
 
--- 코드 16-30: Returning key values from each item in an array
+-- 코드 16-30: 배열의 각 항목에서 키 값 반환
 
 SELECT id, 
        jsonb_array_elements(film -> 'characters')
