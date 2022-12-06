@@ -3,51 +3,50 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- 코드 5-1: Using COPY for data import
--- This is example syntax only; running it will produce an error
+-- 코드 5-1: COPY를 사용하여 데이터 가져오기
+-- 문법 설명을 위한 뼈대입니다. 실행하면 오류가 발생합니다.
 
 COPY table_name
 FROM 'C:\YourDirectory\your_file.csv'
 WITH (FORMAT CSV, HEADER);
 
 
--- 코드 5-2: CREATE TABLE statement for Census county population estimates
--- Data dictionary for estimates available at: https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/2010-2019/co-est2019-alldata.pdf
--- Data dictionary for additional columns at: http://www.census.gov/prod/cen2010/doc/pl94-171.pdf
--- Note: Some columns have been given more descriptive names
+-- 코드 5-2: 10년 주기 카운티 인구조사 추정치 테이블 생성 CREATE TABLE 문
+-- 추정치의 데이터 사전: https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/2010-2019/co-est2019-alldata.pdf
+-- 추가 열의 데이터 사전: http://www.census.gov/prod/cen2010/doc/pl94-171.pdf
+-- 참고: 열에 따라 자기 설명적인 이름을 가진 열이 있습니다.
 
 CREATE TABLE us_counties_pop_est_2019 (
-    state_fips text,                         -- State FIPS code
-    county_fips text,                        -- County FIPS code
-    region smallint,                         -- Region
-    state_name text,                         -- State name	
-    county_name text,                        -- County name
-    area_land bigint,                        -- Area (Land) in square meters
-    area_water bigint,                       -- Area (Water) in square meters
-    internal_point_lat numeric(10,7),        -- Internal point (latitude)
-    internal_point_lon numeric(10,7),        -- Internal point (longitude)
-    pop_est_2018 integer,                    -- 2018-07-01 resident total population estimate
-    pop_est_2019 integer,                    -- 2019-07-01 resident total population estimate
-    births_2019 integer,                     -- Births from 2018-07-01 to 2019-06-30
-    deaths_2019 integer,                     -- Deaths from 2018-07-01 to 2019-06-30
-    international_migr_2019 integer,         -- Net international migration from 2018-07-01 to 2019-06-30
-    domestic_migr_2019 integer,              -- Net domestic migration from 2018-07-01 to 2019-06-30
-    residual_2019 integer,                   -- Residual for 2018-07-01 to 2019-06-30
+    state_fips text,                         -- 주 미국 연방 정보 처리 표준(FIPS) 코드
+    county_fips text,                        -- 카운티 미국 연방 정보 처리 표준(FIPS) 코드
+    region smallint,                         -- 구역
+    state_name text,                         -- 주 이름	
+    county_name text,                        -- 카운티 이름
+    area_land bigint,                        -- 토지 면적 (제곱미터)
+    area_water bigint,                       -- 수면 면적 (제곱미터)
+    internal_point_lat numeric(10,7),        -- 위도
+    internal_point_lon numeric(10,7),        -- 경도
+    pop_est_2018 integer,                    -- 2018년 7월 1일 기준 인구 추정치
+    pop_est_2019 integer,                    -- 2019년 7월 1일 기준 인구 추정치
+    births_2019 integer,                     -- 2018년 7월 1일부터 2019년 6월 30일 사이 출생자 수
+    deaths_2019 integer,                     -- 2018년 7월 1일부터 2019년 6월 30일 사이 사망자 수
+    international_migr_2019 integer,         -- 2018년 7월 1일부터 2019년 6월 30일 사이 순 국제 이주자 수
+    domestic_migr_2019 integer,              -- 2018년 7월 1일부터 2019년 6월 30일 사이 순 지역 이주자 수
+    residual_2019 integer,                   -- 일관성을 위해 추정치를 조정하는 데 사용되는 숫자
     CONSTRAINT counties_2019_key PRIMARY KEY (state_fips, county_fips)	
 );
 
 SELECT * FROM us_counties_pop_est_2019;
 
--- 코드 5-3: Importing Census data using COPY
--- Note! If you run into an import error here, be sure you downloaded the code and
--- data for the book according to the steps listed in Chapter 1.
--- Windows users: Please check the Note on PAGE XXXXXX as well.
+-- 코드 5-3: COPY를 이용한 인구조사 데이터 가져오기
+-- 이 코드를 실행하다가 불러오기 오류가 발생할 시 1장을 따라 코드를 다운받으세요.
+-- 윈도우 사용자의 경우 29페이지의 노트를 참고하세요.
 
 COPY us_counties_pop_est_2019
 FROM 'C:\YourDirectory\us_counties_pop_est_2019.csv'
 WITH (FORMAT CSV, HEADER);
 
--- Checking the data
+-- 데이터 확인하기
 
 SELECT * FROM us_counties_pop_est_2019;
 
@@ -62,7 +61,7 @@ ORDER BY internal_point_lon DESC
 LIMIT 5;
 
 
--- 코드 5-4: Creating a table to track supervisor salaries
+-- 코드 5-4: 관리자 급여를 추적하기 위한 테이블 만들기
 
 CREATE TABLE supervisor_salaries (
     id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -74,17 +73,17 @@ CREATE TABLE supervisor_salaries (
     benefits numeric(10,2)
 );
 
--- 코드 5-5: Importing salaries data from CSV to three table columns
+-- 코드 5-5: CSV에서 세 개의 테이블 열로 급여 데이터 가져오기
 
 COPY supervisor_salaries (town, supervisor, salary)
 FROM 'C:\YourDirectory\supervisor_salaries.csv'
 WITH (FORMAT CSV, HEADER);
 
--- Check the data
+-- 데이터 확인하기
 SELECT * FROM supervisor_salaries ORDER BY id LIMIT 2;
 
 
--- 코드 5-6: Importing a subset of rows with WHERE
+-- 코드 5-6: WHERE로 행 하위 집합 가져오기
 
 DELETE FROM supervisor_salaries;
 
@@ -96,8 +95,7 @@ WHERE town = 'New Brillig';
 SELECT * FROM supervisor_salaries;
 
 
--- 코드 5-7: Using a temporary table to add a default value to a column during
--- import
+-- 코드 5-7: 가져오는 동안 임시 테이블을 사용하여 열에 기본값 추가하기
 
 DELETE FROM supervisor_salaries;
 
@@ -114,11 +112,11 @@ FROM supervisor_salaries_temp;
 
 DROP TABLE supervisor_salaries_temp;
 
--- Check the data
+-- 데이터 확인하기
 SELECT * FROM supervisor_salaries ORDER BY id LIMIT 2;
 
 
--- 코드 5-8: Exporting an entire table with COPY
+-- 코드 5-8: COPY로 전체 테이블 내보내기
 
 COPY us_counties_pop_est_2019
 TO 'C:\YourDirectory\us_counties_export.txt'
@@ -132,7 +130,7 @@ COPY us_counties_pop_est_2019
 TO 'C:\YourDirectory\us_counties_latlon_export.txt'
 WITH (FORMAT CSV, HEADER, DELIMITER '|');
 
--- 코드 5-10: Exporting query results with COPY
+-- 코드 5-10: COPY를 이용한 쿼리 결과 내보내기
 
 COPY (
     SELECT county_name, state_name
