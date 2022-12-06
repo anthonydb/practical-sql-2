@@ -3,7 +3,7 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- 코드 11-1: Creating a 2014-2018 ACS 5-Year Estimates table and importing data
+-- 코드 11-1: 2014~2018년의 ACS 5개년 추정치 테이블 생성 및 데이터 가져오기
 
 CREATE TABLE acs_2014_2018_stats (
     geoid text CONSTRAINT geoid_key PRIMARY KEY,
@@ -22,14 +22,13 @@ WITH (FORMAT CSV, HEADER);
 
 SELECT * FROM acs_2014_2018_stats;
 
--- 코드 11-2: Using corr(Y, X) to measure the relationship between 
--- education and income
+-- 코드 11-2: corr(Y, X)를 사용하여 교육과 소득 간의 관계 측정하기
 
 SELECT corr(median_hh_income, pct_bachelors_higher)
     AS bachelors_income_r
 FROM acs_2014_2018_stats;
 
--- 코드 11-3: Using corr(Y, X) on additional variables
+-- 코드 11-3: 추가 변수에 corr(Y, X) 사용하기
 
 SELECT
     round(
@@ -43,7 +42,7 @@ SELECT
       ) AS bachelors_travel_r
 FROM acs_2014_2018_stats;
 
--- 코드 11-4: Regression slope and intercept functions
+-- 코드 11-4: 회귀 기울기 및 절편 함수
 
 SELECT
     round(
@@ -54,23 +53,23 @@ SELECT
         ) AS y_intercept
 FROM acs_2014_2018_stats;
 
--- 코드 11-5: Calculating the coefficient of determination, or r-squared
+-- 코드 11-5: 결정계수 또는 r제곱 계산하기
 
 SELECT round(
         regr_r2(median_hh_income, pct_bachelors_higher)::numeric, 3
         ) AS r_squared
 FROM acs_2014_2018_stats;
 
--- Bonus: Additional stats functions
--- Variance of the entire population
+-- 보너스: 통계 함수
+-- 전체 인구의 분산
 SELECT var_pop(median_hh_income)
 FROM acs_2014_2018_stats;
 
--- Standard deviation of the entire population
+-- 전체 인구의 표준편차
 SELECT stddev_pop(median_hh_income)
 FROM acs_2014_2018_stats;
 
--- 코드 11-6: Using the rank() and dense_rank() window functions
+-- 코드 11-6: rank() 및 dense_rank() 윈도우 함수 사용하기
 
 CREATE TABLE widget_companies (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -97,7 +96,7 @@ SELECT
 FROM widget_companies
 ORDER BY widget_output DESC;
 
--- 코드 11-7: Applying rank() within groups using PARTITION BY
+-- 코드 11-7: PARTITION BY를 사용하여 그룹 내에 rank() 적용하기
 
 CREATE TABLE store_sales (
     store text NOT NULL,
@@ -127,7 +126,7 @@ FROM store_sales
 ORDER BY category, rank() OVER (PARTITION BY category 
         ORDER BY unit_sales DESC);
 
--- 코드 11-8: Creating and filling a table for Census county business pattern data
+-- 코드 11-8: 인구조사 카운티 기업 패턴 데이터에 대한 테이블 생성 및 채우기
 
 CREATE TABLE cbp_naics_72_establishments (
     state_fips text,
@@ -150,7 +149,7 @@ FROM cbp_naics_72_establishments
 ORDER BY state_fips, county_fips
 LIMIT 5;
 
--- 코드 11-9: Finding business rates per thousand population in counties with 50,000 or more people
+-- 코드 11-9: 인구가 50,000명 이상인 카운티에서 인구 1,000명 비율로 기업 찾기
 
 SELECT
     cbp.county,
@@ -165,7 +164,7 @@ FROM cbp_naics_72_establishments cbp JOIN us_counties_pop_est_2019 pop
 WHERE pop.pop_est_2018 >= 50000 
 ORDER BY cbp.establishments::numeric / pop.pop_est_2018 DESC;
 
--- 코드 11-10: Creating a rolling average for export data
+-- 코드 11-10: 데이터를 내보내기 위한 이동 평균 계산
 
 CREATE TABLE us_exports (
     year smallint,
@@ -178,12 +177,12 @@ COPY us_exports
 FROM 'C:\YourDirectory\us_exports.csv'
 WITH (FORMAT CSV, HEADER);
 
--- View the monthly citrus data
+-- 월별 감귤류 수출량 확인
 SELECT year, month, citrus_export_value
 FROM us_exports
 ORDER BY year, month;
 
--- Calculate rolling average
+-- 롤링 평균 계산
 SELECT year, month, citrus_export_value,
     round(   
        avg(citrus_export_value) 
