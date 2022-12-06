@@ -3,11 +3,11 @@
 -- by Anthony DeBarros
 ----------------------------------------------------------------------------
 
--- 코드 2-1: Creating a database named analysis
+-- 코드 2-1: analysis 데이터베이스 생성
 
 CREATE DATABASE analysis;
 
--- 코드 2-2: Creating a table named teachers with six columns
+-- 코드 2-2: 6개의 열을 가진 teachers 테이블 생성
 
 CREATE TABLE teachers (
     id bigserial,
@@ -18,10 +18,10 @@ CREATE TABLE teachers (
     salary numeric
 );
 
--- This command will remove (drop) the table.
+-- 아래 명령어는 테이블을 삭제합니다.
 -- DROP TABLE teachers;
 
--- 코드 2-3 Inserting data into the teachers table
+-- 코드 2-3 teachers 테이블에 데이터 삽입하기
 
 INSERT INTO teachers (first_name, last_name, school, hire_date, salary)
 VALUES ('Janet', 'Smith', 'F.D. Roosevelt HS', '2011-10-30', 36200),
