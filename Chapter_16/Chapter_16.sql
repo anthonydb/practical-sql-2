@@ -249,7 +249,7 @@ FROM earthquakes
 ORDER BY (earthquake #>> '{properties, mag}')::numeric DESC NULLS LAST
 LIMIT 5;
 
--- Bonus: Instead of using a path extraction operator (#>>), you can also use field extraction:
+-- 보너스: #>> 대신 필드 추출을 사용할 수 있습니다.
 SELECT earthquake -> 'properties' ->> 'place' AS place,
        to_timestamp((earthquake -> 'properties' ->> 'time')::bigint / 1000)
            AT TIME ZONE 'UTC' AS time,
