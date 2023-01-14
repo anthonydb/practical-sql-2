@@ -11,9 +11,9 @@
 
 ### 구매 링크
 
-- 교보문고
-- YES24
-- 알라딘
+- [교보문고](https://product.kyobobook.co.kr/detail/S000200642129)
+- [YES24](http://www.yes24.com/Product/Goods/116860700)
+- [알라딘](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=308665691)
 
 ---
 
