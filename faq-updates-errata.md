@@ -9,6 +9,7 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 None yet
 
+
 ### Chapter 1: Setting Up Your Coding Environment
 
 **Page 3: Downloading Code and Data from GitHub**
@@ -35,9 +36,13 @@ None yet
 
 None yet
 
+
 ### Chapter 5: Importing and Exporting Data
 
-None yet
+**Page 65, Understanding Census Columns and Data Types**
+
+The URL for the 2010 Census technical documentation has been moved to [https://www2.census.gov/programs-surveys/decennial/rdo/about/2010-census-programs/2010Census_pl94-171_techdoc.pdf](https://www2.census.gov/programs-surveys/decennial/rdo/about/2010-census-programs/2010Census_pl94-171_techdoc.pdf)
+
 
 ### Chapter 6: Basic Math and Stats with SQL
 
