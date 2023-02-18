@@ -78,7 +78,23 @@ None yet
 
 ### Chapter 14: Mining Text to Find Meaningful Data
 
-None yet
+**Pages 253, etc.: Turning Text to Data with Regular Expression Functions**
+
+The dates of crimes in this section are in the format MM/DD/YY. If your database has a `datestyle` setting other than `MDY` -- for example if you're in Europe -- then you will likely need to set your `datestyle` to complete the examples.
+
+Check your `datestyle` by running this query in pgAdmin:
+
+```
+SHOW datestyle;
+```
+
+If the result is other than `ISO, MDY`, you can set the `datestyle` on a per-session basis by running this command:
+
+```
+SET datestyle to "ISO, MDY";
+```
+You can then complete the examples. The change will persist until you restart pgAdmin.
+
 
 ### Chapter 15: Analyzing Spatial Data with PostGIS
 
