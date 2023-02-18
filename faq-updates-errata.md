@@ -7,34 +7,34 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 ### Introduction
 
-None yet
+* No updates
 
 
 ### Chapter 1: Setting Up Your Coding Environment
 
 * **Page 3: Downloading Code and Data from GitHub**
 
-> The GitHub folder name has been renamed to `practical-sql-2-main` from `practical-sql-2-master` in line with GitHub conventions. 
+> The GitHub folder name has been renamed to `practical-sql-2-main` from `practical-sql-2-master` in line with GitHub conventions. (Applies to first printing of the book.)
 
 * **Page 13: pgAdmin Dialog to Create Server**
 
-> The location of the pgAdmin dialog to add a server has changed. Now, in the object browser, right-click `Servers` and then click `Register` > `Server`. The remaining steps in the Note on page 13 are the same. (Formerly, the dialog was accessed by right-clicking `Servers` and selecting `Create` > `Server`.)
+> The location of the pgAdmin dialog to add a server has changed. Now, in the object browser, right-click `Servers` and then click `Register` > `Server`. The remaining steps in the Note on page 13 are the same. (Formerly, the dialog was accessed by right-clicking `Servers` and selecting `Create` > `Server`.) (Applies to first printing of the book.)
 
 * **Page 15, Figure 1-5: pgAdmin Query Tool**
 
-> Version 6.9 of pgAdmin, released in May 2022, introduced a redesigned Query Tool Layout. General functionality is the same, but if you are using version 6.9 or later, you will see that some menu icons shown in the book at the top of the window are now placed atop the results grid. 
+> Version 6.9 of pgAdmin, released in May 2022, introduced a redesigned Query Tool Layout. General functionality is the same, but if you are using version 6.9 or later, you will see that some menu icons shown in the book at the top of the window are now placed atop the results grid. (Applies to first printing of the book.)
 
 ### Chapter 2: Creating Your First Database and Table
 
-None yet
+* No updates
 
 ### Chapter 3: Beginning Data Exploration with SELECT
 
-None yet
+* No updates
 
 ### Chapter 4: Understanding Data Types
 
-None yet
+* No updates
 
 
 ### Chapter 5: Importing and Exporting Data
@@ -46,35 +46,39 @@ None yet
 
 ### Chapter 6: Basic Math and Stats with SQL
 
-None yet
+* No updates
 
 ### Chapter 7: Joining Tables in a Relational Database
 
-None yet
+* No updates
 
 ### Chapter 8: Table Design That Works for You
 
-None yet
+* No updates
 
 ### Chapter 9: Extracting Information by Grouping and Summarizing
 
-None yet
+* No updates
 
 ### Chapter 10: Inspecting and Modifying Data
 
-None yet
+* **Page 180: Improving Performance When Updating Large Tables**
+
+> The second statement in Listing 10-26 renames the copy we made with Listing 10-25 to the original name of the table. The text incorrectly says we are renaming the copy made in Listing 10-24.
 
 ### Chapter 11: Statistical Functions in SQL
 
-None yet
+* No updates
 
 ### Chapter 12: Working With Dates and Times
 
-None yet
+* **Page 214: Finding Patterns in New York City Taxi Data**
+
+> The URL for the NYC tax trip data dictionary has moved to [https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf](https://www.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf)
 
 ### Chapter 13: Advanced Query Techniques
 
-None yet
+* No updates
 
 ### Chapter 14: Mining Text to Find Meaningful Data
 
@@ -95,35 +99,39 @@ SET datestyle to "ISO, MDY";
 ```
 > You can then complete the examples. The change will persist until you restart pgAdmin.
 
+* **Page 267: Creating a Table for Full-Text Search** 
+
+> The `COPY` statement in Listing 14-18 uses an at-sign (@) for quoting, not an ampersand. 
+
 
 ### Chapter 15: Analyzing Spatial Data with PostGIS
 
 * **Pages 282, etc.: Geometry Viewer Results Grid Icon**
 
-> Beginning with version 6.9 of pgAdmin, released in May 2022, the icon to launch the Geometry Viewer in the result column header was changed from an eye to a map (makes sense). On Page 282 and later in the book, I mention clicking the eye icon to launch the viewer. Now, instead, click the map icon.
+> Beginning with version 6.9 of pgAdmin, released in May 2022, the icon to launch the Geometry Viewer in the result column header was changed from an eye to a map (makes sense). On Page 282 and later in the book, I mention clicking the eye icon to launch the viewer. Now, instead, click the map icon. (Applies to first printing of the book.)
 
 
 ### Chapter 16: Working With JSON Data
 
-None yet
+* No updates
 
 ### Chapter 17: Saving Time with Views, Functions, and Triggers
 
-None yet
+* No updates
 
 ### Chapter 18: Using PostgreSQL from the Command Line
 
-None yet
+* No updates
 
 ### Chapter 19: Maintaining Your Database
 
-None yet
+* No updates
 
 ### Index
 
 * **Page 417: IN comparison operator**
 
-> The entry should reference pages 36, 172, 229.
+> The entry should reference pages 36, 172, 229. (Applies to first printing of the book.)
 
 
 
