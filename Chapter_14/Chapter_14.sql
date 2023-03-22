@@ -382,4 +382,7 @@ WHERE search_speech_text @@
 ORDER BY score DESC
 LIMIT 5;
 
+-- Note: To see PostgreSQL full-text search implemented on a web app using
+-- queries similar to these, visit:
+-- https://anthonydebarros.com/sotu/
 
