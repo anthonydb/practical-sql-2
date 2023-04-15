@@ -16,6 +16,10 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 > The GitHub folder name has been renamed to `practical-sql-2-main` from `practical-sql-2-master` in line with GitHub conventions. (Applies to first printing of the book.)
 
+* **Page 12: pgAdmin Renamed "Browser" to "Object Explorer"**
+
+> In Figure 1-3 on page 12, and in text on that page and subsequent references, the book refers to a section of pgAdmin labeled as the "Browser" or "object browser." As of pgAdmin 4 v7.0, the user interface has changed to call that area the "Object Explorer."
+
 * **Page 13: pgAdmin Dialog to Create Server**
 
 > The location of the pgAdmin dialog to add a server has changed. Now, in the object browser, right-click `Servers` and then click `Register` > `Server`. The remaining steps in the Note on page 13 are the same. (Formerly, the dialog was accessed by right-clicking `Servers` and selecting `Create` > `Server`.) (Applies to first printing of the book.)
