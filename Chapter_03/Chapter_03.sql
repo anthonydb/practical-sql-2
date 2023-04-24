@@ -90,7 +90,7 @@ WHERE salary >= 40000 AND salary <= 65000;
 
 SELECT first_name
 FROM teachers
-WHERE first_name LIKE 'sam%';
+WHERE first_name LIKE 'Sam%';
 
 SELECT first_name
 FROM teachers
