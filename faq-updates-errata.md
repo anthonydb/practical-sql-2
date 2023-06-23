@@ -16,6 +16,10 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 > The GitHub folder name has been renamed to `practical-sql-2-main` from `practical-sql-2-master` in line with GitHub conventions. (Applies to first printing of the book.)
 
+* **Page 5: Language Pack Install (Windows)**
+
+> Currently (June 2023), the Language Pack is missing from StackBuilder. I'm attempting to contact EDB, which supplies PostgreSQL for Windows, to find out whether this is permanent. For now, you can skip adding the Language Pack and proceed with the install using StackBuilder for PostGIS only.
+
 * **Page 12: pgAdmin Renamed "Browser" to "Object Explorer"**
 
 > In Figure 1-3 on page 12, and in text on that page and subsequent references, the book refers to a section of pgAdmin labeled as the "Browser" or "object browser." As of pgAdmin 4 v7.0, the user interface has changed to call that area the "Object Explorer."
