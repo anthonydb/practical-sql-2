@@ -14,11 +14,7 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 * **Page 3: Downloading Code and Data from GitHub**
 
-> The GitHub folder name has been renamed to `practical-sql-2-main` from `practical-sql-2-master` in line with GitHub conventions. (Applies to first printing of the book.)
-
-* **Page 5: Language Pack Install (Windows)**
-
-> Currently (June 2023), the Language Pack is missing from StackBuilder. I'm attempting to contact EDB, which supplies PostgreSQL for Windows, to find out whether this is permanent. For now, you can skip adding the Language Pack and proceed with the install using StackBuilder for PostGIS only.
+> The GitHub folder name has been renamed to `practical-sql-2-main` from `practical-sql-2-master` in line with GitHub conventions. (Applies only to first printing of the book.)
 
 * **Page 12: pgAdmin Renamed "Browser" to "Object Explorer"**
 
@@ -26,11 +22,11 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 * **Page 13: pgAdmin Dialog to Create Server**
 
-> The location of the pgAdmin dialog to add a server has changed. Now, in the object browser, right-click `Servers` and then click `Register` > `Server`. The remaining steps in the Note on page 13 are the same. (Formerly, the dialog was accessed by right-clicking `Servers` and selecting `Create` > `Server`.) (Applies to first printing of the book.)
+> The location of the pgAdmin dialog to add a server has changed. Now, in the object browser, right-click `Servers` and then click `Register` > `Server`. The remaining steps in the Note on page 13 are the same. (Formerly, the dialog was accessed by right-clicking `Servers` and selecting `Create` > `Server`.) (Applies only to first printing of the book.)
 
 * **Page 15, Figure 1-5: pgAdmin Query Tool**
 
-> Version 6.9 of pgAdmin, released in May 2022, introduced a redesigned Query Tool Layout. General functionality is the same, but if you are using version 6.9 or later, you will see that some menu icons shown in the book at the top of the window are now placed atop the results grid. (Applies to first printing of the book.)
+> Version 6.9 of pgAdmin, released in May 2022, introduced a redesigned Query Tool Layout. General functionality is the same, but if you are using version 6.9 or later, you will see that some menu icons shown in the book at the top of the window are now placed atop the results grid. (Applies only to first printing of the book.)
 
 ### Chapter 2: Creating Your First Database and Table
 
