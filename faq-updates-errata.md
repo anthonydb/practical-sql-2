@@ -24,7 +24,11 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 > I'm bugging the EDB people to fix the issue and will remove this notice when that happens.
 
-* **Page 12: pgAdmin Renamed "Browser" to "Object Explorer"**
+* **Pages 6 and 7: Configuring Python language support (Windows)**
+
+> Note that the current version of the EDB Language Pack is updated from the version shown in the book. Use the folder and version name provided via the EDB Windows installer for `PATH` and `PYTHONHOME`. As of July 2023, that is `C:\edb\languagepack\v3\Python-3.10` 
+
+* **Pages 12 and on: pgAdmin Renamed "Browser" to "Object Explorer"**
 
 > In Figure 1-3 on page 12, and in text on that page and subsequent references, the book refers to a section of pgAdmin labeled as the "Browser" or "object browser." As of pgAdmin 4 v7.0, the user interface has changed to call that area the "Object Explorer."
 

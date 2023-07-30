@@ -12,7 +12,7 @@ Throughout the book, we’ve used the graphical user interface [pgAdmin](https:/
 
 The following list shows several tools I’ve tried, including free and paid options. The free tools work well for general analysis work. If you wade deeper into database development, you might want to upgrade to the paid options, which typically offer advanced features and support:
 
-[Beekeeper Studio](https://www.beekeeperstudio.io/): Free and open source GUI for PostgreSQL, MySQL, Microsoft SQL Server, SQLite and other platforms. Beekeeper works on Windows, macOS, and Linux and features one of the more refined app designs among database GUIs.
+[Beekeeper Studio](https://www.beekeeperstudio.io/): Open source GUI for PostgreSQL, MySQL, Microsoft SQL Server, SQLite and other platforms with free and paid versions. Beekeeper works on Windows, macOS, and Linux and features one of the more refined app designs among database GUIs.
 
 [DBeaver](https://dbeaver.com/): Described as a “universal database tool” that works with PostgreSQL. MySQL, and many other databases, it includes a visual query builder, code auto-completion and other advanced features. Paid and free versions for Windows, macOS, and Linux.
 
@@ -64,7 +64,7 @@ Here’s a collection of online resources you can use to stay informed:
 
 [PostgreSQL User Groups](https://www.postgresql.org/community/user-groups/): A list of community groups that offer meetups and other activities.
 
-[PostGIS Blog](http://postgis.net/blog/): Announcements and updates on the PostGIS extension covered in Chapter 15.
+[PostGIS Blog](http://postgis.net/news/): Announcements and updates on the PostGIS extension covered in Chapter 15.
 
 Additionally, I recommend paying attention to developer notes for any of the PostgreSQL-related software you use, such as pgAdmin.
 
