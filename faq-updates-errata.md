@@ -2,7 +2,7 @@
 
 ### FAQ, Updates, and Errata
 
-This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition.
+This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition. Some of these apply to the first couple of printings of the book and may be corrected if you have a third printing or later. Check the copyright page to see which printing you have.
 
 
 ### Introduction
@@ -16,21 +16,13 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 > The GitHub folder name has been renamed to `practical-sql-2-main` from `practical-sql-2-master` in line with GitHub conventions. (Applies only to first printing of the book.)
 
-* **Page 4: Windows Installation (pgAdmin issue)**
-
-> As of late July 2023, the version of pgAdmin included with the EDB PostgreSQL installer has a bug preventing it from launching. The workaround is to download and install a copy of pgAdmin 4 v7.5 or later from [https://www.pgadmin.org/download/pgadmin-4-windows/](https://www.pgadmin.org/download/pgadmin-4-windows/). 
-
-> Prior to installing that version, it is recommended that you UNinstall the pgAdmin included with the EDB PostgreSQL package. To do so, navigate under `Start` to `Add or remove programs`. Find PostgreSQL and select `Uninstall`. When asked if you want to uninstall the whole program or components only, choose components and then click the box next to `pgAdmin`.
-
-> I'm bugging the EDB people to fix the issue and will remove this notice when that happens.
-
 * **Pages 6 and 7: Configuring Python language support (Windows)**
 
 > Note that the current version of the EDB Language Pack is updated from the version shown in the book. Use the folder and version name provided via the EDB Windows installer for `PATH` and `PYTHONHOME`. As of July 2023, that is `C:\edb\languagepack\v3\Python-3.10` 
 
 * **Pages 12 and on: pgAdmin Renamed "Browser" to "Object Explorer"**
 
-> In Figure 1-3 on page 12, and in text on that page and subsequent references, the book refers to a section of pgAdmin labeled as the "Browser" or "object browser." As of pgAdmin 4 v7.0, the user interface has changed to call that area the "Object Explorer."
+> In Figure 1-3 on page 12, and in text on that page and subsequent references, the book refers to a section of pgAdmin labeled as the "Browser" or "object browser." As of pgAdmin 4 v7.0, the user interface has changed to call that area the "Object Explorer." (Applies to first and second printings.)
 
 * **Page 13: pgAdmin Dialog to Create Server**
 
@@ -94,7 +86,9 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 ### Chapter 13: Advanced Query Techniques
 
-* No updates
+* **Page 240: Listing number**
+
+> At the bottom of the page, the sentence should read, "The crosstab structure is the same as in Listing 13-17." (Applies to first and second printings.)
 
 ### Chapter 14: Mining Text to Find Meaningful Data
 
