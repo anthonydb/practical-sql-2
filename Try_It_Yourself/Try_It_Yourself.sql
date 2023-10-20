@@ -253,7 +253,7 @@ SELECT 3.14 * (5 ^ 2);
 SELECT county_name,
        state_name,
        births_2019 AS births,
-       deaths_2019 AS DEATHS,
+       deaths_2019 AS deaths,
        births_2019::numeric / deaths_2019 AS birth_death_ratio
 FROM us_counties_pop_est_2019
 WHERE state_name = 'New York'
@@ -262,6 +262,14 @@ ORDER BY birth_death_ratio DESC;
 -- Generally, counties in and around New York City had the highest ratio of births
 -- to deaths in the 2019 estimates. One exception to the trend is Jefferson County,
 -- which is upstate on the U.S./Canadian border.
+
+-- Note: There were six counties in the U.S. with zero deaths in 2019, according
+-- to this data set -- in Hawaii, Nebraska, North Dakota, and Texas. If you modify
+-- the query to filter on one of those states, you'll need to adjust the WHERE
+-- clause to eliminate those zero-death counties because division by zero isn't 
+-- allowed. To do that, modify your WHERE clause like this:
+
+WHERE state_name = 'Texas' AND deaths_2019 > 0
 
 
 -- 3. Was the 2019 median county population estimate higher in California or New York?
