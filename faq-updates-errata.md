@@ -18,7 +18,7 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 * **Pages 6 and 7: Configuring Python language support (Windows)**
 
-> Note that the current version of the EDB Language Pack is updated from the version shown in the book. Use the folder and version name provided via the EDB Windows installer for `PATH` and `PYTHONHOME`. As of July 2023, that is `C:\edb\languagepack\v3\Python-3.10` 
+> Note that the current version of the EDB Language Pack is updated from the version shown in the book. Use the folder and version name provided via the EDB Windows installer for `PATH` and `PYTHONHOME`. As of October 2023, that is `C:\edb\languagepack\v4\Python-3.11` 
 
 * **Pages 12 and on: pgAdmin Renamed "Browser" to "Object Explorer"**
 
