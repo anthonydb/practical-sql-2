@@ -71,7 +71,7 @@ CREATE TABLE supervisor_salaries (
     town text,
     county text,
     supervisor text,
-    start_date text,
+    start_date date,
     salary numeric(10,2),
     benefits numeric(10,2)
 );
