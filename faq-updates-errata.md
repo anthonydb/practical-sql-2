@@ -18,7 +18,7 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 * **Page 5: Windows Installation (PostGIS)**
 
-> The PostGIS installer for Windows now asks you to check off which components to install rather than providing individual Yes/No prompts. You can select all components including Create Spatial Database. (Applies printings one through three of the book.)
+> The PostGIS installer for Windows now asks you to check off which components to install rather than providing individual Yes/No prompts. You can select all components including Create Spatial Database. (Applies to printings one through three of the book.)
 
 * **Pages 6 and 7: Configuring Python language support (Windows)**
 
