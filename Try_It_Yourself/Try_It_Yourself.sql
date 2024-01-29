@@ -677,7 +677,7 @@ WHERE meat_processing = TRUE AND
 -- What might explain the difference?
 
 -- Answer:
--- The r value of pct_bachelors_higher and median_hh_income is about .60, which
+-- The r value of pct_masters_higher and median_hh_income is about .60, which
 -- shows a lower connection between percent master's degree or higher and
 -- income than percent bachelor's degree or higher and income. One possible
 -- explanation is that attaining a master's degree or higher may have a more
