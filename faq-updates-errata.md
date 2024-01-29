@@ -16,6 +16,10 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 > The GitHub folder name has been renamed to `practical-sql-2-main` from `practical-sql-2-master` in line with GitHub conventions. (Applies only to first printing of the book.)
 
+* **Page 5: Windows Installation (PostGIS)**
+
+> The PostGIS installer for Windows now asks you to check off which components to install rather than providing individual Yes/No prompts. You can select all components including Create Spatial Database. (Applies to printings one through three of the book.)
+
 * **Pages 6 and 7: Configuring Python language support (Windows)**
 
 > Note that the current version of the EDB Language Pack is updated from the version shown in the book. Use the folder and version name provided via the EDB Windows installer for `PATH` and `PYTHONHOME`. As of October 2023, that is `C:\edb\languagepack\v4\Python-3.11` 
