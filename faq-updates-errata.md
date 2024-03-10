@@ -120,10 +120,13 @@ SET datestyle to "ISO, MDY";
 
 ### Chapter 15: Analyzing Spatial Data with PostGIS
 
+* **Pages 280: URL for WKT variable definitions**
+
+> Documentation for the definition of WKT variables has moved to [https://docs.geotools.org/stable/javadocs/org/geotools/api/referencing/doc-files/WKT.html](https://docs.geotools.org/stable/javadocs/org/geotools/api/referencing/doc-files/WKT.html)
+
 * **Pages 282, etc.: Geometry Viewer Results Grid Icon**
 
 > Beginning with version 6.9 of pgAdmin, released in May 2022, the icon to launch the Geometry Viewer in the result column header was changed from an eye to a map (makes sense). On Page 282 and later in the book, I mention clicking the eye icon to launch the viewer. Now, instead, click the map icon. (Applies to first printing of the book.)
-
 
 ### Chapter 16: Working With JSON Data
 
