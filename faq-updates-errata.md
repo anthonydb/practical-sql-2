@@ -2,7 +2,7 @@
 
 ### FAQ, Updates, and Errata
 
-This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition. Some of these apply to the first couple of printings of the book and may be corrected if you have a third printing or later. Check the copyright page to see which printing you have.
+This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition. Some of these apply to the first couple of printings of the book and may be updated if you have a third printing or later. Check the copyright page to see which printing you have.
 
 
 ### Introduction
@@ -32,9 +32,17 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 > The location of the pgAdmin dialog to add a server has changed. Now, in the object browser, right-click `Servers` and then click `Register` > `Server`. The remaining steps in the Note on page 13 are the same. (Formerly, the dialog was accessed by right-clicking `Servers` and selecting `Create` > `Server`.) (Applies only to first printing of the book.)
 
+* **Page 14: pgAdmin: Running a Query**
+
+> pgAdmin, as of version 8.7 (May 2024), has added new options for running a SQL statement in the Query Tool. Previously, pgAdmin had a single `Execute/Refresh` button in its menu bar. Those have been replaced by two buttons: `Execute Script` and `Execute Query`. 
+
+> Clicking `Execute Script` will run every statement in your Query Tool editor. Clicking `Execute Query` will run the statement where your cursor is positioned. It also will present you with a dialog box to confirm your choice (which you can choose to silence in the future). Applies to printings one through three of the book.)
+
 * **Page 15, Figure 1-5: pgAdmin Query Tool**
 
 > Version 6.9 of pgAdmin, released in May 2022, introduced a redesigned Query Tool Layout. General functionality is the same, but if you are using version 6.9 or later, you will see that some menu icons shown in the book at the top of the window are now placed atop the results grid. (Applies only to first printing of the book.)
+
+> Version 8.7 of pgAdmin, released in May 2024, updated how queries are executed in the Query Tool. 
 
 ### Chapter 2: Creating Your First Database and Table
 
