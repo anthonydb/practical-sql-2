@@ -20,9 +20,11 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 > The PostGIS installer for Windows now asks you to check off which components to install rather than providing individual Yes/No prompts. You can select all components including Create Spatial Database. (Applies to printings one through three of the book.)
 
+> The Windows 11 Start menu continues to evolve. To see the PostgreSQL and PostGIS folders added during installation, you may need to click `Start` > `All apps`.
+
 * **Pages 6 and 7: Configuring Python language support (Windows)**
 
-> Note that the current version of the EDB Language Pack is updated from the version shown in the book. Use the folder and version name provided via the EDB Windows installer for `PATH` and `PYTHONHOME`. As of October 2023, that is `C:\edb\languagepack\v4\Python-3.11` 
+> Note that the current version of the EDB Language Pack is updated from the version shown in the book. Use the folder and version name provided via the EDB Windows installer for `PATH` and `PYTHONHOME`. Since October 2023, that path is `C:\edb\languagepack\v4\Python-3.11` 
 
 * **Pages 12 and on: pgAdmin Renamed "Browser" to "Object Explorer"**
 
@@ -34,15 +36,18 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 * **Page 14: pgAdmin: Running a Query**
 
-> pgAdmin, as of version 8.7 (May 2024), has added new options for running a SQL statement in the Query Tool. Previously, pgAdmin had a single `Execute/Refresh` button in its menu bar. Those have been replaced by two buttons: `Execute Script` and `Execute Query`. 
+> pgAdmin, as of version 8.7 (May 2024), has added new options for running a SQL statement in the Query Tool. Previously, the Query Tool had a single `Execute/Refresh` button in its menu bar. That has been replaced by two buttons: `Execute Script` and `Execute Query`. 
 
-> Clicking `Execute Script` will run every statement in your Query Tool editor. Clicking `Execute Query` will run the statement where your cursor is positioned. It also will present you with a dialog box to confirm your choice (which you can choose to silence in the future). Applies to printings one through three of the book.)
+> Clicking `Execute Script` will run every statement in your Query Tool editor (unless you highlight a statement). Clicking `Execute Query` will run only the statement where your cursor is positioned, without a need to highlight the statement. It also will present you with a dialog box to confirm your choice (which you can choose to silence in the future). Applies to printings one through three of the book.
 
 * **Page 15, Figure 1-5: pgAdmin Query Tool**
 
 > Version 6.9 of pgAdmin, released in May 2022, introduced a redesigned Query Tool Layout. General functionality is the same, but if you are using version 6.9 or later, you will see that some menu icons shown in the book at the top of the window are now placed atop the results grid. (Applies only to first printing of the book.)
 
-> Version 8.7 of pgAdmin, released in May 2024, updated how queries are executed in the Query Tool. 
+* **Page 15, Customizing pgAdmin**
+
+> The book states that pgAdmin preferences are accessed by clicking `File` > `Preferences`. This is true for Windows 11. On macOS, click `pgAdmin` > `Preferences`.
+
 
 ### Chapter 2: Creating Your First Database and Table
 
