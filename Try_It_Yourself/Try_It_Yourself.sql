@@ -899,26 +899,27 @@ SELECT (regexp_match('Williams, Sr.', '.*, (.*)'))[1];
 -- regexp_split_to_table() in a subquery to create a table of words to count.
 -- Bonus: remove commas and periods at the end of each word.
 
--- Answer:
 -- This query uses a Common Table Expression to first separate each word
--- in the text into a separate row in a table named word_list. Then the SELECT
--- statement counts the words, which are cleaned up with two operations. First,
--- several nested replace functions remove commas, periods, and colons. Second,
--- all words are converted to lowercase so that when we count we group words
--- that may appear with various cases (e.g., "Military" and "military").
+-- in the text into a separate row in a table named word_list. As part of the
+-- operation, we use nested replace functions to remove commas, periods, and
+-- colons. Then the SELECT statement counts the words, which we convert
+-- to lowercase so that when we count we group words that may appear with
+-- various cases (e.g., "Military" and "military").
+
+-- Thanks to reader @DavidSwagger for pointing out the replace function
+-- needed to happen in the WITH statement.
 
 WITH
     word_list (word)
 AS
     (
-        SELECT regexp_split_to_table(speech_text, '\s') AS word
+        SELECT regexp_split_to_table(
+               replace(replace(replace(speech_text, ',', ''), '.', ''), ':', ''),
+               '\s') AS word
         FROM president_speeches
         WHERE speech_date = '1946-01-21'
     )
-
-SELECT lower(
-               replace(replace(replace(word, ',', ''), '.', ''), ':', '')
-             ) AS cleaned_word,
+SELECT lower(word) AS cleaned_word,
        count(*)
 FROM word_list
 WHERE length(word) >= 5
