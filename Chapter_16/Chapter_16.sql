@@ -293,7 +293,7 @@ SELECT ST_SetSRID(
 FROM earthquakes
 ORDER BY id;
 
--- Listing 16-19: Converting JSON coordinates to a PostGIS geometry column 
+-- Listing 16-19: Converting JSON coordinates to a PostGIS geography column 
 
 -- Add a column of the geography data type 
 ALTER TABLE earthquakes ADD COLUMN earthquake_point geography(POINT, 4326);
