@@ -64,7 +64,7 @@ VALUES
 SELECT * FROM date_time_types;
 
 -- Listing 4-5: Using the interval data type
--- Assumes script 4-4 has been run
+-- (Assumes Listing 4-4 has been run)
 
 SELECT
     timestamp_column,
