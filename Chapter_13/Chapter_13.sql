@@ -201,12 +201,10 @@ WITH
     (SELECT state_name, sum(pop_est_2018)
      FROM us_counties_pop_est_2019
      GROUP BY state_name),
-
     establishments (st, establishment_count) AS
     (SELECT st, sum(establishments) AS establishment_count
      FROM cbp_naics_72_establishments
      GROUP BY st)
-
 SELECT counties.st,
        pop_est_2018,
        establishment_count,
@@ -223,7 +221,6 @@ WITH us_median AS
     (SELECT percentile_cont(.5)
      WITHIN GROUP (ORDER BY pop_est_2019) AS us_median_pop
      FROM us_counties_pop_est_2019)
-
 SELECT county_name,
        state_name AS st,
        pop_est_2019,
@@ -266,12 +263,10 @@ FROM crosstab('SELECT office,
                FROM ice_cream_survey
                GROUP BY office, flavor
                ORDER BY office',
-
               'SELECT flavor
                FROM ice_cream_survey
                GROUP BY flavor
                ORDER BY flavor')
-
 AS (office text,
     chocolate bigint,
     strawberry bigint,
@@ -303,10 +298,8 @@ FROM crosstab('SELECT
                GROUP BY station_name,
                         date_part(''month'', observation_date)
                ORDER BY station_name',
-
               'SELECT month
                FROM generate_series(1,12) month')
-
 AS (station text,
     jan numeric(3,0),
     feb numeric(3,0),
@@ -349,7 +342,6 @@ WITH temps_collapsed (station_name, max_temperature_group) AS
                 ELSE 'No reading'
             END
     FROM temperature_readings)
-
 SELECT station_name, max_temperature_group, count(*)
 FROM temps_collapsed
 GROUP BY station_name, max_temperature_group

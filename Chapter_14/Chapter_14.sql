@@ -189,7 +189,6 @@ SET date_1 =
       (regexp_match(original_text, '\/\d{2}\n(\d{4})'))[1] 
           ||' US/Eastern'
     )::timestamptz,
-             
     date_2 = 
     CASE 
     -- if there is no second date but there is a second hour
@@ -201,7 +200,6 @@ SET date_1 =
           (regexp_match(original_text, '\/\d{2}\n\d{4}-(\d{4})'))[1] 
               ||' US/Eastern'
           )::timestamptz 
-
     -- if there is both a second date and second hour
         WHEN (SELECT regexp_match(original_text, '-(\d{1,2}\/\d{1,2}\/\d{2})') IS NOT NULL)
               AND (SELECT regexp_match(original_text, '\/\d{2}\n\d{4}-(\d{4})') IS NOT NULL)
