@@ -20,11 +20,13 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 > The PostGIS installer for Windows now asks you to check off which components to install rather than providing individual Yes/No prompts. You can select all components including Create Spatial Database. (Applies to printings one through three of the book.)
 
+> The EDB installer for Windows no longer includes the Language Pack. See [this issue](https://github.com/anthonydb/practical-sql-2/issues/32) for details on how to configure Python support.
+
 > The Windows 11 Start menu continues to evolve. To see the PostgreSQL and PostGIS folders added during installation, you may need to click `Start` > `All apps`.
 
 * **Pages 6 and 7: Configuring Python language support (Windows)**
 
-> Note that the current version of the EDB Language Pack is updated from the version shown in the book. Use the folder and version name provided via the EDB Windows installer for `PATH` and `PYTHONHOME`. Since October 2023, that path is `C:\edb\languagepack\v4\Python-3.11` 
+> The EDB installer for Windows no longer includes the Language Pack. Please see [this issue](https://github.com/anthonydb/practical-sql-2/issues/32) for instructions on how to configure Python support. 
 
 * **Pages 12 and on: pgAdmin Renamed "Browser" to "Object Explorer"**
 
