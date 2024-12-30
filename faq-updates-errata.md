@@ -2,8 +2,12 @@
 
 ### FAQ, Updates, and Errata
 
-This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition. Some of these apply to the first couple of printings of the book and may be updated if you have a third printing or later. Check the copyright page to see which printing you have.
+This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition. Some only apply to the first printings of the book and have been subsequently incorporated in later printings. Check the copyright page to see which printing you have.
 
+
+### pgAdmin Updates
+
+Version 9 notes coming with February 2025 release of pgAdmin.
 
 ### Introduction
 
@@ -18,9 +22,9 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 * **Page 5: Windows Installation (PostGIS)**
 
-> The PostGIS installer for Windows now asks you to check off which components to install rather than providing individual Yes/No prompts. You can select all components including Create Spatial Database. (Applies to printings one through three of the book.)
-
 > The EDB installer for Windows no longer includes the Language Pack. See [this issue](https://github.com/anthonydb/practical-sql-2/issues/32) for details on how to configure Python support.
+
+> The PostGIS installer for Windows now asks you to check off which components to install rather than providing individual Yes/No prompts. You can select all components including Create Spatial Database. (Applies to printings one through three of the book.)
 
 > The Windows 11 Start menu continues to evolve. To see the PostgreSQL and PostGIS folders added during installation, you may need to click `Start` > `All apps`.
 
