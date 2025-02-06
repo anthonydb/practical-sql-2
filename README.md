@@ -7,7 +7,7 @@
 
 If you're reading the first edition of the book, published in 2018, please [use the code and data in the first edition repository](https://github.com/anthonydb/practical-sql/). If the cover of your copy does not say, "2nd Edition," then you're using the first edition. 
 
-## A Note About Updates to pgAdmin
+## Important Updates to pgAdmin
 
 In the book, we write SQL queries and manage our PostgreSQL databases with [pgAdmin](https://pgadmin.org), a free and open source graphical user interface. pgAdmin is under continuous development, and its current interface may differ from the screenshots and instructions in the book. Please check [the book FAQ](https://github.com/anthonydb/practical-sql-2/blob/master/faq-updates-errata.md) for updates.
 

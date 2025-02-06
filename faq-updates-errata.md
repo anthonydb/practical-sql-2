@@ -5,9 +5,17 @@
 This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition. Some only apply to the first printings of the book and have been subsequently incorporated in later printings. Check the copyright page to see which printing you have.
 
 
-### pgAdmin Updates
+### Important pgAdmin 4 Version 9 Update!
 
-Version 9 notes coming with February 2025 release of pgAdmin.
+Version 9 of pgAdmin 4, released in February 2025, introduces a new default "workspace" layout that is substantially different from the layout of the tool shown in the book. It's also, in my opinion, less intuitive. Fortunately, it's possible to set the app's layout to the "classic" design shown in the book. To do that:
+
+1. Launch pgAdmin
+2. On macOS, select the `pgAdmin` menu, then `Settings`. On Windows, select the `File` menu, then `Preferences`.
+3. In the Preferences dialog, navigate to `Miscellaneous` and click `User interface`.
+4. Under `Layout`, choose `Classic`. You can also choose a light or dark theme here.
+5. Click `Save`. 
+
+Please see additional pgAdmin updates in the chapter sections below.
 
 ### Introduction
 
