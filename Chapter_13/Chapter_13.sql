@@ -107,10 +107,10 @@ VALUES (2, 'Janet', 'King'),
 
 SELECT first_name, last_name
 FROM employees
-WHERE emp_id IN (
+WHERE id IN (
     SELECT id
     FROM retirees)
-ORDER BY emp_id;
+ORDER BY id;
     
 -- Listing 13-9: Using a correlated subquery with WHERE EXISTS
 
