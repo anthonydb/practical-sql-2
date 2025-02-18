@@ -458,7 +458,7 @@ CREATE TABLE songs (
 -- We could consider the catalog_code. We would have to answer yes to
 -- these questions:
 -- 1. Is it going to be unique across all albums released by all companies?
--- 2. Will an album always have a catelog code?
+-- 2. Will an album always have a catalog code?
 
 
 -- 3. To speed up queries, which columns are good candidates for indexes?
