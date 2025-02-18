@@ -2,8 +2,20 @@
 
 ### FAQ, Updates, and Errata
 
-This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition. Some of these apply to the first couple of printings of the book and may be updated if you have a third printing or later. Check the copyright page to see which printing you have.
+This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition. Some only apply to the first printings of the book and have been subsequently incorporated in later printings. Check the copyright page to see which printing you have.
 
+
+### Important pgAdmin 4 Version 9 Update!
+
+Version 9 of pgAdmin 4, released in February 2025, introduces a new default "workspace" layout that is substantially different from the layout of the tool shown in the book. It's also, in my opinion, less intuitive. Fortunately, it's possible to set the app's layout to the "classic" design shown in the book. To do that:
+
+1. Launch pgAdmin
+2. On macOS, select the `pgAdmin` menu, then `Settings`. On Windows, select the `File` menu, then `Preferences`.
+3. In the Preferences dialog, navigate to `Miscellaneous` and click `User interface`.
+4. Under `Layout`, choose `Classic`. You can also choose a light or dark theme here.
+5. Click `Save`. 
+
+Please see additional pgAdmin updates in the chapter sections below.
 
 ### Introduction
 
@@ -18,13 +30,15 @@ This page contains answers to Frequently Asked Questions, updates to material an
 
 * **Page 5: Windows Installation (PostGIS)**
 
+> The EDB installer for Windows no longer includes the Language Pack. See [this issue](https://github.com/anthonydb/practical-sql-2/issues/32) for details on how to configure Python support.
+
 > The PostGIS installer for Windows now asks you to check off which components to install rather than providing individual Yes/No prompts. You can select all components including Create Spatial Database. (Applies to printings one through three of the book.)
 
 > The Windows 11 Start menu continues to evolve. To see the PostgreSQL and PostGIS folders added during installation, you may need to click `Start` > `All apps`.
 
 * **Pages 6 and 7: Configuring Python language support (Windows)**
 
-> Note that the current version of the EDB Language Pack is updated from the version shown in the book. Use the folder and version name provided via the EDB Windows installer for `PATH` and `PYTHONHOME`. Since October 2023, that path is `C:\edb\languagepack\v4\Python-3.11` 
+> The EDB installer for Windows no longer includes the Language Pack. Please see [this issue](https://github.com/anthonydb/practical-sql-2/issues/32) for instructions on how to configure Python support. 
 
 * **Pages 12 and on: pgAdmin Renamed "Browser" to "Object Explorer"**
 
