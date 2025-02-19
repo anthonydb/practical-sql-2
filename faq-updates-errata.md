@@ -169,7 +169,9 @@ SET datestyle to "ISO, MDY";
 
 ### Chapter 19: Maintaining Your Database
 
-* No updates
+* **Page 392: Listing number**
+
+> In the first paragraph on the page, the sentence should read, "You can confirm this by rerunning the code in Listing 19-2, which shows the table remains at 35MB even after the automatic vacuum."
 
 ### Index
 
