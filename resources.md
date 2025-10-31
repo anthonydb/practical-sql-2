@@ -1,6 +1,6 @@
 ## Practical SQL, 2nd Edition
 
-[Practical SQL](https://www.nostarch.com/practicalsql2/) by Anthony DeBarros is available from No Starch Press.
+[Practical SQL](https://www.nostarch.com/practical-sql-2nd-edition/) by Anthony DeBarros is available from No Starch Press.
 
 ### Resources
 
