@@ -28,7 +28,7 @@ Please see additional pgAdmin updates in the chapter sections below.
 
 > The GitHub folder name has been renamed to `practical-sql-2-main` from `practical-sql-2-master` in line with GitHub conventions. (Applies only to first printing of the book.)
 
-* **Page 5: Windows Installation (Language Pack for Python;  and PostGIS)**
+* **Page 5: Windows Installation (Language Pack for Python; and PostGIS)**
 
 > The EDB installer for Windows no longer includes the Language Pack. See [this issue](https://github.com/anthonydb/practical-sql-2/issues/32) for details on how to configure Python support.
 
