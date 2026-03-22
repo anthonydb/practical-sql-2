@@ -24,7 +24,7 @@ FROM teachers
 ORDER BY salary DESC;
 
 -- Note you can also specify the sort column by
--- using a number representing its position in the result.
+-- using a number representing its position in the SELECT list.
 
 SELECT first_name, last_name, salary
 FROM teachers
