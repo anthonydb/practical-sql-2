@@ -9,7 +9,7 @@ If you're reading the first edition of the book, published in 2018, please [use 
 
 ## Important Updates to pgAdmin
 
-In the book, we write SQL queries and manage our PostgreSQL databases with [pgAdmin](https://pgadmin.org), a free and open source graphical user interface. pgAdmin is under continuous development, and its current interface may differ from the screenshots and instructions in the book. Please check [the book FAQ](https://github.com/anthonydb/practical-sql-2/blob/master/faq-updates-errata.md) for updates.
+In the book, we write SQL queries and manage our PostgreSQL databases with [pgAdmin](https://pgadmin.org), a free and open source graphical user interface. pgAdmin is under continuous development, and its current interface may differ from the screenshots and instructions in the book. Please check [the book FAQ](https://github.com/anthonydb/practical-sql-2/blob/main/faq-updates-errata.md) for updates.
 
 ## Who Is This Book For?
 
@@ -27,11 +27,11 @@ We use [PostgreSQL](https://www.postgresql.org), which is free and open source. 
 
 **Exercises**: The "Try It Yourself" questions and answers for each chapter, listed separately. Try working through the questions before peeking at the answers.
 
-**Software Installation Updates**: Over time, the instructions for installing PostgreSQL and additional components may change. You'll find updates noted at [software-installation-updates.md](https://github.com/anthonydb/practical-sql-2/blob/master/software-installation-updates.md).
+**Software Installation Updates**: Over time, the instructions for installing PostgreSQL and additional components may change. You'll find updates noted at [software-installation-updates.md](https://github.com/anthonydb/practical-sql-2/blob/main/software-installation-updates.md).
 
-**FAQ, Updates, and Errata**: Answers to frequently asked questions,  updates, and corrections are noted at [faq-updates-errata.md](https://github.com/anthonydb/practical-sql-2/blob/master/faq-updates-errata.md).
+**FAQ, Updates, and Errata**: Answers to frequently asked questions,  updates, and corrections are noted at [faq-updates-errata.md](https://github.com/anthonydb/practical-sql-2/blob/main/faq-updates-errata.md).
 
-**Resources**: Updates to the book's Appendix on Additional PostgreSQL Resources at [resources.md](https://github.com/anthonydb/practical-sql-2/blob/master/resources.md).
+**Resources**: Updates to the book's Appendix on Additional PostgreSQL Resources at [resources.md](https://github.com/anthonydb/practical-sql-2/blob/main/resources.md).
 
 ## What's Covered in Each Chapter?
 
