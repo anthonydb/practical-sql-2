@@ -4,6 +4,9 @@
 
 This page contains answers to Frequently Asked Questions, updates to material and URLs, and errata for Practical SQL, 2nd Edition. Some only apply to the first printings of the book and have been subsequently incorporated in later printings. Check the copyright page to see which printing you have.
 
+### New pgAdmin AI Assistant!
+
+Version 9.13 of pgAdmin introduced an AI Assistant for use in the Query Tool and for a series of reports that assess performance, design and security. For more info, see my brief guide at [https://github.com/anthonydb/practical-sql-2/blob/main/pgadmin-ai-assistant.md](https://github.com/anthonydb/practical-sql-2/blob/main/pgadmin-ai-assistant.md)
 
 ### Important pgAdmin 4 Version 9 Update!
 
@@ -20,7 +23,6 @@ Please see additional pgAdmin updates in the chapter sections below.
 ### Introduction
 
 * No updates
-
 
 ### Chapter 1: Setting Up Your Coding Environment
 
