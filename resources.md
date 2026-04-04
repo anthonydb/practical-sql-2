@@ -16,15 +16,13 @@ The following list shows several tools I’ve tried, including free and paid opt
 
 [DBeaver](https://dbeaver.com/): Described as a “universal database tool” that works with PostgreSQL. MySQL, and many other databases, it includes a visual query builder, code auto-completion and other advanced features. Paid and free versions for Windows, macOS, and Linux.
 
-[DataGrip](https://www.jetbrains.com/datagrip/): A SQL development environment that offers code completion, bug detection, and suggestions for streamlining code, among many other features. It’s a paid product, but the company, JetBrains, offers discounts and free versions for students, educators, and nonprofits.
+[DataGrip](https://www.jetbrains.com/datagrip/): A SQL development environment that offers code completion, bug detection, and suggestions for streamlining code, among many other features. A paid product that is now [free for non-commercial use](https://blog.jetbrains.com/datagrip/2025/10/01/datagrip-is-now-free-for-non-commercial-use/).
 
 [Navicat](https://www.navicat.com/): A richly featured SQL development environment with versions that support PostgreSQL as well as other databases, including MySQL, Oracle, MongoDB, and Microsoft SQL Server. Navicat is a paid version only, but the company offers a 14-day free trial.
 
 [Postbird](https://github.com/Paxa/postbird/): A simple cross-platform PostgreSQL GUI for writing queries and viewing objects. Free and open source.
 
 [Postico](https://eggerapps.at/postico/): A macOS-only client from the maker of Postgres.app that takes its cues from Apple design. The full version is paid, but a restricted-feature version is available with no time limit.
-
-[PSequel](https://www.psequel.com/): Also macOS-only, PSequel is a free PostgreSQL client that is decidedly minimalist (see ).
 
 A trial version can help you decide whether a paid product is right for you.
 
@@ -38,7 +36,7 @@ You can expand the capabilities of PostgreSQL via numerous third-party utilities
 
 [pgAgent](https://www.pgadmin.org/docs/pgadmin4/development/pgagent.html): A job manager that lets you run queries at scheduled times, among other tasks.
 
-[pgBackRest](https://pgbackrest.org/):An advanced database backup and restore management tool.
+[pgBackRest](https://pgbackrest.org/): An advanced database backup and restore management tool.
 
 [pgcli](https://github.com/dbcli/pgcli/): A replacement for psql that includes improved formatting when writing queries and viewing output.
 

@@ -45,8 +45,8 @@ We use [PostgreSQL](https://www.postgresql.org), which is free and open source. 
 * Chapter 8: Table Design That Works for You
 * Chapter 9: Extracting Information by Grouping and Summarizing
 * Chapter 10: Inspecting and Modifying Data
-* Chapter 11: Statistical Functions In SQL
-* Chapter 12: Working With Dates and Times
+* Chapter 11: Statistical Functions in SQL
+* Chapter 12: Working with Dates and Times
 * Chapter 13: Advanced Query Techniques
 * Chapter 14: Mining Text to Find Meaningful Data
 * Chapter 15: Analyzing Spatial Data with PostGIS
