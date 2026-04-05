@@ -54,7 +54,7 @@ We use [PostgreSQL](https://www.postgresql.org), which is free and open source. 
 * Chapter 17: Saving Time with Views, Functions, and Triggers
 * Chapter 18: Using PostgreSQL from the Command Line
 * Chapter 19: Maintaining Your Database
-* Chapter 20: Telling Your Data's Story
+* Chapter 20: Telling Your Data's Story (no code exercises)
 * Appendix: Additional PostgreSQL Resources
 
 ## How Do I Get the Code and Data?

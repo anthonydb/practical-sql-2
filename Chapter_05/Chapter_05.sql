@@ -15,8 +15,8 @@ WITH (FORMAT CSV, HEADER);
 
 -- Listing 5-2: CREATE TABLE statement for Census county population estimates
 -- Data dictionary for estimates available at: https://www2.census.gov/programs-surveys/popest/technical-documentation/file-layouts/2010-2019/co-est2019-alldata.pdf
--- Data dictionary for additional columns at: http://www.census.gov/prod/cen2010/doc/pl94-171.pdf
--- Note: Some columns have been given more descriptive names
+-- Data dictionary for additional columns at: https://www2.census.gov/programs-surveys/decennial/rdo/about/2010-census-programs/2010Census_pl94-171_techdoc.pdf
+-- Note: Some columns have been given more descriptive names.
 
 CREATE TABLE us_counties_pop_est_2019 (
     state_fips text,                         -- State FIPS code
@@ -43,7 +43,7 @@ SELECT * FROM us_counties_pop_est_2019;
 -- Listing 5-3: Importing Census data using COPY
 -- Note! If you run into an import error here, be sure you downloaded the code and
 -- data for the book according to the steps listed in Chapter 1.
--- Windows users: Please check the Note on PAGE XXXXXX as well.
+-- Windows users: Please check the Note on page 3 as well.
 
 COPY us_counties_pop_est_2019
 FROM 'C:\YourDirectory\us_counties_pop_est_2019.csv'
