@@ -179,9 +179,9 @@ LIMIT 3;
 
 -- Resources:
    -- TIGER/Line® Shapefiles and TIGER/Line® Files
-   -- https://www.census.gov/geo/maps-data/data/tiger-line.html
+   -- https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
    -- Cartographic Boundary Shapefiles - Counties
-   -- https://www.census.gov/geo/maps-data/data/cbf/cbf_counties.html
+   -- https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html
 
 
 -- Import (for use on command line if on macOS or Linux; see Chapter 18)
@@ -243,15 +243,15 @@ WHERE ST_DWithin(sh.geom::geography,
 
 -- SPATIAL JOINS
 -- SANTA FE WATER AND ROAD DATA
--- http://www.santafenm.gov/santa_fe_river
+-- https://www.santafenm.gov/public-works/parks-and-open-space/river-and-watershed
 
 -- Census 2019 Tiger/Line roads, water
--- https://www.census.gov/geo/maps-data/data/tiger-line.html
+-- https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html
 -- https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2019&layergroup=Roads
 -- https://www.census.gov/cgi-bin/geo/shapefiles/index.php?year=2019&layergroup=Water
 
 -- RTTYP - Route Type Code Description
--- https://www.census.gov/geo/reference/rttyp.html
+-- https://www.census.gov/library/reference/code-lists/route-type-codes.html
 -- C County
 -- I Interstate
 -- M Common Name
@@ -260,7 +260,7 @@ WHERE ST_DWithin(sh.geom::geography,
 -- U U.S.
 
 -- MTFCC MAF/TIGER feature class code
--- https://www.census.gov/geo/reference/mtfcc.html
+-- https://www.census.gov/library/reference/code-lists/mt-feature-class-codes.html
 -- Here, H3010: A natural flowing waterway
 
 
