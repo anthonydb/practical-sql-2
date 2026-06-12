@@ -291,21 +291,26 @@ FROM us_counties_pop_est_2019
 WHERE state_name = 'California';
 
 -- Or both in one query (credit: https://github.com/Kennith-eng)
+-- Note that this query uses GROUP BY to group the results by state, which is necessary to get
+-- the median for each state. The WHERE clause limits the results to the two states of interest.
+-- We'll cover GROUP BY in Chapter 9, but you can use it here to get the results you need.
 
 SELECT state_name,
-       percentile_cont(0.5)
+       percentile_cont(.5)
           WITHIN GROUP (ORDER BY pop_est_2019) AS median
 FROM us_counties_pop_est_2019
 WHERE state_name IN ('New York', 'California')
 GROUP BY state_name;
 
--- Finally, this query shows the median for each state:
+-- Finally, if you're curious, this query shows the median for every state,
+-- ranked from lowest to highest:
 
 SELECT state_name,
-       percentile_cont(0.5)
+       percentile_cont(.5)
           WITHIN GROUP (ORDER BY pop_est_2019) AS median
 FROM us_counties_pop_est_2019
-GROUP BY state_name;
+GROUP BY state_name
+ORDER BY median;
 
 
 ----------------------------------------------------------------------------
