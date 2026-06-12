@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Evaluá tu compra</title>
+
+  <style>
+    /* Reset básico */
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #a8e6cf; /* verde pastel */
+      transition: background-color 0.6s ease;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.96);
+      padding: 28px 30px;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .slider-container {
+      margin-bottom: 24px;
+    }
+
+    .slider-title {
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-top: 6px;
+      color: #555;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      resize: none;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    textarea::placeholder {
+      color: #999;
+    }
+
+    /* Botón moderno */
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6c63ff, #8b85ff);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 8px 18px rgba(108, 99, 255, 0.35);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 26px rgba(108, 99, 255, 0.45);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .comment-output {
+      margin-top: 18px;
+      padding: 14px;
+      background-color: #f7f7f7;
+      border-radius: 12px;
+      display: none;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .thank-you {
+      margin-top: 14px;
+      text-align: center;
+      color: #2d6a4f;
+      font-weight: 600;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Evaluá tu compra 🛒</h1>
+    <div class="subtitle">Tu opinión nos ayuda a mejorar 💬</div>
+
+    <div class="slider-container">
+      <div class="slider-title">¿Cómo fue tu experiencia? ⭐</div>
+
+      <input
+        type="range"
+        min="0"
+        max="2"
+        step="1"
+        value="0"
+        id="ratingSlider"
+      />
+
+      <div class="labels">
+        <span>😊 Buena</span>
+        <span>😐 Regular</span>
+        <span>😞 Mala</span>
+      </div>
+    </div>
+
+    <textarea
+      id="comment"
+      placeholder="✍️ Contanos qué te pareció la compra..."
+    ></textarea>
+
+    <button id="sendBtn">
+      Enviar evaluación 🚀
+    </button>
+
+    <div class="comment-output" id="commentOutput"></div>
+    <div class="thank-you" id="thankYou">¡Gracias por la evaluación! 🙌</div>
+  </div>
+
+  <script>
+    const slider = document.getElementById('ratingSlider');
+    const body = document.body;
+    const sendBtn = document.getElementById('sendBtn');
+    const commentInput = document.getElementById('comment');
+    const commentOutput = document.getElementById('commentOutput');
+    const thankYou = document.getElementById('thankYou');
+
+    /* Colores pastel según el nivel de satisfacción */
+    function updateBackground(value) {
+      const colors = {
+        '0': '#a8e6cf', // verde suave
+        '1': '#fff3b0', // amarillo pastel
+        '2': '#ffb4a2'  // rojo suave
+      };
+
+      body.style.backgroundColor = colors[value];
+    }
+
+    slider.addEventListener('input', (event) => {
+      updateBackground(event.target.value);
+    });
+
+    sendBtn.addEventListener('click', () => {
+      const text = commentInput.value.trim();
+      if (text === '') return;
+
+      commentOutput.textContent = '📝 "' + text + '"';
+      commentOutput.style.display = 'block';
+      thankYou.style.display = 'block';
+
+      commentInput.value = '';
+    });
+  </script>
+</body>
+</html>

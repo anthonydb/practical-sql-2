@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluá tu compra</title>
+    <style>
+        :root {
+            /* Estos valores iniciales serán sobrescritos por JS, 
+               pero los definimos para la carga inicial */
+            --bg-current: #00e676; 
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-current);
+            transition: background-color 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.95); /* Un poco de transparencia */
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #222;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* --- Estilos del Slider --- */
+        .slider-container {
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            outline: none;
+            cursor: pointer;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        /* Estilo del "thumb" (el botón que se mueve) */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #fff;
+            border: 4px solid #00c853; /* Color inicial */
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.2s, border-color 0.3s;
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        /* Etiquetas debajo del slider */
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #444;
+        }
+
+        .emoji-display {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+            height: 70px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* --- Formulario --- */
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            border: 3px solid #e5e7eb;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: #fafafa;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #333;
+            box-shadow: 0 0 0 3px rgba(0,0,0,0.1);
+        }
+
+        button {
+            background-color: #111;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+        }
+
+        button:hover {
+            background-color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* --- Lista de Comentarios --- */
+        #commentsList {
+            margin-top: 2rem;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .comment-item {
+            background-color: #fff;
+            border-left: 6px solid #333;
+            padding: 1rem;
+            margin-bottom: 12px;
+            border-radius: 4px 10px 10px 4px;
+            animation: fadeIn 0.4s ease-in-out;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        }
+
+        .comment-header {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sentiment-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #fff; /* Texto blanco para mayor contraste en badges vivos */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Estilos para el mensaje de agradecimiento */
+        .thank-you-message {
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 800;
+            color: #222;
+            opacity: 0;
+            transition: all 0.4s ease;
+            height: 0;
+            overflow: hidden;
+            transform: translateY(-10px);
+        }
+
+        .thank-you-message.visible {
+            opacity: 1;
+            height: auto;
+            margin-bottom: 1rem;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Evaluá tu compra</h1>
+        <p class="subtitle">¡Queremos saber tu opinión!</p>
+
+        <!-- Icono que cambia según el slider -->
+        <span id="emojiIcon" class="emoji-display">😁</span>
+
+        <div class="slider-container">
+            <!-- Slider: 0 = Verde, 1 = Amarillo, 2 = Rojo -->
+            <input type="range" min="0" max="2" value="0" step="1" id="sentimentSlider">
+            
+            <div class="slider-labels">
+                <span>Bueno</span>
+                <span>Regular</span>
+                <span>Malo</span>
+            </div>
+        </div>
+
+        <textarea id="commentInput" placeholder="Contanos tu experiencia..."></textarea>
+        
+        <button id="submitBtn">ENVIAR RESEÑA</button>
+
+        <div id="thankYouMsg" class="thank-you-message">¡Muchas gracias por tu feedback! 🙌</div>
+
+        <div id="commentsList">
+            <!-- Los comentarios aparecerán aquí -->
+        </div>
+    </div>
+
+    <script>
+        // Configuración de estados con COLORES VIVOS
+        const states = [
+            { 
+                // Verde Neón / Intenso
+                bgColor: '#00e676', 
+                thumbColor: '#00c853', // Un poco más oscuro para el borde/texto
+                emoji: '😁', 
+                label: 'BUENO' 
+            },
+            { 
+                // Amarillo Sol / Intenso
+                bgColor: '#ffea00', 
+                thumbColor: '#ffab00', // Ámbar fuerte para contraste
+                emoji: '😐', 
+                label: 'REGULAR' 
+            },
+            { 
+                // Rojo Fuego / Intenso
+                bgColor: '#ff1744', 
+                thumbColor: '#d50000', // Rojo oscuro para contraste
+                emoji: '🤬', 
+                label: 'MALO' 
+            }
+        ];
+
+        const slider = document.getElementById('sentimentSlider');
+        const body = document.body;
+        const emojiIcon = document.getElementById('emojiIcon');
+        const submitBtn = document.getElementById('submitBtn');
+        const commentInput = document.getElementById('commentInput');
+        const commentsList = document.getElementById('commentsList');
+        const thankYouMsg = document.getElementById('thankYouMsg');
+        
+        // Elemento de estilo dinámico para el thumb
+        const dynamicStyle = document.createElement("style");
+        document.head.appendChild(dynamicStyle);
+
+        // Función para actualizar la UI basada en el slider
+        function updateUI(value) {
+            const state = states[value];
+            
+            // Cambiar color de fondo del body
+            body.style.backgroundColor = state.bgColor;
+            
+            // Cambiar emoji con efecto de rebote
+            emojiIcon.style.transform = "scale(0.5)";
+            setTimeout(() => {
+                emojiIcon.innerText = state.emoji;
+                emojiIcon.style.transform = "scale(1.2)";
+                setTimeout(() => emojiIcon.style.transform = "scale(1)", 150);
+            }, 100);
+            
+            // Actualizar variables y estilos dinámicos
+            slider.style.setProperty('--thumb-color', state.thumbColor);
+            
+            // Actualizamos la regla CSS para el borde del thumb
+            dynamicStyle.innerHTML = `
+                input[type=range]::-webkit-slider-thumb { 
+                    border-color: ${state.thumbColor} !important; 
+                }
+                .sentiment-badge-dynamic {
+                    background-color: ${state.thumbColor};
+                }
+            `;
+        }
+
+        // Evento al mover el slider
+        slider.addEventListener('input', (e) => {
+            updateUI(e.target.value);
+        });
+
+        // Evento al enviar comentario
+        submitBtn.addEventListener('click', () => {
+            const text = commentInput.value.trim();
+            const value = slider.value;
+            const state = states[value];
+
+            if (text === "") {
+                commentInput.style.borderColor = '#d50000';
+                commentInput.style.boxShadow = '0 0 0 3px rgba(213, 0, 0, 0.2)';
+                setTimeout(() => {
+                    commentInput.style.borderColor = '#e5e7eb';
+                    commentInput.style.boxShadow = 'none';
+                }, 2000);
+                return;
+            }
+
+            // Crear el elemento del comentario
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment-item';
+            
+            // Borde izquierdo con el color intenso
+            commentDiv.style.borderLeftColor = state.thumbColor;
+
+            const date = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
+
+            commentDiv.innerHTML = `
+                <div class="comment-header">
+                    <span>${date}</span>
+                    <span class="sentiment-badge" style="background-color:${state.thumbColor}">${state.label}</span>
+                </div>
+                <div>${text}</div>
+            `;
+
+            // Insertar al principio de la lista
+            commentsList.insertBefore(commentDiv, commentsList.firstChild);
+
+            // Limpiar input
+            commentInput.value = "";
+
+            // Mostrar mensaje de agradecimiento
+            thankYouMsg.classList.add('visible');
+
+            // Ocultar mensaje automáticamente después de 3 segundos
+            setTimeout(() => {
+                thankYouMsg.classList.remove('visible');
+            }, 3000);
+        });
+
+        // Inicializar UI
+        updateUI(0);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Meta para que el diseño sea responsive en mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Evaluá tu compra</title>
+
+  <style>
+    /* Reset básico y tipografía global */
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /*
+      El body ocupa toda la pantalla y se centra el contenido.
+      El color de fondo cambia dinámicamente según el slider.
+    */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #4caf50; /* estado inicial: verde */
+      transition: background-color 0.6s ease; /* animación suave */
+    }
+
+    /* Contenedor principal tipo tarjeta */
+    .container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 24px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    /* Área de texto para el comentario */
+    textarea {
+      width: 100%;
+      min-height: 90px;
+      resize: none;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    /* Contenedor del slider */
+    .slider-container {
+      margin-bottom: 16px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: #333;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .comment-output {
+      margin-top: 16px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Evaluá tu compra</h1>
+
+    <textarea id="comment" placeholder="Escribí tu comentario..."></textarea>
+
+    <div class="slider-container">
+      <input id="rating" type="range" min="0" max="2" step="1" value="0" />
+      <p id="ratingLabel" style="margin-top:8px; font-weight:bold; text-align:center; color:#4caf50;">
+        Bueno
+      </p>
+    </div>
+
+    <button id="sendBtn">Enviar</button>
+
+    <div id="output" class="comment-output"></div>
+  </div>
+
+  <script>
+    const slider = document.getElementById('rating');
+    const body = document.body;
+    const button = document.getElementById('sendBtn');
+    const commentInput = document.getElementById('comment');
+    const output = document.getElementById('output');
+
+    function updateBackground(value) {
+      const label = document.getElementById('ratingLabel');
+
+      switch (value) {
+        case '0':
+          body.style.backgroundColor = '#4caf50';
+          label.textContent = 'Bueno';
+          label.style.color = '#4caf50';
+          break;
+        case '1':
+          body.style.backgroundColor = '#ffeb3b';
+          label.textContent = 'Regular';
+          label.style.color = '#ff9800';
+          break;
+        case '2':
+          body.style.backgroundColor = '#f44336';
+          label.textContent = 'Malo';
+          label.style.color = '#f44336';
+          break;
+      }
+    }
+
+    slider.addEventListener('input', (e) => {
+      updateBackground(e.target.value);
+    });
+
+    button.addEventListener('click', () => {
+      const text = commentInput.value.trim();
+      if (!text) return;
+
+      const labelText = document.getElementById('ratingLabel').textContent;
+      output.innerHTML = `
+        <p><strong>${labelText}:</strong> ${text}</p>
+        <p style="margin-top:8px; color:#555;">¡Gracias por tu feedback! Nos ayuda a mejorar.</p>
+      `;
+      output.style.display = 'block';
+      commentInput.value = '';
+    });
+  </script>
+</body>
+</html>

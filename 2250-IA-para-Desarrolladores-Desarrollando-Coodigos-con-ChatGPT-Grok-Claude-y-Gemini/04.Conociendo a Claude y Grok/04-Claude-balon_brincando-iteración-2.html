@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balón Brincando</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #000000;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff0000;
+            font-size: 48px;
+            text-shadow: 2px 2px 8px rgba(255, 0, 0, 0.5);
+            z-index: 10;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .balon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a);
+            border-radius: 50%;
+            box-shadow: 
+                inset -5px -5px 10px rgba(0, 0, 0, 0.3),
+                5px 5px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.1s;
+        }
+
+        .balon::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
+            border-radius: 50%;
+        }
+
+        .squash {
+            transform: scaleY(0.8) scaleX(1.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Balón Brincando</h1>
+    <div id="contenedor-balones"></div>
+
+    <script>
+        const contenedor = document.getElementById('contenedor-balones');
+        const balones = [];
+        const numBalones = 5;
+        const gravedad = 0.5;
+        const rebote = 0.7;
+        const friccion = 0.99;
+
+        // Colores para los balones
+        const colores = [
+            'radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a)',
+            'radial-gradient(circle at 30% 30%, #51cf66, #2f9e44)',
+            'radial-gradient(circle at 30% 30%, #339af0, #1c7ed6)',
+            'radial-gradient(circle at 30% 30%, #ffd43b, #f59f00)',
+            'radial-gradient(circle at 30% 30%, #f783ac, #e64980)'
+        ];
+
+        class Balon {
+            constructor(x, y, color) {
+                this.elemento = document.createElement('div');
+                this.elemento.className = 'balon';
+                this.elemento.style.background = color;
+                contenedor.appendChild(this.elemento);
+
+                this.posX = x;
+                this.posY = y;
+                this.velocidadX = 0;
+                this.velocidadY = 0;
+
+                this.elemento.style.left = this.posX + 'px';
+                this.elemento.style.top = this.posY + 'px';
+            }
+
+            aplicarImpulso(clickX, clickY) {
+                const centroX = this.posX + 30;
+                const centroY = this.posY + 30;
+
+                this.velocidadY = -15;
+                this.velocidadX = (clickX - centroX) * 0.1;
+            }
+
+            actualizar() {
+                this.velocidadY += gravedad;
+                this.velocidadX *= friccion;
+
+                this.posX += this.velocidadX;
+                this.posY += this.velocidadY;
+
+                // Colisión con el suelo
+                if (this.posY + 60 >= window.innerHeight) {
+                    this.posY = window.innerHeight - 60;
+                    this.velocidadY *= -rebote;
+
+                    this.elemento.classList.add('squash');
+                    setTimeout(() => this.elemento.classList.remove('squash'), 100);
+
+                    if (Math.abs(this.velocidadY) < 0.5) {
+                        this.velocidadY = 0;
+                    }
+                }
+
+                // Colisión con el techo
+                if (this.posY <= 0) {
+                    this.posY = 0;
+                    this.velocidadY *= -rebote;
+                }
+
+                // Colisión con paredes laterales
+                if (this.posX <= 0) {
+                    this.posX = 0;
+                    this.velocidadX *= -rebote;
+                }
+                if (this.posX + 60 >= window.innerWidth) {
+                    this.posX = window.innerWidth - 60;
+                    this.velocidadX *= -rebote;
+                }
+
+                this.elemento.style.left = this.posX + 'px';
+                this.elemento.style.top = this.posY + 'px';
+            }
+
+            estaEnMovimiento() {
+                return Math.abs(this.velocidadY) > 0.1 || 
+                       Math.abs(this.velocidadX) > 0.1 || 
+                       this.posY + 60 < window.innerHeight;
+            }
+        }
+
+        // Crear balones iniciales
+        for (let i = 0; i < numBalones; i++) {
+            const x = (window.innerWidth / (numBalones + 1)) * (i + 1) - 30;
+            const y = window.innerHeight / 2 - 30;
+            balones.push(new Balon(x, y, colores[i]));
+        }
+
+        let animacionActiva = false;
+
+        // Detectar clic en la pantalla
+        document.addEventListener('click', (e) => {
+            const clickX = e.clientX;
+            const clickY = e.clientY;
+
+            // Aplicar impulso a todos los balones
+            balones.forEach(balon => {
+                balon.aplicarImpulso(clickX, clickY);
+            });
+
+            if (!animacionActiva) {
+                animacionActiva = true;
+                animar();
+            }
+        });
+
+        function animar() {
+            let algunoEnMovimiento = false;
+
+            balones.forEach(balon => {
+                balon.actualizar();
+                if (balon.estaEnMovimiento()) {
+                    algunoEnMovimiento = true;
+                }
+            });
+
+            if (algunoEnMovimiento) {
+                requestAnimationFrame(animar);
+            } else {
+                animacionActiva = false;
+            }
+        }
+
+        // Ajustar posición de balones al redimensionar ventana
+        window.addEventListener('resize', () => {
+            balones.forEach(balon => {
+                if (balon.posX + 60 > window.innerWidth) {
+                    balon.posX = window.innerWidth - 60;
+                }
+                if (balon.posY + 60 > window.innerHeight) {
+                    balon.posY = window.innerHeight - 60;
+                }
+                balon.elemento.style.left = balon.posX + 'px';
+                balon.elemento.style.top = balon.posY + 'px';
+            });
+        });
+    </script>
+</body>
+</html>

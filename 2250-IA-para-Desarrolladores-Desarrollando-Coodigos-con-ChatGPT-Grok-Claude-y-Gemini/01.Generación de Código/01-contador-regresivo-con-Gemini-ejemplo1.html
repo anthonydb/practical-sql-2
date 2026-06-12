@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador Regresivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .number-display {
+            font-size: 12rem;
+            font-weight: 900;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+        }
+
+        .animate-pop {
+            animation: pop 0.5s ease-out;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-center">
+        <!-- Contenedor del número -->
+        <div id="display-container" class="mb-8 hidden">
+            <div id="number" class="number-display">5</div>
+        </div>
+
+        <!-- Mensaje de estado -->
+        <div id="status-message" class="text-2xl font-bold mb-8 text-blue-400">
+            ¿Listo para empezar?
+        </div>
+
+        <!-- Botón de inicio -->
+        <button id="start-btn" class="btn-start px-8 py-4 rounded-full font-bold text-xl hover:scale-105 active:scale-95 transition-transform">
+            Iniciar Cuenta Regresiva
+        </button>
+    </div>
+
+    <script>
+        const numberElement = document.getElementById('number');
+        const displayContainer = document.getElementById('display-container');
+        const startBtn = document.getElementById('start-btn');
+        const statusMessage = document.getElementById('status-message');
+
+        function startCountdown() {
+            let count = 5;
+            
+            // UI Setup
+            startBtn.classList.add('hidden');
+            displayContainer.classList.remove('hidden');
+            statusMessage.innerText = "Contando...";
+            
+            // Mostrar primer número inmediatamente
+            updateDisplay(count);
+
+            const timer = setInterval(() => {
+                count--;
+                
+                if (count >= 1) {
+                    updateDisplay(count);
+                } else {
+                    clearInterval(timer);
+                    finishCountdown();
+                }
+            }, 1000); // 1 segundo de retraso
+        }
+
+        function updateDisplay(val) {
+            // Reiniciar animación
+            numberElement.classList.remove('animate-pop');
+            void numberElement.offsetWidth; // Trigger reflow
+            
+            numberElement.innerText = val;
+            numberElement.classList.add('animate-pop');
+            
+            // Cambio de color según el número
+            if (val === 1) {
+                numberElement.style.color = '#ef4444'; // Rojo al final
+            } else {
+                numberElement.style.color = '#f8fafc';
+            }
+        }
+
+        function finishCountdown() {
+            numberElement.innerText = "¡Ya!";
+            numberElement.style.color = '#22c55e'; // Verde
+            statusMessage.innerText = "¡Terminado!";
+            
+            // Permitir reiniciar después de un momento
+            setTimeout(() => {
+                startBtn.classList.remove('hidden');
+                startBtn.innerText = "Reiniciar";
+            }, 1500);
+        }
+
+        startBtn.addEventListener('click', startCountdown);
+    </script>
+</body>
+</html>

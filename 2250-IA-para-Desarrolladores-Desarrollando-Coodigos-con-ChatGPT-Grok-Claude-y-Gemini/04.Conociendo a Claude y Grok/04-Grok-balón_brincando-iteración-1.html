@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Balón que Brinca</title>
+  
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 100%);
+      overflow: hidden;
+      cursor: pointer;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .scene {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+    }
+
+    .ball {
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle at 35% 35%, #ff6b6b, #c92c2c);
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      bottom: 80px;
+      transform: translateX(-50%);
+      box-shadow: 
+        0 10px 30px rgba(0,0,0,0.4),
+        inset 25px 25px 40px rgba(255,255,255,0.3),
+        inset -20px -20px 40px rgba(0,0,0,0.4);
+      transition: transform 0.1s ease-out;
+    }
+
+    .ball.jump {
+      animation: jump 0.7s ease-in-out;
+    }
+
+    @keyframes jump {
+      0%   { bottom: 80px;  transform: translateX(-50%) scale(1); }
+      40%  { bottom: 380px; transform: translateX(-50%) scale(1.1); }
+      60%  { bottom: 340px; transform: translateX(-50%) scale(0.95); }
+      100% { bottom: 80px;  transform: translateX(-50%) scale(1); }
+    }
+
+    .shadow {
+      width: 160px;
+      height: 40px;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, transparent 70%);
+      position: absolute;
+      left: 50%;
+      bottom: 40px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      opacity: 0.6;
+      transition: all 0.7s ease-in-out;
+    }
+
+    .ball.jump + .shadow {
+      bottom: 30px;
+      width: 100px;
+      opacity: 0.3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scene">
+    <div class="ball" id="ball"></div>
+    <div class="shadow"></div>
+  </div>
+
+  <script>
+    const ball = document.getElementById('ball');
+    
+    // Brinca al cargar la página (opcional)
+    // ball.classList.add('jump');
+
+    document.addEventListener('click', () => {
+      // Removemos la clase para que la animación pueda repetirse
+      ball.classList.remove('jump');
+      
+      // Pequeño retraso para que el navegador registre el cambio
+      void ball.offsetWidth;
+      
+      // Volvemos a añadir la clase → se ejecuta la animación
+      ball.classList.add('jump');
+    });
+  </script>
+
+</body>
+</html>

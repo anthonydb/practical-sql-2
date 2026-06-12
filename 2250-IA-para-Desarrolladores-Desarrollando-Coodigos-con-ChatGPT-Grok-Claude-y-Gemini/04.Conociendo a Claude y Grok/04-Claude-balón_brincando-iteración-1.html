@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balón Brincando</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+        }
+
+        #balon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a);
+            border-radius: 50%;
+            box-shadow: 
+                inset -5px -5px 10px rgba(0, 0, 0, 0.3),
+                5px 5px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.1s;
+        }
+
+        #balon::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
+            border-radius: 50%;
+        }
+
+        .squash {
+            transform: scaleY(0.8) scaleX(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="balon"></div>
+
+    <script>
+        const balon = document.getElementById('balon');
+        let posX = window.innerWidth / 2 - 30;
+        let posY = window.innerHeight / 2 - 30;
+        let velocidadY = 0;
+        let velocidadX = 0;
+        let gravedad = 0.5;
+        let rebote = 0.7;
+        let friccion = 0.99;
+        let animacionActiva = false;
+
+        // Posicionar balón al centro inicialmente
+        balon.style.left = posX + 'px';
+        balon.style.top = posY + 'px';
+
+        // Detectar clic en la pantalla
+        document.addEventListener('click', (e) => {
+            // Calcular dirección hacia donde se hizo clic
+            const clickX = e.clientX;
+            const clickY = e.clientY;
+            const centroX = posX + 30;
+            const centroY = posY + 30;
+
+            // Aplicar impulso hacia arriba y hacia el clic
+            velocidadY = -15;
+            velocidadX = (clickX - centroX) * 0.1;
+
+            if (!animacionActiva) {
+                animacionActiva = true;
+                animar();
+            }
+        });
+
+        function animar() {
+            // Aplicar gravedad
+            velocidadY += gravedad;
+            
+            // Aplicar fricción horizontal
+            velocidadX *= friccion;
+
+            // Actualizar posiciones
+            posX += velocidadX;
+            posY += velocidadY;
+
+            // Colisión con el suelo
+            if (posY + 60 >= window.innerHeight) {
+                posY = window.innerHeight - 60;
+                velocidadY *= -rebote;
+                
+                // Efecto de aplastamiento
+                balon.classList.add('squash');
+                setTimeout(() => balon.classList.remove('squash'), 100);
+
+                // Si la velocidad es muy baja, detener
+                if (Math.abs(velocidadY) < 0.5) {
+                    velocidadY = 0;
+                }
+            }
+
+            // Colisión con el techo
+            if (posY <= 0) {
+                posY = 0;
+                velocidadY *= -rebote;
+            }
+
+            // Colisión con paredes laterales
+            if (posX <= 0) {
+                posX = 0;
+                velocidadX *= -rebote;
+            }
+            if (posX + 60 >= window.innerWidth) {
+                posX = window.innerWidth - 60;
+                velocidadX *= -rebote;
+            }
+
+            // Actualizar posición del balón
+            balon.style.left = posX + 'px';
+            balon.style.top = posY + 'px';
+
+            // Continuar animación si hay movimiento
+            if (Math.abs(velocidadY) > 0.1 || Math.abs(velocidadX) > 0.1 || posY + 60 < window.innerHeight) {
+                requestAnimationFrame(animar);
+            } else {
+                animacionActiva = false;
+            }
+        }
+
+        // Ajustar posición del balón al redimensionar ventana
+        window.addEventListener('resize', () => {
+            if (posX + 60 > window.innerWidth) posX = window.innerWidth - 60;
+            if (posY + 60 > window.innerHeight) posY = window.innerHeight - 60;
+            balon.style.left = posX + 'px';
+            balon.style.top = posY + 'px';
+        });
+    </script>
+</body>
+</html>

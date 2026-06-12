@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contador regresivo</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      font-size: 5rem;
+      background: #111;
+      color: #00ffcc;
+    }
+  </style>
+</head>
+<body>
+  <div id="counter">5</div>
+
+  <script>
+    let count = 5;
+    const counter = document.getElementById('counter');
+
+    const interval = setInterval(() => {
+      count--;
+      counter.textContent = count;
+
+      if (count === 1) {
+        clearInterval(interval);
+      }
+    }, 1000);
+  </script>
+</body>
+</html>

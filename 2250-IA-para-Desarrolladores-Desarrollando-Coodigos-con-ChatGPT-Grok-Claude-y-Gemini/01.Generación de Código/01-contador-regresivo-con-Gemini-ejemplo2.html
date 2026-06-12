@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contador Regresivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Animación suave para los números */
+        .number-transition {
+            transition: all 0.5s ease-in-out;
+            transform: scale(1);
+            opacity: 1;
+        }
+        .number-exit {
+            transform: scale(0.5);
+            opacity: 0;
+        }
+        .number-enter {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center font-sans">
+
+    <div class="text-center p-8 bg-slate-800 rounded-3xl shadow-2xl border border-slate-700 w-full max-w-sm mx-4">
+        <h1 class="text-2xl font-bold mb-8 text-slate-300 tracking-wider">CUENTA REGRESIVA</h1>
+        
+        <!-- Contenedor del número -->
+        <div class="h-48 flex items-center justify-center mb-8">
+            <div id="countdown-display" class="text-9xl font-black text-blue-500 number-transition">
+                5
+            </div>
+        </div>
+
+        <!-- Botón de control -->
+        <button id="start-btn" class="w-full bg-blue-600 hover:bg-blue-500 active:transform active:scale-95 text-white font-bold py-4 px-6 rounded-2xl transition duration-200 shadow-lg shadow-blue-900/20">
+            Iniciar Cuenta
+        </button>
+
+        <p id="status-msg" class="mt-6 text-slate-400 font-medium h-6">
+            Presiona el botón para comenzar
+        </p>
+    </div>
+
+    <script>
+        const display = document.getElementById('countdown-display');
+        const startBtn = document.getElementById('start-btn');
+        const statusMsg = document.getElementById('status-msg');
+
+        let isRunning = false;
+
+        function updateDisplay(number) {
+            // Aplicar efecto de salida
+            display.classList.add('number-exit');
+            
+            setTimeout(() => {
+                // Cambiar el contenido
+                display.innerText = number;
+                display.classList.remove('number-exit');
+                display.classList.add('number-enter');
+                
+                // Forzar reflujo para que la animación de entrada funcione
+                display.offsetHeight; 
+                
+                display.classList.remove('number-enter');
+            }, 250);
+        }
+
+        async function startCountdown() {
+            if (isRunning) return;
+            
+            isRunning = true;
+            startBtn.disabled = true;
+            startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            statusMsg.innerText = "¡Contando!";
+
+            let count = 5;
+            display.innerText = count;
+
+            const timer = setInterval(() => {
+                count--;
+                
+                if (count >= 1) {
+                    updateDisplay(count);
+                } else {
+                    clearInterval(timer);
+                    statusMsg.innerText = "¡Tiempo terminado!";
+                    display.innerText = "0";
+                    display.classList.add('text-emerald-400');
+                    display.classList.remove('text-blue-500');
+                    
+                    // Resetear después de un momento
+                    setTimeout(() => {
+                        isRunning = false;
+                        startBtn.disabled = false;
+                        startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        startBtn.innerText = "Reiniciar";
+                        display.classList.remove('text-emerald-400');
+                        display.classList.add('text-blue-500');
+                    }, 2000);
+                }
+            }, 1000);
+        }
+
+        startBtn.addEventListener('click', startCountdown);
+    </script>
+</body>
+</html>

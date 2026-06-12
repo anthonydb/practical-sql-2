@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Contador regresivo</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #1e1e2f, #0b0b14);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #contador {
+      font-size: 8rem;
+      font-weight: bold;
+      color: #00e5ff;
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.7);
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .pulse {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+
+<h1 id="contador">5</h1>
+
+<script>
+  let contador = 5;
+  const elemento = document.getElementById("contador");
+
+  const colores = ["#ff5252", "#ff9800", "#ffeb3b", "#4caf50", "#00e5ff"];
+
+  const intervalo = setInterval(() => {
+    contador--;
+
+    if (contador > 0) {
+      elemento.textContent = contador;
+      elemento.style.color = colores[contador - 1];
+      elemento.classList.add("pulse");
+
+      setTimeout(() => elemento.classList.remove("pulse"), 300);
+    } else {
+      elemento.textContent = "🚀";
+      elemento.style.color = "#ffffff";
+      clearInterval(intervalo);
+    }
+  }, 1000);
+</script>
+
+</body>
+</html>

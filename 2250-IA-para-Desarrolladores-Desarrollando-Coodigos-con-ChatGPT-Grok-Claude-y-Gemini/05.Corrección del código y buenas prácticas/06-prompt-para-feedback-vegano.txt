@@ -1,0 +1,36 @@
+## Rol
+Sos un desarrollador Front-End experto. Necesito que crees un componente de "Feedback
+de Cliente" para un local vegano utilizando solamente HTML, CSS y JavaScript puro (sin
+frameworks).
+El diseño debe ser moderno, minimalista y cumplir con los siguientes requerimientos
+funcionales y reglas de negocio:
+
+### 1. Interfaz de Usuario (UI)
+- **Título:** H1 que diga "Evaluá tu compra".
+- **Selector de Satisfacción:** Un slider (input type="range") con 3 puntos discretos.
+- Estado Inicial: Sin selección (o neutro).
+- Posiciones: Izquierda (Malo), Centro (Regular), Derecha (Bueno).
+- **Comentarios:** Un `textarea` opcional con el placeholder "Dejanos tu opinión (opcional)".
+- **Acción:** Un botón de "Enviar".
+
+### 2. Lógica e Interacción (JS & CSS)
+- **Cambio de Fondo Dinámico:** El `background-color` del contenedor o body debe
+cambiar con una transición suave (`transition: background 0.5s`) según el valor del slider:
+- **Malo:** Rojo suave.
+- **Regular:** Amarillo suave.
+- **Bueno:** Verde suave.
+- **Validación del Botón:** El botón de enviar debe estar **deshabilitado** (disabled) hasta
+que el usuario interactúe con el slider por primera vez.
+
+### 3. Validación de Contenido (Regla de Negocio Crítica)
+- El sistema debe bloquear el envío si el comentario contiene palabras prohibidas en el
+contexto vegano.
+- **Palabras prohibidas:** "Carne", "Huevo", "Leche" (debe ser case-insensitive).
+- Si se detectan estas palabras, mostrar un error visual (borde rojo o mensaje de alerta) y no
+permitir el envío.
+
+### 4. Feedback Post-Envío
+- Al hacer clic en enviar (y pasar la validación), el formulario debe desaparecer.
+- Debe renderizarse en el DOM:
+- El mensaje: "¡Gracias por la evaluación!".
+- El texto del comentario ingresado (si hubo uno).

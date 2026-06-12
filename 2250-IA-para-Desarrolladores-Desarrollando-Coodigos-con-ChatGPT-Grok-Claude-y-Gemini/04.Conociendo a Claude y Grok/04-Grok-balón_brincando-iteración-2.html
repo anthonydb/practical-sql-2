@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bolinhas Brincando</title>
+  
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #0a0015;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      touch-action: manipulation; /* mejor para mobile */
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .ball {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      box-shadow: 
+        0 0 30px 12px var(--color-glow),
+        inset 0 0 20px rgba(255,255,255,0.4);
+      background: radial-gradient(circle at 30% 30%, white 10%, var(--color) 50%, black 90%);
+    }
+
+    /* Colores aleatorios posibles */
+    .ball.color-1 { --color: #00ffff; --color-glow: #00ffff88; }
+    .ball.color-2 { --color: #ff3366; --color-glow: #ff336688; }
+    .ball.color-3 { --color: #33ff99; --color-glow: #33ff9988; }
+    .ball.color-4 { --color: #ffcc33; --color-glow: #ffcc3388; }
+    .ball.color-5 { --color: #9966ff; --color-glow: #9966ff88; }
+
+    .controls {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      z-index: 100;
+      padding: 10px;
+    }
+
+    button {
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      color: white;
+      transition: all 0.15s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    #resetBtn {
+      background: #444466;
+    }
+    #resetBtn:hover { background: #666688; }
+
+    #addBtn {
+      background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    }
+    #addBtn:hover { transform: scale(1.08); }
+
+    #clearBtn {
+      background: #662222;
+    }
+    #clearBtn:hover { background: #883333; }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="container"></div>
+
+  <div class="controls">
+    <button id="resetBtn">🔄 Resetar</button>
+    <button id="addBtn">+ Adicionar Bolinha</button>
+    <button id="clearBtn">🗑️ Limpar</button>
+  </div>
+
+  <script>
+    const container = document.getElementById('container');
+    let balls = [];
+
+    function createBall() {
+      const ball = document.createElement('div');
+      ball.classList.add('ball');
+
+      // Color aleatorio
+      const colors = ['color-1','color-2','color-3','color-4','color-5'];
+      ball.classList.add(colors[Math.floor(Math.random() * colors.length)]);
+
+      // Posición y velocidad inicial aleatoria
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * (window.innerHeight * 0.5);
+      const vx = (Math.random() - 0.5) * 8;
+      const vy = - (10 + Math.random() * 12); // hacia arriba primero
+
+      ball.style.left = x + 'px';
+      ball.style.top  = y + 'px';
+      ball.x  = x;
+      ball.y  = y;
+      ball.vx = vx;
+      ball.vy = vy;
+      ball.radius = 30;
+
+      container.appendChild(ball);
+      balls.push(ball);
+    }
+
+    function updateBalls() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const gravity = 0.45;
+      const bounce = -0.82; // rebote con algo de pérdida de energía
+      const friction = 0.98;
+
+      balls.forEach(ball => {
+        ball.vy += gravity;
+        ball.vx *= friction;
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+
+        // Rebote en paredes laterales
+        if (ball.x < ball.radius) {
+          ball.x = ball.radius;
+          ball.vx = -ball.vx * 0.88;
+        }
+        if (ball.x > width - ball.radius) {
+          ball.x = width - ball.radius;
+          ball.vx = -ball.vx * 0.88;
+        }
+
+        // Rebote en suelo y techo
+        if (ball.y >= height - ball.radius) {
+          ball.y = height - ball.radius;
+          ball.vy = bounce * ball.vy;
+          // evita que se atasque abajo
+          if (Math.abs(ball.vy) < 1.5) ball.vy = -8 - Math.random()*4;
+        }
+        if (ball.y < ball.radius) {
+          ball.y = ball.radius;
+          ball.vy = -ball.vy;
+        }
+
+        ball.style.left = ball.x + 'px';
+        ball.style.top  = ball.y + 'px';
+      });
+
+      requestAnimationFrame(updateBalls);
+    }
+
+    // Controles
+    document.getElementById('addBtn').addEventListener('click', () => {
+      createBall();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      balls.forEach(b => b.remove());
+      balls = [];
+      for (let i = 0; i < 5; i++) createBall(); // 5 bolas al resetear
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      balls.forEach(b => b.remove());
+      balls = [];
+    });
+
+    // Iniciar con algunas bolas
+    for (let i = 0; i < 6; i++) {
+      createBall();
+    }
+
+    // Iniciar animación
+    updateBalls();
+
+    // Crear bola al hacer clic en cualquier parte (opcional)
+    // container.addEventListener('click', createBall);
+  </script>
+
+</body>
+</html>

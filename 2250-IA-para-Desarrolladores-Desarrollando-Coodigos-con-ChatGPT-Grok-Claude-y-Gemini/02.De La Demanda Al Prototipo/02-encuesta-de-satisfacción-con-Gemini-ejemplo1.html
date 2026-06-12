@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluá tu compra</title>
+    <style>
+        /* Estilos Generales y Animación de Fondo */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* El color inicial es verde (posición 0 del slider) */
+            background-color: #d1fae5; 
+            transition: background-color 0.6s ease-in-out;
+            color: #333;
+        }
+
+        /* Contenedor principal (Tarjeta blanca) */
+        .container {
+            background-color: rgba(255, 255, 255, 0.95); /* Un poco de transparencia */
+            padding: 2rem;
+            border-radius: 20px; /* Bordes más redondeados */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Sombra más suave */
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        /* Estilos del Slider */
+        .slider-container {
+            margin: 2.5rem 0;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e5e7eb;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Personalización del "thumb" (la bolita del slider) */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #4f46e5; /* Color índigo agradable */
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            background: #4338ca;
+        }
+
+        /* Etiquetas debajo del slider */
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        /* Área de texto */
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            margin-bottom: 1.5rem;
+            border: 2px solid #f3f4f6;
+            border-radius: 12px;
+            resize: none;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: all 0.3s;
+            background-color: #f9fafb;
+            font-size: 0.95rem;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #a5b4fc; /* Color de foco suave */
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(165, 180, 252, 0.2);
+        }
+
+        /* Botón de enviar */
+        button {
+            background-color: #111827;
+            color: white;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        button:hover {
+            background-color: #1f2937;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: scale(0.98);
+            box-shadow: none;
+        }
+
+        /* Sección de Comentarios */
+        .comments-section {
+            margin-top: 2.5rem;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 5px; /* Espacio para scrollbar */
+        }
+
+        /* Scrollbar personalizado */
+        .comments-section::-webkit-scrollbar {
+            width: 6px;
+        }
+        .comments-section::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .comments-section::-webkit-scrollbar-thumb {
+            background-color: #d1d5db;
+            border-radius: 20px;
+        }
+
+        .comment-card {
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 5px solid;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            animation: fadeIn 0.5s ease;
+            word-wrap: break-word;
+        }
+
+        .comment-header {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comment-rating-badge {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        /* Animación para nuevos comentarios */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Colores específicos para bordes de comentarios */
+        .border-green { border-left-color: #34d399; }
+        .border-yellow { border-left-color: #fbbf24; }
+        .border-red { border-left-color: #f87171; }
+
+        /* Mensaje de éxito (Toast) */
+        #successMessage {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: #10b981; /* Verde esmeralda agradable */
+            color: white;
+            text-align: center;
+            border-radius: 50px;
+            padding: 12px 24px;
+            position: fixed;
+            z-index: 10;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.4s ease, bottom 0.4s ease;
+        }
+
+        #successMessage.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Evaluá tu compra</h1>
+        <p style="color: #6b7280; margin-bottom: 30px;">¿Qué te pareció la experiencia?</p>
+
+        <!-- Slider -->
+        <div class="slider-container">
+            <input type="range" id="ratingSlider" min="0" max="2" step="1" value="0">
+            
+            <div class="slider-labels">
+                <span>Bueno</span>
+                <span>Regular</span>
+                <span>Mala</span>
+            </div>
+        </div>
+
+        <!-- Campo de comentario -->
+        <textarea id="commentInput" placeholder="Comparte tu opinión con nosotros..."></textarea>
+
+        <!-- Botón -->
+        <button onclick="addComment()">Enviar Reseña</button>
+
+        <!-- Lista de comentarios -->
+        <div class="comments-section" id="commentsList">
+            <!-- Los comentarios aparecerán aquí -->
+        </div>
+    </div>
+
+    <!-- Mensaje Toast de Éxito -->
+    <div id="successMessage">¡Gracias por la evaluación!</div>
+
+    <script>
+        // Referencias a elementos del DOM
+        const body = document.body;
+        const slider = document.getElementById('ratingSlider');
+        const commentInput = document.getElementById('commentInput');
+        const commentsList = document.getElementById('commentsList');
+        const successMessage = document.getElementById('successMessage');
+
+        // Definición de colores vivos y brillantes
+        const colors = {
+            0: '#00e676', // Verde brillante (Bueno)
+            1: '#ffeb3b', // Amarillo vivo (Regular)
+            2: '#ff5252'  // Rojo intenso (Mala)
+        };
+
+        // Clases para bordes
+        const borderClasses = {
+            0: 'border-green',
+            1: 'border-yellow',
+            2: 'border-red'
+        };
+
+        const ratingLabels = {
+            0: 'Bueno',
+            1: 'Regular',
+            2: 'Mala'
+        };
+
+        // Inicializar color de fondo
+        body.style.backgroundColor = colors[0];
+
+        // Evento: Al mover el slider, cambiar el color de fondo
+        slider.addEventListener('input', function() {
+            const value = this.value;
+            body.style.backgroundColor = colors[value];
+        });
+
+        // Función para agregar comentario
+        function addComment() {
+            const text = commentInput.value.trim();
+            const ratingValue = slider.value;
+            
+            if (text === "") {
+                // Usamos un alert simple, pero se podría mejorar también
+                alert("Por favor, escribe un comentario antes de enviar.");
+                return;
+            }
+
+            // Crear el elemento HTML del comentario
+            const commentDiv = document.createElement('div');
+            commentDiv.className = `comment-card ${borderClasses[ratingValue]}`;
+            
+            // Obtener fecha actual
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            commentDiv.innerHTML = `
+                <div class="comment-header">
+                    <span class="comment-rating-badge">${ratingLabels[ratingValue]}</span>
+                    <span>${timeString}</span>
+                </div>
+                <div style="color: #4b5563;">${escapeHtml(text)}</div>
+            `;
+
+            // Agregar al inicio de la lista
+            commentsList.prepend(commentDiv);
+
+            // Limpiar el campo de texto
+            commentInput.value = "";
+
+            // Mostrar mensaje de éxito
+            showToast();
+        }
+
+        function showToast() {
+            successMessage.className = "show";
+            setTimeout(function(){ 
+                successMessage.className = successMessage.className.replace("show", ""); 
+            }, 3000);
+        }
+
+        // Función de seguridad
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>

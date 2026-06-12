@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Cliente - Local Vegano</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f5f5f5;
+            transition: background 0.5s ease;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .slider-container {
+            margin-bottom: 30px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            padding: 10px 0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #e74c3c 0%, #f39c12 50%, #27ae60 100%);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .emoji-display {
+            text-align: center;
+            font-size: 48px;
+            margin-top: 15px;
+            height: 60px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        textarea.error {
+            border-color: #e74c3c;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover:not(:disabled) {
+            background: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .thank-you {
+            text-align: center;
+            display: none;
+        }
+
+        .thank-you.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .thank-you h2 {
+            color: #27ae60;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .thank-you-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .user-comment {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-style: italic;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            display: block;
+        }
+
+        .form-container.hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container" id="formContainer">
+            <h1>Evaluá tu compra</h1>
+            
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Malo</span>
+                    <span>Regular</span>
+                    <span>Bueno</span>
+                </div>
+                <div class="slider-wrapper">
+                    <input type="range" id="satisfactionSlider" min="0" max="2" step="1" value="1">
+                </div>
+                <div class="emoji-display" id="emojiDisplay">😐</div>
+            </div>
+
+            <textarea 
+                id="commentTextarea" 
+                placeholder="Dejanos tu opinión (opcional)"
+            ></textarea>
+            
+            <div class="error-message" id="errorMessage">
+                ⚠️ Tu comentario contiene palabras no permitidas en nuestro local vegano
+            </div>
+
+            <button id="submitBtn" disabled>Enviar</button>
+        </div>
+
+        <div class="thank-you" id="thankYou">
+            <div class="thank-you-icon">✨</div>
+            <h2>¡Gracias por la evaluación!</h2>
+            <div id="displayComment"></div>
+        </div>
+    </div>
+
+    <script>
+        // Referencias a elementos del DOM
+        const slider = document.getElementById('satisfactionSlider');
+        const emojiDisplay = document.getElementById('emojiDisplay');
+        const textarea = document.getElementById('commentTextarea');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const formContainer = document.getElementById('formContainer');
+        const thankYou = document.getElementById('thankYou');
+        const displayComment = document.getElementById('displayComment');
+        const body = document.body;
+
+        // Palabras prohibidas
+        const prohibitedWords = ['carne', 'huevo', 'leche'];
+
+        // Estado de interacción
+        let hasInteractedWithSlider = false;
+
+        // Emojis y colores según valor del slider
+        const feedbackConfig = {
+            0: { emoji: '😞', color: '#ffcdd2' }, // Malo - Rojo suave
+            1: { emoji: '😐', color: '#fff9c4' }, // Regular - Amarillo suave
+            2: { emoji: '😊', color: '#c8e6c9' }  // Bueno - Verde suave
+        };
+
+        // Función para actualizar el emoji y el fondo
+        function updateFeedback() {
+            const value = slider.value;
+            const config = feedbackConfig[value];
+            
+            emojiDisplay.textContent = config.emoji;
+            body.style.background = config.color;
+        }
+
+        // Función para validar palabras prohibidas
+        function containsProhibitedWords(text) {
+            const lowerText = text.toLowerCase();
+            return prohibitedWords.some(word => lowerText.includes(word));
+        }
+
+        // Event listener para el slider
+        slider.addEventListener('input', function() {
+            if (!hasInteractedWithSlider) {
+                hasInteractedWithSlider = true;
+                submitBtn.disabled = false;
+            }
+            updateFeedback();
+        });
+
+        // Event listener para el textarea (validación en tiempo real)
+        textarea.addEventListener('input', function() {
+            if (containsProhibitedWords(textarea.value)) {
+                textarea.classList.add('error');
+                errorMessage.classList.add('show');
+            } else {
+                textarea.classList.remove('error');
+                errorMessage.classList.remove('show');
+            }
+        });
+
+        // Event listener para el botón de enviar
+        submitBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Validar palabras prohibidas antes de enviar
+            if (containsProhibitedWords(textarea.value)) {
+                textarea.classList.add('error');
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Ocultar el formulario
+            formContainer.classList.add('hide');
+
+            // Mostrar mensaje de agradecimiento
+            thankYou.classList.add('show');
+
+            // Mostrar el comentario si existe
+            if (textarea.value.trim() !== '') {
+                displayComment.innerHTML = `
+                    <div class="user-comment">
+                        "${textarea.value}"
+                    </div>
+                `;
+            }
+        });
+
+        // Inicializar el feedback al cargar la página
+        updateFeedback();
+    </script>
+</body>
+</html>
