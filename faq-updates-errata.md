@@ -71,7 +71,9 @@ Please see additional pgAdmin updates in the chapter sections below.
 
 ### Chapter 3: Beginning Data Exploration with SELECT
 
-* No updates
+* **Page 37, Using LIKE and ILIKE with WHERE**
+
+> The definition of the percent sign (%) wildcard should indicate that it matches zero or more characters. The book says one or more characters.
 
 ### Chapter 4: Understanding Data Types
 
